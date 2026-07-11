@@ -6,7 +6,7 @@
     <title>Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row items-center">
+  <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row overflow-hidden">
     <nav
       class="flex-none bg-[#EBEFE5] w-1/6 h-screen flex flex-col justify-between p-10"
     >
@@ -70,7 +70,7 @@
       </button>
     </nav>
     <section
-      class="flex-1 flex flex-col justify-start items-start p-10 gap-7 h-screen"
+      class="flex-1 flex flex-col justify-start items-start p-10 gap-7 h-screen overflow-y-auto"
     >
       <div class="flex flex-col gap-2">
         <h1 id="user" class="font-bold text-3xl">
@@ -83,9 +83,9 @@
 
       <div class="grid grid-cols-2 gap-4 w-full">
         <div
-          class="col-span-full rounded-3xl p-6 flex flex-row justify-between gap-3 bg-[#0D631B] duration-200 hover:shadow-xl"
+          class="col-span-full rounded-3xl p-6 flex flex-row justify-between gap-3 bg-[#0D631B] duration-200 hover:shadow-md hover:bg-[#2E7D32] cursor-pointer"
         >
-          <div class="flex flex-col gap-3 bg-[#0D631B] text-white">
+          <div class="flex flex-col gap-3 text-white">
             <h2 class="text-xl font-semibold">TOTAL TABUNGAN ANDA</h2>
             <div class="flex flex-row mb-2">
               <p class="font-light">
@@ -96,7 +96,7 @@
               </p>
             </div>
             <div
-              class="flex flex-row gap-2 border-2 border-white/10 justify-center items-center rounded-xl py-1 px-3 w-fit backdrop-blur-sm bg-white/10 shadow-xl"
+              class="flex flex-row gap-2 border-2 border-white/10 justify-center items-center rounded-xl py-1 px-3 w-fit backdrop-blur-sm bg-white/10 shadow-md"
             >
               <img
                 src="./assets/icon/total-tabungan-2.png"
@@ -128,7 +128,7 @@
           </div>
 
           <div
-            class="bg-[#F1F5EB] flex flex-row justify-between items-center rounded-2xl p-3"
+            class="bg-[#F1F5EB] flex flex-row justify-between items-center rounded-2xl p-3 px-5 hover:shadow-md duration-200 cursor-pointer"
           >
             <div
               class="flex flex-row gap-4 items-center justify-start px-2 py-2"
@@ -139,25 +139,90 @@
                 class="h-[70%] border bg-[#d2edcc] p-3 rounded-2xl"
               />
               <div class="flex flex-col justify-center items-start gap-1">
-                <p class="font-bold text-sm">5.2 kg Sampah Plastik & Logam</p>
+                <p class="font-bold text-sm">
+                  <span id="sampah-setoran-terakhir"
+                    >5.2 kg Sampah Plastik & Logam</span
+                  >
+                </p>
                 <p class="text-xs">
                   Dilayani oleh Petugas: <span id="petugas">Petugas 1</span>
                 </p>
               </div>
             </div>
-            <img src="" alt="" />
+            <img src="./assets/icon/arrow.png" alt="arrow" />
           </div>
         </div>
 
         <div class="col-span-full flex flex-row rounded-xl gap-4">
-          <div class="bg-white rounded-xl p-5 w-72">kotak kecil</div>
+          <div
+            id="setor-sampah-dashboard"
+            class="rounded-3xl p-5 bg-[#0D631B] flex flex-row justify-between items-center gap-7 duration-200 hover:shadow-md text-white px-7 cursor-pointer hover:bg-[#2E7D32]"
+          >
+            <img
+              src="assets/icon/setor-sampah/setor-putih.png"
+              alt="setor-sampah"
+              class="h-[50px] bg-white/20 rounded-2xl p-3"
+            />
+            <div class="flex flex-col justify-center items-start gap-1">
+              <p class="text-xl font-bold">Setor Sampah Sekarang</p>
+              <p class="text-sm">Tambah Pendapatanmu!</p>
+            </div>
+            <img src="./assets/icon/arrow-putih.png" alt="arrow" />
+          </div>
 
-          <div class="bg-white rounded-xl p-5 w-64">kotak kecil</div>
+          <div
+            id="setor-sampah-dashboard"
+            class="rounded-3xl p-5 bg-[#E0E4DA]/60 flex flex-row justify-between items-center gap-7 duration-200 hover:shadow-md text-black px-7 cursor-pointer"
+          >
+            <img
+              src="assets/icon/tarik-saldo.png"
+              alt="setor-sampah"
+              class="w-[55px] h-[50px] bg-[#d2edcc] rounded-2xl p-3"
+            />
+            <div class="flex flex-col justify-center items-start gap-1">
+              <p class="text-xl font-bold">Tarik Saldo</p>
+              <p class="text-sm">Konversi Poin ke Rupiah</p>
+            </div>
+            <img src="./assets/icon/arrow-hijau.png" alt="arrow" />
+          </div>
         </div>
 
-        <div class="bg-white rounded-xl p-5">kotak kecil</div>
+        <div
+          class="rounded-xl p-5 px-7 flex flex-col justify-between gap-3 border-2 border-[#923357]/40 bg-[#B14B6F]/20 hover:shadow-md duration-200 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <img src="./assets/icon/daun.png" alt="" />
+            <p
+              class="bg-white py-1 px-3 rounded-2xl text-sm font-bold text-[#B14B6F]"
+            >
+              Level <span id="level-user">4</span>
+            </p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <p class="font-bold text-5xl"><span id="poin-user">850</span></p>
+            <p>Poin Hijau</p>
+          </div>
+        </div>
 
-        <div class="bg-white rounded-xl p-5">kotak kecil</div>
+        <div
+          class="rounded-xl p-5 px-7 flex flex-col justify-between gap-3 shadow-md bg-[#F1F5EB]/20 hover:shadow-lg duration-200 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <img src="./assets/icon/voucher.png" alt="" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <p class="font-bold text-5xl"><span id="voucher-user">12</span></p>
+            <p>Voucher Tersedia</p>
+          </div>
+        </div>
+
+        <div
+          class="col-span-full rounded-3xl bg-white p-5 bg-[linear-gradient(to_right,rgba(0,0,0,0.7),rgba(0,0,0,0.3),transparent),url('./assets/img/bg-artikel-compress.png')] bg-cover bg-no-repeat bg-center h-[200px] cursor-pointer duration-300 hover:shadow-xl hover:translate-y-1"
+        >
+          <p class="text-3xl font-bold text-white">
+            Membangun Lingkungan Bersih Bersama
+          </p>
+        </div>
       </div>
     </section>
   </body>
