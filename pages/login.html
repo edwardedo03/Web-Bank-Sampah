@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="m-0 p-0 flex flex-col justify-center items-center h-screen text-center gap-6 bg-[#F7FBF0]"
+  >
+    <div class="flex flex-col justify-center items-center gap-2">
+      <img
+        src="../assets/icon/setor-sampah/setor-putih.png"
+        alt="setor"
+        class="bg-[#0D631B] p-3 rounded-3xl mb-2"
+      />
+      <h1 class="text-3xl font-bold text-[#0D631B]">
+        Bank Sampah Selaras Ecosystem
+      </h1>
+      <p class="text-sm">Kelola sampah jadi berkah untuk komunitas</p>
+    </div>
+
+    <div
+      class="p-7 flex flex-col justify-center items-center gap-4 bg-white rounded-xl w-[35%] shadow-[0_0_20px_rgba(0,0,0,0.2)]"
+    >
+      <form
+        action=""
+        class="flex flex-col justify-center items-center gap-4 w-full"
+      >
+        <div class="flex flex-col gap-2 items-start w-full">
+          <p class="font-bold">Email Nasabah</p>
+          <input
+            type="email"
+            name="email"
+            placeholder="✉ syarifudin@gmail.com"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+          />
+        </div>
+        <div class="flex flex-col gap-2 items-start w-full">
+          <div class="flex flex-row justify-between items-center w-full">
+            <p class="font-bold">Kata Sandi</p>
+            <a href="" class="font-bold text-md text-[#0D631B]"
+              >Lupa Password</a
+            >
+          </div>
+          <input
+            type="password"
+            name="password"
+            placeholder="🔒︎ ••••••••"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+          />
+        </div>
+        <input
+          type="submit"
+          value="Masuk"
+          class="font-bold text-white bg-[#0D631B] px-4 py-2 rounded-lg hover:bg-[#2E7D32] duration-200 cursor-pointer w-full"
+        />
+        <hr class="w-full border-t border-gray-200 my-2" />
+      </form>
+      <a href="">
+        <p
+          class="text-[#40493D] font-semibold hover:text-[#2E7D32] duration-200"
+        >
+          Belum menjadi nasabah?
+        </p>
+      </a>
+      <button
+        class="border-2 border-[#2E7D32] rounded-md px-4 py-2 w-full font-bold text-md text-[#2E7D32] hover:bg-[#2E7D32] hover:text-[#F7FBF0] duration-200"
+      >
+        Daftar Sekarang
+      </button>
+    </div>
+
+    <button
+      class="flex flex-row gap-4 justify-center items-center bg-[#E5EADF] p-3 px-5 rounded-xl hover:bg-[#B14B6F]/70 hover:text-[#F7FBF0] duration-200 border-2 border-gray-700/10 shadow-md w-[35%]"
+    >
+      <img
+        src="../assets/icon/bantuan-login.png"
+        alt=""
+        class="bg-[#B14B6F] p-3 rounded-3xl"
+      />
+      <div class="flex flex-col items-start">
+        <p class="font-bold text-md">Butuh Bantuan Petugas?</p>
+        <p class="text-sm">Klik untuk hubungi kami via WhatsApp</p>
+      </div>
+    </button>
+  </body>
+</html>
