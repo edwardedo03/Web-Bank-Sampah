@@ -11,8 +11,10 @@
     $password = $decode['password'] ?? '';
     $role = $decode['role'] ?? '';
 
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
     $statement = $conn->prepare("INSERT INTO akun (email, username, password, role) VALUES (?, ?, ?, ?)");
-    $statement->bind_param("ssss", $email, $username, $password, $role);
+    $statement->bind_param("ssss", $email, $username, $password_hash, $role);
 
     try {
         $statement->execute();

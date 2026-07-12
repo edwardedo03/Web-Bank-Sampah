@@ -13,7 +13,7 @@ $("#signup-form").on("submit", function (e) {
     alert("Mohon Mengisi Verifikasi Kata Sandi");
     return;
   } else if (dataSignup.password !== $("#konfirmasi-password").val()) {
-    alert("Konfirmasi Kata Sandi Berbeda");
+    alert("Verifikasi Kata Sandi Berbeda");
     return;
   }
 

@@ -9,8 +9,8 @@
     $username = $decode['username'] ?? '';
     $password = $decode['password'] ?? '';
 
-    $statement = $conn->prepare("SELECT * FROM akun WHERE username = ? AND password = ?");
-    $statement->bind_param("ss", $username, $password);
+    $statement = $conn->prepare("SELECT * FROM akun WHERE username = ? ");
+    $statement->bind_param("s", $username);
 
     try {
         $statement->execute();
@@ -19,19 +19,27 @@
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             
-            echo json_encode([
-                'success' => true,
-                'message' => 'Login berhasil',
-                'user' => [
-                    'username' => $user['username'],
-                    'email' => $user['email'],
-                    'role' => $user['role']
-                ]
+            if (password_verify($password, $user['password'])) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Login berhasil',
+                    'user' => [
+                        'username' => $user['username'],
+                        'email' => $user['email'],
+                        'role' => $user['role']
+                    ]
+                ]);
+            } else {
+                echo json_encode([
+                'success' => false,
+                'message' => 'Password Salah'
             ]);
+            }
+
         } else {
             echo json_encode([
                 'success' => false,
-                'message' => 'Username atau Password Salah'
+                'message' => 'Username Belum Terdaftar'
             ]);
         }
 
