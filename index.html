@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./assets/js/jquery-4.0.0.min.js"></script>
   </head>
   <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row overflow-hidden">
     <nav
@@ -71,6 +72,7 @@
         </button>
         <button
           class="bg-red-800 text-white text-sm p-2 rounded-xl font-bold hover:bg-red-700 duration-200"
+          id="logout"
         >
           Logout
         </button>
@@ -81,7 +83,8 @@
     >
       <div class="flex flex-col gap-2">
         <h1 id="user" class="font-bold text-3xl">
-          Selamat Pagi, <span>Budi!</span>
+          <span id="waktu">Selamat Pagi, </span
+          ><span id="nama-user">Budi!</span>
         </h1>
         <p class="font-light">
           Senang melihatmu kembali berkontribusi hari ini.
@@ -195,7 +198,7 @@
         </div>
 
         <div
-          class="rounded-xl p-5 px-7 flex flex-col justify-between gap-3 border-2 border-[#923357]/40 bg-[#B14B6F]/20 hover:shadow-md duration-200 cursor-pointer"
+          class="rounded-xl p-5 px-7 flex flex-col justify-between gap-3 border-2 border-[#923357]/40 bg-[#B14B6F]/20 hover:bg-[#B14B6F]/50 hover:shadow-md duration-200 cursor-pointer"
         >
           <div class="flex flex-row justify-between items-center">
             <img src="./assets/icon/daun.png" alt="" />
@@ -232,5 +235,7 @@
         </div>
       </div>
     </section>
+
+    <script src="./script/index.js"></script>
   </body>
 </html>

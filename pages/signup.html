@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/jquery-4.0.0.min.js"></script>
   </head>
@@ -32,6 +32,16 @@
         class="flex flex-col justify-center items-center gap-4 w-full"
       >
         <div class="flex flex-col gap-2 items-start w-full">
+          <p class="font-bold">Email Nasabah</p>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="✉ syarifudin@gmail.com"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+          />
+        </div>
+        <div class="flex flex-col gap-2 items-start w-full">
           <p class="font-bold">Username</p>
           <input
             type="text"
@@ -44,9 +54,6 @@
         <div class="flex flex-col gap-2 items-start w-full">
           <div class="flex flex-row justify-between items-center w-full">
             <p class="font-bold">Kata Sandi</p>
-            <a href="" class="font-bold text-md text-[#0D631B]"
-              >Lupa Password</a
-            >
           </div>
           <input
             type="password"
@@ -56,19 +63,31 @@
             class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
           />
         </div>
+        <div class="flex flex-col gap-2 items-start w-full">
+          <div class="flex flex-row justify-between items-center w-full">
+            <p class="font-bold">Konfirmasi Kata Sandi</p>
+          </div>
+          <input
+            type="password"
+            name="konfirmasi-password"
+            id="konfirmasi-password"
+            placeholder="🔒︎ ••••••••"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+          />
+        </div>
         <input
           type="submit"
-          value="Masuk"
+          value="Daftar"
           class="font-bold text-white bg-[#0D631B] px-4 py-2 rounded-lg hover:bg-[#2E7D32] duration-200 cursor-pointer w-full"
         />
         <hr class="w-full border-t border-gray-200 my-2" />
       </form>
-      <p class="text-[#40493D] font-light">Belum menjadi nasabah?</p>
-      <a href="./signup.html" class="w-full">
+      <p class="text-[#40493D] font-light">Sudah memiliki akun?</p>
+      <a href="./login.html" class="w-full">
         <button
           class="border-2 border-[#2E7D32] rounded-md px-4 py-2 w-full font-bold text-md text-[#2E7D32] hover:bg-[#2E7D32] hover:text-[#F7FBF0] duration-200"
         >
-          Daftar Sekarang
+          Masuk Sekarang
         </button>
       </a>
     </div>
@@ -87,6 +106,6 @@
       </div>
     </button>
 
-    <script src="../script/login.js"></script>
+    <script src="../script/signup.js"></script>
   </body>
 </html>
