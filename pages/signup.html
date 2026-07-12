@@ -28,17 +28,17 @@
       <form
         action="../index.html"
         method="post"
-        id="login-form"
+        id="signup-form"
         class="flex flex-col justify-center items-center gap-4 w-full"
       >
         <div class="flex flex-col gap-2 items-start w-full">
-          <p class="font-bold">Email Nasabah</p>
+          <p class="font-bold">Email</p>
           <input
             type="email"
             name="email"
             id="email"
             placeholder="✉ syarifudin@gmail.com"
-            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
           />
         </div>
         <div class="flex flex-col gap-2 items-start w-full">
@@ -48,7 +48,7 @@
             name="username"
             id="username"
             placeholder="syarifudin.keren"
-            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
           />
         </div>
         <div class="flex flex-col gap-2 items-start w-full">
@@ -60,7 +60,7 @@
             name="password"
             id="password"
             placeholder="🔒︎ ••••••••"
-            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
           />
         </div>
         <div class="flex flex-col gap-2 items-start w-full">
@@ -72,9 +72,19 @@
             name="konfirmasi-password"
             id="konfirmasi-password"
             placeholder="🔒︎ ••••••••"
-            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full"
+            class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
           />
         </div>
+        <select
+          name="role"
+          id="role"
+          class="cursor-pointer border-2 border-gray-700/20 rounded-md px-2 py-1 w-full text-sm font-semibold text-gray-800/70 focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
+        >
+          <option value="">Select-your-role</option>
+          <option value="admin">Admin</option>
+          <option value="petugas">Petugas</option>
+          <option value="nasabah">Nasabah</option>
+        </select>
         <input
           type="submit"
           value="Daftar"
