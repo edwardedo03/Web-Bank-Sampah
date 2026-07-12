@@ -9,5 +9,5 @@ if (!username) {
 $("#logout").on("click", () => {
   sessionStorage.removeItem("username");
 
-  window.location.href = "../pages/login.html";
+  window.location.href = "./pages/login.html";
 });
