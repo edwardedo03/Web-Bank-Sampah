@@ -11,3 +11,15 @@ $("#logout").on("click", () => {
 
   window.location.href = "./pages/login.html";
 });
+
+$("#setor-sampah-dashboard").on("click", function () {
+  window.location.href = "./pages/nasabah/setor_sampah.html";
+});
+
+$("#riwayat-transaksi-dashboard").on("click", function () {
+  window.location.href = "./pages/nasabah/riwayat_transaksi.html";
+});
+
+$("#tarik-saldo-dashboard").on("click", function () {
+  window.location.href = "./pages/nasabah/riwayat_transaksi.html";
+});
