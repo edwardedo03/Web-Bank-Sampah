@@ -122,14 +122,14 @@
     >
       <div class="grid grid-cols-4 gap-4 w-[70%]">
         <div
-          class="col-span-full bg-white p-6 py-7 rounded-xl border-2 border-[#0D631B] gap-2 shadow-md flex flex-row justify-between items-end"
+          class="col-span-3 bg-white p-6 py-7 rounded-xl border-2 border-[#0D631B] gap-2 shadow-md flex flex-row justify-between items-end"
         >
           <div>
             <h2 class="font-bold text-lg text-[#40493D]">
               SALDO TABUNGAN DIGITAL
             </h2>
             <p class="font-bold text-[#0D631B] text-3xl">
-              Rp <span>450.000</span>
+              Rp <span id="saldo-tabungan">450.000</span>
             </p>
           </div>
           <img
@@ -138,45 +138,232 @@
           />
         </div>
         <div
-          class="col-span-2 bg-white p-5 rounded-xl flex flex-col gap-2 border border-gray-700/50 shadow-md"
+          id="tarik-saldo"
+          class="col-span-1 bg-[#0D631B] bg-[url('../../assets/icon/tarik-saldo-light.svg')] bg-no-repeat bg-[position:130px_63px] bg-[size:20%] rounded-xl shadow-md p-6 flex flex-col justify-center hover:bg-[#2E7D32] duration-200 cursor-pointer"
         >
-          <p class="text-md font-semibold">Total Sampah</p>
-          <p class="text-[#0D631B] text-lg"><span>124.50</span> Kg</p>
+          <p class="text-white font-bold text-xl">TARIK</p>
+          <p class="text-white font-bold text-2xl">SALDO</p>
         </div>
         <div
-          class="col-span-2 bg-white p-5 rounded-xl flex flex-col gap-2 border border-gray-700/50 shadow-md"
+          class="col-span-2 bg-white p-5 rounded-xl flex flex-col gap-2 border border-gray-700/30 shadow-md"
+        >
+          <p class="text-md font-semibold">Total Sampah</p>
+          <p class="text-[#0D631B] text-lg">
+            <span id="total-sampah">124.50</span> Kg
+          </p>
+        </div>
+        <div
+          class="col-span-2 bg-white p-5 rounded-xl flex flex-col gap-2 border border-gray-700/30 shadow-md"
         >
           <p class="text-md font-semibold">Penyetoran</p>
-          <p class="text-[#0D631B] text-lg"><span>18</span> Kali</p>
+          <p class="text-[#0D631B] text-lg">
+            <span id="jumlah-setoran">18</span> Kali
+          </p>
         </div>
 
-        <div class="flex flex-row justify-start my-2">
+        <div class="flex flex-row justify-start mt-2">
           <ul class="flex flex-row gap-2">
             <li
-              class="bg-[#0D631B] text-sm px-7 py-2 rounded-full text-[#F7FBF0] cursor-pointer"
+              id="semua"
+              data-target="kategori-semua"
+              class="btn-filter bg-[#0D631B] text-sm px-7 py-2 rounded-full text-[#F7FBF0] cursor-pointer font-semibold hover:scale-95 duration-200"
             >
               Semua
             </li>
             <li
-              class="bg-[#0D631B] text-sm px-7 py-2 rounded-full text-[#F7FBF0] cursor-pointer"
+              id="plastik"
+              data-target="kategori-plastik"
+              class="btn-filter bg-gray-800/30 text-sm px-7 py-2 rounded-full text-gray-800/80 cursor-pointer font-semibold hover:bg-[#0D631B] hover:text-[#F7FBF0] hover:scale-95 duration-200"
             >
               Plastik
             </li>
             <li
-              class="bg-[#0D631B] text-sm px-7 py-2 rounded-full text-[#F7FBF0] cursor-pointer"
+              id="kertas"
+              data-target="kategori-kertas"
+              class="btn-filter bg-gray-800/30 text-sm px-7 py-2 rounded-full text-gray-800/80 cursor-pointer font-semibold hover:bg-[#0D631B] hover:text-[#F7FBF0] hover:scale-95 duration-200"
             >
               Kertas
             </li>
             <li
-              class="bg-[#0D631B] text-sm px-7 py-2 rounded-full text-[#F7FBF0] cursor-pointer"
+              id="logam"
+              data-target="kategori-logam"
+              class="btn-filter bg-gray-800/30 text-sm px-7 py-2 rounded-full text-gray-800/80 cursor-pointer font-semibold hover:bg-[#0D631B] hover:text-[#F7FBF0] hover:scale-95 duration-200"
             >
               Logam
             </li>
           </ul>
         </div>
       </div>
+
+      <div
+        id="kategori-semua"
+        class="content-kategori w-[70%] flex flex-col gap-4"
+      >
+        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+          <div class="flex flex-row justify-between items-center py-4 px-2">
+            <div class="flex flex-row justify-start items-center gap-4">
+              <img
+                src="../../assets/icon/setor-sampah/setor-light.png"
+                alt="icon-setor-sampah"
+                class="bg-[#0D631B] rounded-full p-3"
+              />
+              <div class="flex flex-col items-start">
+                <h4 class="font-semibold text-lg">Plastik PET & Botol</h4>
+                <p class="text-sm">14 Okt 2023 ● 14.20</p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end justify-center">
+              <h5 class="text-[#0D631B] font-semibold text-lg">
+                + Rp <span>45.000</span>
+              </h5>
+              <p
+                class="bg-[#DCFCE7] py-1 px-4 rounded-xl text-sm font-bold text-[#0D631B]"
+              >
+                BERHASIL
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="py-4 px-2 flex flex-row justify-between">
+            <p class="text-[#0D631B]/90">Berat: <span>15.40</span> Kg</p>
+            <a href="">
+              <p
+                class="font-semibold text-[#0D631B] duration-200 hover:font-bold hover:text-[#2E7D32]"
+              >
+                Detail >
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="kategori-plastik"
+        class="content-kategori w-[70%] flex flex-col gap-4 hidden"
+      >
+        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+          <div class="flex flex-row justify-between items-center py-4 px-2">
+            <div class="flex flex-row justify-start items-center gap-4">
+              <img
+                src="../../assets/icon/setor-sampah/setor-light.png"
+                alt="icon-setor-sampah"
+                class="bg-[#0D631B] rounded-full p-3"
+              />
+              <div class="flex flex-col items-start">
+                <h4 class="font-semibold text-lg">Plastik Botol</h4>
+                <p class="text-sm">14 Okt 2023 ● 14.20</p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end justify-center">
+              <h5 class="text-[#0D631B] font-semibold text-lg">
+                + Rp <span>45.000</span>
+              </h5>
+              <p
+                class="bg-[#DCFCE7] py-1 px-4 rounded-xl text-sm font-bold text-[#0D631B]"
+              >
+                BERHASIL
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="py-4 px-2 flex flex-row justify-between">
+            <p class="text-[#0D631B]/90">Berat: <span>15.40</span> Kg</p>
+            <a href="">
+              <p
+                class="font-semibold text-[#0D631B] duration-200 hover:font-bold hover:text-[#2E7D32]"
+              >
+                Detail >
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="kategori-kertas"
+        class="content-kategori w-[70%] flex flex-col gap-4 hidden"
+      >
+        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+          <div class="flex flex-row justify-between items-center py-4 px-2">
+            <div class="flex flex-row justify-start items-center gap-4">
+              <img
+                src="../../assets/icon/setor-sampah/setor-light.png"
+                alt="icon-setor-sampah"
+                class="bg-[#0D631B] rounded-full p-3"
+              />
+              <div class="flex flex-col items-start">
+                <h4 class="font-semibold text-lg">Kertas Bungkus</h4>
+                <p class="text-sm">14 Okt 2023 ● 14.20</p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end justify-center">
+              <h5 class="text-[#0D631B] font-semibold text-lg">
+                + Rp <span>45.000</span>
+              </h5>
+              <p
+                class="bg-[#DCFCE7] py-1 px-4 rounded-xl text-sm font-bold text-[#0D631B]"
+              >
+                BERHASIL
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="py-4 px-2 flex flex-row justify-between">
+            <p class="text-[#0D631B]/90">Berat: <span>15.40</span> Kg</p>
+            <a href="">
+              <p
+                class="font-semibold text-[#0D631B] duration-200 hover:font-bold hover:text-[#2E7D32]"
+              >
+                Detail >
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="kategori-logam"
+        class="content-kategori w-[70%] flex flex-col gap-4 hidden"
+      >
+        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+          <div class="flex flex-row justify-between items-center py-4 px-2">
+            <div class="flex flex-row justify-start items-center gap-4">
+              <img
+                src="../../assets/icon/setor-sampah/setor-light.png"
+                alt="icon-setor-sampah"
+                class="bg-[#0D631B] rounded-full p-3"
+              />
+              <div class="flex flex-col items-start">
+                <h4 class="font-semibold text-lg">Logam Besi</h4>
+                <p class="text-sm">14 Okt 2023 ● 14.20</p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end justify-center">
+              <h5 class="text-[#0D631B] font-semibold text-lg">
+                + Rp <span>45.000</span>
+              </h5>
+              <p
+                class="bg-[#DCFCE7] py-1 px-4 rounded-xl text-sm font-bold text-[#0D631B]"
+              >
+                BERHASIL
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="py-4 px-2 flex flex-row justify-between">
+            <p class="text-[#0D631B]/90">Berat: <span>15.40</span> Kg</p>
+            <a href="">
+              <p
+                class="font-semibold text-[#0D631B] duration-200 hover:font-bold hover:text-[#2E7D32]"
+              >
+                Detail >
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <script src=""></script>
+    <script src="../../script/nasabah/riwayat_transaksi.js"></script>
   </body>
 </html>

@@ -35,7 +35,7 @@ $("#login-form").on("submit", function (e) {
             } else {
               window.location.href = "../index.html";
             }
-          }, 1000);
+          }, 200);
         } else {
           alert(res.message);
         }
