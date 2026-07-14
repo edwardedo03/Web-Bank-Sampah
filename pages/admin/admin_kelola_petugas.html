@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Petugas — Bank Sampah Selaras</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <style>
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            display: inline-block;
+        }
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle__track {
+            position: absolute;
+            inset: 0;
+            background: #d6dbd1;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .toggle__track::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 3px;
+            top: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.15s ease;
+        }
+        .toggle input:checked + .toggle__track {
+            background: var(--green-600);
+        }
+        .toggle input:checked + .toggle__track::before {
+            transform: translateX(18px);
+        }
+        .pill-tag {
+            display: inline-flex;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            background: var(--green-100);
+            color: var(--green-700);
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+        .edit-icon-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-600);
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: var(--text-600);
+        }
+        .pagination__btns {
+            display: flex;
+            gap: 6px;
+        }
+        .pagination__btns button {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar__brand">
+            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
+            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+        </div>
+
+        <ul class="sidebar__nav">
+            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
+            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+            <li><a class="sidebar__link is-active" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
+        </ul>
+
+        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+    </aside>
+
+    <div class="main">
+
+        <header class="topbar">
+            <div class="topbar__brand">Bank Sampah Selaras</div>
+            <div class="topbar__actions">
+                <span class="topbar__help">?</span>
+                <div class="avatar" id="adminInitials">AD</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="page-head">
+                <div>
+                    <h1>Manajemen Petugas Lapangan</h1>
+                    <p>Daftar petugas aktif yang bertugas mengelola setoran sampah di lapangan.</p>
+                </div>
+                <button type="button" class="btn btn--primary" id="btnTambahPetugas">+ Tambah Petugas Baru</button>
+            </div>
+
+            <div class="card">
+                <input type="text" id="cariPetugas" placeholder="Masukkan nama atau ID petugas..."
+                       style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 13px; font-family: inherit; margin-bottom: 16px;">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Foto & Nama</th>
+                            <th>ID Petugas</th>
+                            <th>Wilayah Tugas</th>
+                            <th>Status Aktif</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="petugasTableBody">
+                        <tr data-id="SS-00124">
+                            <td>
+                                <div class="person">
+                                    <span class="person__avatar">AS</span>
+                                    Ahmad Subardjo
+                                </div>
+                            </td>
+                            <td>SS-00124</td>
+                            <td><span class="pill-tag">Blok A - Kebayoran</span></td>
+                            <td>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle__track"></span>
+                                </label>
+                            </td>
+                            <td><button class="edit-icon-btn" title="Edit petugas">✎</button></td>
+                        </tr>
+                        <tr data-id="SS-00125">
+                            <td>
+                                <div class="person">
+                                    <span class="person__avatar">SA</span>
+                                    Siti Aminah
+                                </div>
+                            </td>
+                            <td>SS-00125</td>
+                            <td><span class="pill-tag">Blok C - Kebayoran</span></td>
+                            <td>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle__track"></span>
+                                </label>
+                            </td>
+                            <td><button class="edit-icon-btn" title="Edit petugas">✎</button></td>
+                        </tr>
+                        <tr data-id="SS-00129">
+                            <td>
+                                <div class="person">
+                                    <span class="person__avatar">BH</span>
+                                    Budi Hartanto
+                                </div>
+                            </td>
+                            <td>SS-00129</td>
+                            <td><span class="pill-tag">Blok B - Pondok Indah</span></td>
+                            <td>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle__track"></span>
+                                </label>
+                            </td>
+                            <td><button class="edit-icon-btn" title="Edit petugas">✎</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <span>Menampilkan 3 dari 42 petugas</span>
+                    <div class="pagination__btns">
+                        <button type="button" id="btnPrevPage">‹</button>
+                        <button type="button" id="btnNextPage">›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+  Contoh alur kerja untuk halaman ini:
+
+  1. Ambil daftar petugas dari backend (dengan pagination):
+     fetch('../../backend/database/get_petugas.php?page=1')
+       .then(res => res.json())
+       .then(data => { ...render ke #petugasTableBody... });
+
+  2. Saat toggle status aktif diklik, kirim perubahan ke backend:
+     fetch('../../backend/database/update_status_petugas.php', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ id_petugas: idPetugas, aktif: checkbox.checked })
+     });
+
+  3. Tombol "+ Tambah Petugas Baru" dan ikon pensil (edit) sebaiknya membuka
+     form/modal, lalu POST ke backend/database/simpan_petugas.php
+
+  Di bawah ini contoh pencarian sederhana yang jalan langsung di browser:
+*/
+document.getElementById('cariPetugas').addEventListener('input', function (e) {
+    const keyword = e.target.value.toLowerCase();
+    document.querySelectorAll('#petugasTableBody tr').forEach(function (row) {
+        const teks = row.textContent.toLowerCase();
+        row.style.display = teks.includes(keyword) ? '' : 'none';
+    });
+});
+</script>
+
+</body>
+</html>

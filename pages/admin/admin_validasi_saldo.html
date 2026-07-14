@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Validasi Tarik Saldo — Bank Sampah Selaras</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <style>
+        .validasi-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 16px;
+            align-items: start;
+        }
+        .detail-panel {
+            display: none;
+        }
+        .detail-panel.is-open {
+            display: block;
+        }
+        .detail-panel__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .detail-panel__close {
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: var(--text-400);
+            cursor: pointer;
+        }
+        .detail-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--green-600);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+        .detail-nominal-box {
+            background: var(--green-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            margin: 14px 0;
+        }
+        .detail-row {
+            font-size: 12.5px;
+            margin-bottom: 12px;
+        }
+        .detail-row span.label {
+            display: block;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-400);
+            margin-bottom: 3px;
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            color: #fff;
+        }
+        .icon-btn--approve { background: var(--green-600); }
+        .icon-btn--reject { background: var(--red-600); }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar__brand">
+            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
+            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+        </div>
+
+        <ul class="sidebar__nav">
+            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
+            <li><a class="sidebar__link is-active" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
+        </ul>
+
+        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+    </aside>
+
+    <div class="main">
+
+        <header class="topbar">
+            <div class="topbar__brand">Bank Sampah Selaras</div>
+            <div class="topbar__actions">
+                <span class="topbar__help">?</span>
+                <div class="avatar" id="adminInitials">AD</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="page-head">
+                <div>
+                    <h1>Validasi Penarikan</h1>
+                    <p>Tinjau dan setujui permintaan penarikan saldo dari nasabah.</p>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="card stat-card">
+                    <div>
+                        <p class="stat-card__label">Total Pending</p>
+                        <p class="stat-card__value">12 Request</p>
+                    </div>
+                    <div class="stat-card__icon">📋</div>
+                </div>
+                <div class="card stat-card">
+                    <div>
+                        <p class="stat-card__label">Nilai Validasi</p>
+                        <p class="stat-card__value">Rp 4.250.000</p>
+                    </div>
+                    <div class="stat-card__icon">💵</div>
+                </div>
+                <div class="card stat-card stat-card--accent">
+                    <div>
+                        <p class="stat-card__label">Target SLA</p>
+                        <p class="stat-card__value">24 Jam</p>
+                    </div>
+                    <div class="stat-card__icon">⏱️</div>
+                </div>
+            </div>
+
+            <div class="validasi-layout">
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Nasabah</th>
+                                <th>Nominal</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="penarikanTableBody">
+                            <tr data-id="1" data-nama="Budi Santoso" data-inisial="BS" data-nominal="Rp 250.000"
+                                data-tanggal="12 Okt 2023" data-metode="Bank Central Asia - 1234567890"
+                                data-waktu="12 Okt 2023, 14:20"
+                                data-catatan="Penarikan untuk biaya sekolah anak bulan ini.">
+                                <td>
+                                    <div class="person">
+                                        <span class="person__avatar">BS</span>
+                                        Budi Santoso
+                                    </div>
+                                </td>
+                                <td class="amount">Rp 250.000</td>
+                                <td>12 Okt 2023</td>
+                                <td><span class="badge badge--pending">PENDING</span></td>
+                                <td>
+                                    <button class="icon-btn icon-btn--approve btn-lihat-detail" data-id="1">✓</button>
+                                    <button class="icon-btn icon-btn--reject" data-id="1">✕</button>
+                                </td>
+                            </tr>
+                            <tr data-id="2" data-nama="Siti Aminah" data-inisial="SA" data-nominal="Rp 1.100.000"
+                                data-tanggal="12 Okt 2023" data-metode="Bank Rakyat Indonesia - 9988776655"
+                                data-waktu="12 Okt 2023, 10:05"
+                                data-catatan="-">
+                                <td>
+                                    <div class="person">
+                                        <span class="person__avatar">SA</span>
+                                        Siti Aminah
+                                    </div>
+                                </td>
+                                <td class="amount">Rp 1.100.000</td>
+                                <td>12 Okt 2023</td>
+                                <td><span class="badge badge--pending">PENDING</span></td>
+                                <td>
+                                    <button class="icon-btn icon-btn--approve btn-lihat-detail" data-id="2">✓</button>
+                                    <button class="icon-btn icon-btn--reject" data-id="2">✕</button>
+                                </td>
+                            </tr>
+                            <tr data-id="3" data-nama="Andi Wijaya" data-inisial="AW" data-nominal="Rp 75.000"
+                                data-tanggal="11 Okt 2023" data-metode="Bank Mandiri - 5544332211"
+                                data-waktu="11 Okt 2023, 09:40"
+                                data-catatan="-">
+                                <td>
+                                    <div class="person">
+                                        <span class="person__avatar">AW</span>
+                                        Andi Wijaya
+                                    </div>
+                                </td>
+                                <td class="amount">Rp 75.000</td>
+                                <td>11 Okt 2023</td>
+                                <td><span class="badge badge--pending">PENDING</span></td>
+                                <td>
+                                    <button class="icon-btn icon-btn--approve btn-lihat-detail" data-id="3">✓</button>
+                                    <button class="icon-btn icon-btn--reject" data-id="3">✕</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card detail-panel" id="detailPanel">
+                    <div class="detail-panel__head">
+                        <h3 style="margin:0;font-size:14px;">Detail Request</h3>
+                        <button class="detail-panel__close" id="btnCloseDetail">✕</button>
+                    </div>
+
+                    <div style="text-align:center;">
+                        <div class="detail-avatar" id="detailInisial">BS</div>
+                        <p style="margin:0;font-weight:700;font-size:14px;" id="detailNama">Budi Santoso</p>
+                        <p style="margin:0;font-size:11.5px;color:var(--text-400);" id="detailIdNasabah">ID Nasabah: #BS-2023-001</p>
+                    </div>
+
+                    <div class="detail-nominal-box" style="text-align:center;">
+                        <p class="detail-row span.label" style="margin:0;font-size:10.5px;text-transform:uppercase;color:var(--text-400);">Nominal Penarikan</p>
+                        <p style="margin:4px 0 0;font-size:20px;font-weight:700;color:var(--green-700);" id="detailNominal">Rp 250.000</p>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="label">Metode Pencairan</span>
+                        <span id="detailMetode">Bank Central Asia - 1234567890</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Waktu Pengajuan</span>
+                        <span id="detailWaktu">12 Okt 2023, 14:20</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Catatan Nasabah</span>
+                        <em id="detailCatatan">"Penarikan untuk biaya sekolah anak bulan ini."</em>
+                    </div>
+
+                    <button type="button" class="btn btn--primary btn-block" id="btnSetujui">Setujui Sekarang</button>
+                    <button type="button" class="btn btn--outline btn-block" id="btnTolak" style="border-color:var(--red-600);color:var(--red-600);">Tolak Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+  Contoh alur kerja untuk halaman ini:
+
+  1. Ambil daftar penarikan pending dari backend:
+     fetch('../../backend/database/get_penarikan_pending.php')
+       .then(res => res.json())
+       .then(data => { ...render ke #penarikanTableBody... });
+
+  2. Saat tombol centang (approve) di klik, buka panel detail (kode di bawah),
+     lalu setelah admin klik "Setujui Sekarang" atau "Tolak Request",
+     kirim ke backend, misalnya:
+     fetch('../../backend/database/proses_penarikan.php', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ id: id, aksi: 'setuju' }) // atau 'tolak'
+     });
+
+  Di bawah ini logika buka/tutup panel detail berdasarkan data-* di setiap baris tabel:
+*/
+const detailPanel = document.getElementById('detailPanel');
+
+document.querySelectorAll('.btn-lihat-detail').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const row = btn.closest('tr');
+        document.getElementById('detailInisial').textContent = row.dataset.inisial;
+        document.getElementById('detailNama').textContent = row.dataset.nama;
+        document.getElementById('detailIdNasabah').textContent = 'ID Nasabah: #' + row.dataset.inisial + '-' + row.dataset.id;
+        document.getElementById('detailNominal').textContent = row.dataset.nominal;
+        document.getElementById('detailMetode').textContent = row.dataset.metode;
+        document.getElementById('detailWaktu').textContent = row.dataset.waktu;
+        document.getElementById('detailCatatan').textContent = '"' + row.dataset.catatan + '"';
+        detailPanel.classList.add('is-open');
+    });
+});
+
+document.getElementById('btnCloseDetail').addEventListener('click', function () {
+    detailPanel.classList.remove('is-open');
+});
+</script>
+
+</body>
+</html>

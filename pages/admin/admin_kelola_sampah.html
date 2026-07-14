@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Sampah & Harga — Bank Sampah Selaras</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar__brand">
+            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
+            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+        </div>
+
+        <ul class="sidebar__nav">
+            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
+            <li><a class="sidebar__link is-active" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
+            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
+        </ul>
+
+        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+    </aside>
+
+    <div class="main">
+
+        <header class="topbar">
+            <div class="topbar__brand">Bank Sampah Selaras</div>
+            <div class="topbar__actions">
+                <span class="topbar__help">?</span>
+                <div class="avatar" id="adminInitials">AD</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="page-head">
+                <div>
+                    <h1>Manajemen Jenis Sampah</h1>
+                    <p>Atur harga pasar dan pantau ketersediaan stok gudang secara real-time.</p>
+                </div>
+                <div class="card stat-card" style="min-width: 160px;">
+                    <div>
+                        <p class="stat-card__label">Total Jenis</p>
+                        <p class="stat-card__value" id="statTotalJenis">12</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card__head" style="gap: 12px; flex-wrap: wrap;">
+                    <input type="text" id="cariSampah" placeholder="Cari jenis sampah..."
+                           style="flex: 1; min-width: 220px; padding: 9px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 13px; font-family: inherit;">
+                    <button type="button" class="btn btn--primary" id="btnTambahKategori">+ Tambah Kategori Baru</button>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Jenis Sampah</th>
+                            <th>Harga /kg</th>
+                            <th>Stok Gudang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sampahTableBody">
+                        <tr data-id="1">
+                            <td>
+                                <strong>Kardus & Karton</strong><br>
+                                <span style="font-size:12px;color:var(--text-400)">Kertas Bergelombang</span>
+                            </td>
+                            <td>Rp 2.500<br><span style="font-size:11px;color:var(--text-400)">Stabil</span></td>
+                            <td>1,240 kg</td>
+                            <td>
+                                <button class="btn btn--outline btn-edit-harga" data-id="1">Edit Harga</button>
+                                <button class="btn btn--primary btn-tambah-stok" data-id="1">Tambah Stok</button>
+                            </td>
+                        </tr>
+                        <tr data-id="2">
+                            <td>
+                                <strong>Botol PET Bening</strong><br>
+                                <span style="font-size:12px;color:var(--text-400)">Plastik Minuman</span>
+                            </td>
+                            <td>Rp 4.200<br><span style="font-size:11px;color:var(--red-600)">↘ -Rp 300</span></td>
+                            <td>450 kg</td>
+                            <td>
+                                <button class="btn btn--outline btn-edit-harga" data-id="2">Edit Harga</button>
+                                <button class="btn btn--primary btn-tambah-stok" data-id="2">Tambah Stok</button>
+                            </td>
+                        </tr>
+                        <tr data-id="3">
+                            <td>
+                                <strong>Logam Besi</strong><br>
+                                <span style="font-size:12px;color:var(--text-400)">Besi & Baja Bekas</span>
+                            </td>
+                            <td>Rp 3.800<br><span style="font-size:11px;color:var(--green-600)">↗ +Rp 500</span></td>
+                            <td>2,890 kg</td>
+                            <td>
+                                <button class="btn btn--outline btn-edit-harga" data-id="3">Edit Harga</button>
+                                <button class="btn btn--primary btn-tambah-stok" data-id="3">Tambah Stok</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+  Contoh alur kerja untuk halaman ini:
+
+  1. Load data saat halaman dibuka:
+     fetch('../../backend/database/get_jenis_sampah.php')
+       .then(res => res.json())
+       .then(data => { ...isi #sampahTableBody dari data... });
+
+  2. Tombol "Edit Harga" / "Tambah Stok" harusnya buka modal/form kecil,
+     lalu kirim perubahan ke backend, misalnya:
+     fetch('../../backend/database/update_harga_sampah.php', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ id: id, harga_baru: hargaBaru })
+     });
+
+  3. Tombol "+ Tambah Kategori Baru" sebaiknya membuka form/modal untuk input
+     jenis sampah baru, lalu POST ke backend/database/tambah_jenis_sampah.php
+
+  Di bawah ini contoh pencarian sederhana yang jalan langsung di browser
+  (tanpa ke server) berdasarkan isi tabel yang sudah ada:
+*/
+document.getElementById('cariSampah').addEventListener('input', function (e) {
+    const keyword = e.target.value.toLowerCase();
+    document.querySelectorAll('#sampahTableBody tr').forEach(function (row) {
+        const teks = row.textContent.toLowerCase();
+        row.style.display = teks.includes(keyword) ? '' : 'none';
+    });
+});
+</script>
+
+</body>
+</html>

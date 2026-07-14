@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil Akun — Bank Sampah Selaras</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <style>
+        .profile-card {
+            max-width: 520px;
+        }
+        .profile-avatar-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .profile-avatar-big {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--green-600);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .field {
+            margin-bottom: 16px;
+        }
+        .field label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-600);
+            margin-bottom: 6px;
+        }
+        .field input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+        .field input:disabled {
+            background: var(--green-50);
+            color: var(--text-400);
+        }
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 24px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar__brand">
+            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
+            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+        </div>
+
+        <ul class="sidebar__nav">
+            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
+            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+            <li><a class="sidebar__link is-active" href="admin_profil.html">Profil Akun</a></li>
+        </ul>
+
+        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+    </aside>
+
+    <div class="main">
+
+        <header class="topbar">
+            <div class="topbar__brand">Bank Sampah Selaras</div>
+            <div class="topbar__actions">
+                <span class="topbar__help">?</span>
+                <div class="avatar" id="adminInitials">AD</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="page-head">
+                <div>
+                    <h1>Profil Akun</h1>
+                    <p>Kelola informasi akun dan keamanan login admin.</p>
+                </div>
+            </div>
+
+            <div class="card profile-card">
+                <div class="profile-avatar-row">
+                    <div class="profile-avatar-big" id="profileInisial">AD</div>
+                    <div>
+                        <p style="margin:0;font-weight:700;font-size:15px;" id="profileNama">Admin Utama</p>
+                        <p style="margin:0;font-size:12.5px;color:var(--text-400);">Administrator</p>
+                    </div>
+                </div>
+
+                <form id="formProfil">
+                    <div class="field">
+                        <label for="namaAdmin">Nama Lengkap</label>
+                        <input type="text" id="namaAdmin" name="nama" value="Admin Utama">
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="idAdmin">ID Admin</label>
+                            <input type="text" id="idAdmin" value="ADM-0001" disabled>
+                        </div>
+                        <div class="field">
+                            <label for="emailAdmin">Email</label>
+                            <input type="email" id="emailAdmin" name="email" value="admin@banksampahselaras.id">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="teleponAdmin">Nomor Telepon</label>
+                        <input type="text" id="teleponAdmin" name="telepon" value="0812-0000-0000">
+                    </div>
+
+                    <button type="submit" class="btn btn--primary">Simpan Perubahan</button>
+                </form>
+
+                <hr class="divider">
+
+                <h3 style="font-size: 14.5px; margin: 0 0 14px;">Ubah Kata Sandi</h3>
+                <form id="formPassword">
+                    <div class="field">
+                        <label for="passLama">Kata Sandi Saat Ini</label>
+                        <input type="password" id="passLama" name="password_lama" placeholder="••••••••">
+                    </div>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="passBaru">Kata Sandi Baru</label>
+                            <input type="password" id="passBaru" name="password_baru" placeholder="••••••••">
+                        </div>
+                        <div class="field">
+                            <label for="passKonfirmasi">Konfirmasi Kata Sandi</label>
+                            <input type="password" id="passKonfirmasi" name="password_konfirmasi" placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--outline">Ubah Kata Sandi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+  Contoh alur kerja untuk halaman ini:
+
+  1. Saat halaman dibuka, ambil data admin yang sedang login:
+     fetch('../../backend/database/get_profil_admin.php')
+       .then(res => res.json())
+       .then(data => { ...isi value di setiap input... });
+
+  2. Saat form profil disubmit, kirim perubahan ke backend:
+     fetch('../../backend/database/update_profil_admin.php', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ nama: ..., email: ..., telepon: ... })
+     });
+
+  3. Form ubah password sebaiknya kirim ke endpoint terpisah yang
+     memvalidasi password lama sebelum mengganti ke yang baru, misalnya
+     backend/database/update_password_admin.php
+
+  Untuk sekarang, kedua form ini masih mencegah reload halaman (preventDefault)
+  dan cuma menampilkan alert sebagai placeholder:
+*/
+document.getElementById('formProfil').addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert('Perubahan profil akan tersimpan setelah backend terhubung.');
+});
+
+document.getElementById('formPassword').addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert('Kata sandi akan berubah setelah backend terhubung.');
+});
+</script>
+
+</body>
+</html>
