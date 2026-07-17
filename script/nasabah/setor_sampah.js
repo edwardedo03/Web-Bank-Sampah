@@ -10,6 +10,30 @@ $("#logout").on("click", () => {
   window.location.href = "../../pages/login.html";
 });
 
+let listSampah = [];
+
+$.ajax({
+  url: "../../backend/database/sampah/get_sampah.php",
+  type: "GET",
+  success: function (res) {
+    if (res.success) {
+      listSampah = res.data;
+    } else {
+      console.log("Gagal mengambil data dari db", res.message);
+    }
+  },
+  error: function (xhr, status, error) {
+    console.log("Error mengambil data sampah");
+    console.log(xhr.responseText);
+  },
+});
+
+let subtotalNominal = 0; // per jenis sampah
+let totalBerat = 0; // berat total dalam satu setoran
+let totalNominal = 0; // seluruh sampah dalam satu setoran
+
+//
+
 $(document).ready(function () {
   const sekarang = new Date();
 
@@ -30,16 +54,23 @@ $(document).ready(function () {
 });
 
 const dataSetorSampah = {
-  jenisSampah: "",
-  beratSampah: "",
+  detailTransaksi: [],
   tanggalPenyerahan: "",
   metodePenyerahan: "",
+  totalNominal: 0,
+  totalBerat: 0,
+};
+
+let detailTransaksi = {
+  jenisSampah: "",
+  beratSampah: 0,
+  subtotalNominal: 0,
   catatan: "",
 };
 
 $("#submit-step-1").on("click", () => {
   if ($("input[name='sampah']").is(":checked")) {
-    dataSetorSampah.jenisSampah = $("input[name='sampah']:checked").val();
+    detailTransaksi.jenisSampah = $("input[name='sampah']:checked").val();
 
     $("#step-1").addClass("hidden");
     $("#step-2").removeClass("hidden");
@@ -50,13 +81,13 @@ $("#submit-step-1").on("click", () => {
 });
 
 $("#submit-step-2").on("click", () => {
-  dataSetorSampah.beratSampah = $("#estimasi-berat").val();
   dataSetorSampah.tanggalPenyerahan = $("#tanggal-penyerahan").val();
   dataSetorSampah.metodePenyerahan = $("#metode-penyerahan").val();
-  dataSetorSampah.catatan = $("#setor-note").val();
+  detailTransaksi.beratSampah = $("#estimasi-berat").val();
+  detailTransaksi.catatan = $("#setor-note").val();
 
   if (
-    !(dataSetorSampah.beratSampah > 0.01) ||
+    !(detailTransaksi.beratSampah > 0.01) ||
     !dataSetorSampah.tanggalPenyerahan ||
     !dataSetorSampah.metodePenyerahan
   ) {
@@ -64,15 +95,71 @@ $("#submit-step-2").on("click", () => {
     return;
   }
 
-  $("#step-2").addClass("hidden");
-  $("#step-3").removeClass("hidden");
+  sampahTerpilih = listSampah.find(
+    (sampah) => sampah.jenis_sampah === detailTransaksi.jenisSampah,
+  );
 
-  $("#konfirmasi-jenis-sampah").text(dataSetorSampah.jenisSampah);
-  $("#konfirmasi-estimasi-berat").text(dataSetorSampah.beratSampah + " Kg");
+  let hargaSampah = 0;
+  hargaSampah = parseFloat(sampahTerpilih.harga_sampah_per_kg) || 0;
+
+  subtotalNominal = detailTransaksi.beratSampah * hargaSampah;
+  detailTransaksi.subtotalNominal = subtotalNominal;
+
+  dataSetorSampah.totalNominal = totalNominal;
+  dataSetorSampah.totalBerat = totalBerat;
+  dataSetorSampah.detailTransaksi.push({ ...detailTransaksi });
+
+  $("#konfirmasi-jenis-sampah").text(detailTransaksi.jenisSampah);
+  $("#konfirmasi-estimasi-berat").text(detailTransaksi.beratSampah + " Kg");
   $("#konfirmasi-jadwal-penyerahan").text(
     dataSetorSampah.tanggalPenyerahan.replace("T", " Pukul "),
   );
   $("#konfirmasi-jenis-penyerahan").text(dataSetorSampah.metodePenyerahan);
-  if (dataSetorSampah.catatan)
-    $("#konfirmasi-catatan").text(dataSetorSampah.catatan);
+  if (detailTransaksi.catatan)
+    $("#konfirmasi-catatan").text(detailTransaksi.catatan);
+  $("#subtotal-nominal").text(detailTransaksi.subtotalNominal);
+  $("#total-nominal").text(
+    dataSetorSampah.totalNominal + detailTransaksi.subtotalNominal,
+  );
+
+  $("#step-2").addClass("hidden");
+  $("#step-3").removeClass("hidden");
+});
+
+$("#setor-lagi").on("click", () => {
+  $("#tanggal-penyerahan")
+    .attr("disabled", true)
+    .addClass("bg-gray-100 cursor-not-allowed");
+  $("#metode-penyerahan")
+    .attr("disabled", true)
+    .addClass("bg-gray-100 cursor-not-allowed");
+
+  $("input[name='sampah']").prop("checked", false);
+  $("#estimasi-berat").val("");
+  $("#setor-note").val("");
+
+  totalNominal += subtotalNominal;
+  totalBerat += parseFloat(detailTransaksi.beratSampah);
+
+  $("#step-3").addClass("hidden");
+  $("#step-1").removeClass("hidden");
+
+  // test
+  // dataSetorSampah.detailTransaksi.forEach((sampah, index) => {
+  //   console.log(
+  //     `sampah ke ${index + 1} ${sampah.jenisSampah} ${sampah.beratSampah} ${sampah.catatan} ${sampah.subtotalNominal}`,
+  //   );
+  // });
+});
+
+//
+
+$("#back-step-2").on("click", () => {
+  $("#step-2").addClass("hidden");
+  $("#step-1").removeClass("hidden");
+});
+
+$("#back-step-3").on("click", () => {
+  $("#step-3").addClass("hidden");
+  $("#step-2").removeClass("hidden");
 });
