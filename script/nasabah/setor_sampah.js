@@ -1,11 +1,12 @@
 const username = sessionStorage.getItem("username");
+const idAkun = sessionStorage.getItem("id_akun");
 
-if (!username) {
+if (!username || !idAkun) {
   window.location.href = "../../pages/login.html";
 }
 
 $("#logout").on("click", () => {
-  sessionStorage.removeItem("username");
+  sessionStorage.clear();
 
   window.location.href = "../../pages/login.html";
 });
@@ -169,7 +170,13 @@ $("#back-step-3").on("click", () => {
 // push ke database
 
 $("#submit-form-setor").on("click", () => {
-  dataSetorSampah.idNasabah = sessionStorage.getItem("id_akun") || 1;
+  dataSetorSampah.idNasabah = sessionStorage.getItem("id_akun");
+
+  if (!dataSetorSampah.idNasabah) {
+    alert("Session login tidak ditemukan. Silakan login ulang.");
+    window.location.href = "../../pages/login.html";
+    return;
+  }
 
   dataSetorSampah.totalNominal += detailTransaksi.subtotalNominal;
   dataSetorSampah.totalBerat += parseFloat(detailTransaksi.beratSampah);
@@ -196,4 +203,6 @@ $("#submit-form-setor").on("click", () => {
   });
 });
 
+// test
 console.log(sessionStorage.getItem("id_akun"));
+console.log(sessionStorage.getItem("username"));

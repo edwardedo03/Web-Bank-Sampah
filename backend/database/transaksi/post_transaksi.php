@@ -1,20 +1,29 @@
 <?php
+    session_start();
+
     date_default_timezone_set('Asia/Jakarta');
 
     header("Content-Type: application/json");
-    header("Access-Control-Allow-Origin: *");
     
     require_once '../db.php';
 
     $decode = json_decode(file_get_contents('php://input'), true);
 
-    $id_nasabah = $decode['idNasabah'] ?? '';
+    $id_nasabah = $decode['idNasabah'] ?? ($_SESSION['id_akun'] ?? '');
     $tanggal_transaksi = date('Y-m-d H:i:s');
     $tanggal_penyerahan = isset($decode['tanggalPenyerahan']) ? str_replace('T', ' ', $decode['tanggalPenyerahan']) : '';
     $metode_penyerahan = $decode['metodePenyerahan'] ?? '';
     $total_nominal = $decode['totalNominal'] ?? '';
     $total_berat = $decode['totalBerat'] ?? '';
     $detail_items = $decode['detailTransaksi'] ?? [];
+
+    if (!$id_nasabah) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Session login tidak ditemukan. Silakan login ulang.'
+        ]);
+        exit();
+    }
 
     $conn->begin_transaction();
 
@@ -50,7 +59,7 @@
                         throw new mysqli_sql_exception("Jenis sampah '$jenis_sampah' tidak ditemukan");
                     }
     
-                $statement_detail->bind_param('iisdds', $id_transaksi, $id_sampah, $subtotal_nominal, $berat_sampah, $catatan);
+                $statement_detail->bind_param('iisdds', $id_transaksi, $id_sampah, $jenis_sampah, $subtotal_nominal, $berat_sampah, $catatan);
                 $statement_detail->execute();
             }
     

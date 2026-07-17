@@ -1,13 +1,16 @@
 const username = sessionStorage.getItem("username");
+const idAkun = sessionStorage.getItem("id_akun");
 
-if (!username) {
+console.log("id_akun:", idAkun);
+
+if (!username || !idAkun) {
   window.location.href = "./pages/login.html";
 } else {
   $("#nama-user").text(`${username}`);
 }
 
 $("#logout").on("click", () => {
-  sessionStorage.removeItem("username");
+  sessionStorage.clear();
 
   window.location.href = "./pages/login.html";
 });

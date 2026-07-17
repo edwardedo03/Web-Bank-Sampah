@@ -22,11 +22,13 @@ $("#login-form").on("submit", function (e) {
       url: "../backend/database/login_db.php",
       type: "POST",
       contentType: "application/json",
+      dataType: "json",
       data: JSON.stringify(dataLogin),
       success: function (res) {
         if (res.success) {
           sessionStorage.setItem("username", res.user.username);
-          sessionStorage.setItem("id_akun", res.user.id_akun);
+          sessionStorage.setItem("id_akun", res.user.id);
+          sessionStorage.setItem("role", res.user.role);
 
           setTimeout(() => {
             if (res.user.role === "admin") {
