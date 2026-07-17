@@ -22,10 +22,10 @@
             $statement = $conn->prepare("INSERT INTO nasabah (email_nasabah, username_nasabah, password_nasabah, role) VALUES (?, ?, ?, ?)");
             $statement->bind_param("ssss", $email, $username, $password_hash, $role);
         } else if ($role === 'petugas') {
-            $statement = $conn->prepare("INSERT INTO nasabah (email_petugas, username_petugas, password_petugas, role) VALUES (?, ?, ?, ?)");
+            $statement = $conn->prepare("INSERT INTO petugas_lapangan (email_petugas, username_petugas, password_petugas, role) VALUES (?, ?, ?, ?)");
             $statement->bind_param("ssss", $email, $username, $password_hash, $role);
         } else {
-            $statement = $conn->prepare("INSERT INTO nasabah (email_admin, username_admin, password_admin, role) VALUES (?, ?, ?, ?)");
+            $statement = $conn->prepare("INSERT INTO admin (email_admin, username_admin, password_admin, role) VALUES (?, ?, ?, ?)");
             $statement->bind_param("ssss", $email, $username, $password_hash, $role);
         }
 
