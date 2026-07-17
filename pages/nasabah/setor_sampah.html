@@ -6,7 +6,6 @@
     <title>Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../../assets/js/jquery-4.0.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
   </head>
   <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row overflow-hidden">
     <nav
@@ -15,7 +14,7 @@
       <div class="flex flex-col gap-10">
         <div class="">
           <h2 class="font-bold text-md text-[#0D631B]">Bank Sampah Selaras</h2>
-          <p class="text-sm">Community Waste</p>
+          <p class="text-xs">Recycle Today, Sustain Tomorrow</p>
         </div>
         <ul class="flex flex-col gap-4">
           <a href="../../index.html">
@@ -48,7 +47,7 @@
               <img
                 src="../../assets/icon/setor-sampah/setor-putih.png"
                 alt="setor-sampah"
-                class="w-[22px] h-[21px]"
+                class="w-[22px] h-[21px] select-none"
               />
               Setor Sampah
             </li>
@@ -109,6 +108,7 @@
           <img
             src="../../assets/icon/bantuan-petugas.png"
             alt="bantuan-petugas"
+            class="select-none"
           />
           Bantuan Petugas
         </button>
@@ -124,22 +124,45 @@
       class="flex-1 flex flex-col items-center p-10 gap-7 h-screen overflow-y-auto"
     >
       <form id="form-setor" action="" class="w-full">
-        <div id="step-1" class="flex flex-col justify-center items-center w-full gap-5 py-2 hidden">
+        <div
+          id="step-1"
+          class="flex flex-col justify-center items-center w-full gap-5 py-2"
+        >
           <div class="flex flex-row justify-between items-center w-[50%]">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">1</p>
-                  <p class="font-semibold text-[#0D631B]">Jenis</p>
-              </div>
-              <img src="../../assets/icon/bar.svg" alt="bar">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-gray-700/50 text-gray-700 w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">2</p>
-                  <p class="font-semibold text-gray-700/50">Detail</p>
-              </div>
-              <img src="../../assets/icon/bar.svg" alt="bar">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-gray-700/50 text-gray-700 w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">3</p>
-                  <p class="font-semibold text-gray-700/50">Konfirmasi</p>
-              </div>
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                1
+              </p>
+              <p class="font-semibold text-[#0D631B]">Jenis</p>
+            </div>
+            <img
+              src="../../assets/icon/bar.svg"
+              alt="bar"
+              class="select-none"
+            />
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-gray-700/50 text-gray-700 w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                2
+              </p>
+              <p class="font-semibold text-gray-700/50">Detail</p>
+            </div>
+            <img
+              src="../../assets/icon/bar.svg"
+              alt="bar"
+              class="select-none"
+            />
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-gray-700/50 text-gray-700 w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                3
+              </p>
+              <p class="font-semibold text-gray-700/50">Konfirmasi</p>
+            </div>
           </div>
 
           <div class="flex flex-col gap-5 w-[70%]">
@@ -159,7 +182,7 @@
                 <img
                   src="../../assets/icon/setor-sampah/sampah/plastik.svg"
                   alt="plastik"
-                  class="bg-[#D9E6DA] p-4 rounded-2xl"
+                  class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
                 />
                 <div class="flex flex-col">
                   <h3 class="text-xl font-semibold">Plastik</h3>
@@ -170,18 +193,18 @@
                 type="radio"
                 name="sampah"
                 id="plastic"
-                value="plastic"
+                value="Plastik"
                 class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
               />
             </label>
             <label
-              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md""
+              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md"
             >
               <div class="flex flex-row gap-5 items-center">
                 <img
                   src="../../assets/icon/setor-sampah/sampah/paper.svg"
                   alt="paper"
-                  class="bg-[#D9E6DA] p-4 rounded-2xl"
+                  class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
                 />
                 <div class="flex flex-col">
                   <h3 class="text-xl font-semibold">Kertas</h3>
@@ -192,18 +215,18 @@
                 type="radio"
                 name="sampah"
                 id="paper"
-                value="paper"
+                value="Kertas"
                 class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
               />
             </label>
             <label
-              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md""
+              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md"
             >
               <div class="flex flex-row gap-5 items-center">
                 <img
                   src="../../assets/icon/setor-sampah/sampah/metal.svg"
                   alt="metal"
-                  class="bg-[#D9E6DA] p-4 rounded-2xl"
+                  class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
                 />
                 <div class="flex flex-col">
                   <h3 class="text-xl font-semibold">Logam</h3>
@@ -214,7 +237,7 @@
                 type="radio"
                 name="sampah"
                 id="metal"
-                value="metal"
+                value="Metal"
                 class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
               />
             </label>
@@ -227,28 +250,51 @@
               <img
                 src="../../assets/icon/arrow-ekor.svg"
                 alt="arrow"
-                class="w-4 h-4"
+                class="w-4 h-4 select-none"
               />
             </button>
           </div>
         </div>
 
-        <div id="step-2" class="flex flex-col justify-center items-center w-full gap-5 py-2">
+        <div
+          id="step-2"
+          class="flex flex-col justify-center items-center w-full gap-5 py-2 hidden"
+        >
           <div class="flex flex-row justify-between items-center w-[50%]">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">1</p>
-                  <p class="font-semibold text-[#0D631B]">Jenis</p>
-              </div>
-              <img src="../../assets/icon/bar.svg" alt="bar">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">2</p>
-                  <p class="font-semibold text-[#0D631B]">Detail</p>
-              </div>
-              <img src="../../assets/icon/bar.svg" alt="bar">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-gray-700/50 text-gray-700 w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">3</p>
-                  <p class="font-semibold text-gray-700/50">Konfirmasi</p>
-              </div>
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                1
+              </p>
+              <p class="font-semibold text-[#0D631B]">Jenis</p>
+            </div>
+            <img
+              src="../../assets/icon/bar.svg"
+              alt="bar"
+              class="select-none"
+            />
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                2
+              </p>
+              <p class="font-semibold text-[#0D631B]">Detail</p>
+            </div>
+            <img
+              src="../../assets/icon/bar.svg"
+              alt="bar"
+              class="select-none"
+            />
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-gray-700/50 text-gray-700 w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                3
+              </p>
+              <p class="font-semibold text-gray-700/50">Konfirmasi</p>
+            </div>
           </div>
 
           <div class="flex flex-col gap-5 w-[70%]">
@@ -261,77 +307,236 @@
               </p>
             </div>
             <div class="flex flex-col gap-2">
-              <label for="estimasi-berat" class="font-bold text-[#0D631B]">Estimasi Berat Sampah</label>
+              <label for="estimasi-berat" class="font-bold text-[#0D631B]"
+                >Estimasi Berat Sampah</label
+              >
               <div class="flex flex-row gap-2 items-center">
-                <input type="number" step="0.1" min="0.1" placeholder="0.0" name="estimasi-berat" id="estimasi-berat" class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  placeholder="0.0"
+                  name="estimasi-berat"
+                  id="estimasi-berat"
+                  class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
+                />
                 <p class="text-lg font-bold text-[#0D631B]">Kg</p>
               </div>
             </div>
             <div class="flex flex-col gap-2">
-              <label for="tanggal-penyerahan" class="font-bold text-[#0D631B]">Jadwal Penyerahan Sampah</label>
-              <input datepicker type="text" name="tanggal-penyerahan" id="tanggal-penyerahan" class="rounded-md border-2 border-gray-700/20 px-2 py-1 w-full text-sm font-semibold text-gray-800/70 focus:ring-4 focus:ring-[#0D631B]/10 duration-200">
+              <label for="tanggal-penyerahan" class="font-bold text-[#0D631B]"
+                >Jadwal Penyerahan Sampah</label
+              >
+              <input
+                type="datetime-local"
+                name="tanggal-penyerahan"
+                id="tanggal-penyerahan"
+                class="rounded-md border-2 border-gray-700/20 px-2 py-1 w-full text-sm font-semibold text-gray-800/70 focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
+              />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="metode-penyerahan" class="font-bold text-[#0D631B]">Jenis Penyerahan Sampah</label>
-              <select name="metode-penyerahan" id="metode-penyerahan" class="cursor-pointer border-2 border-gray-700/20 rounded-md px-2 py-1 w-full text-sm font-semibold text-gray-800/70 focus:ring-4 focus:ring-[#0D631B]/10 duration-200">
+              <label for="metode-penyerahan" class="font-bold text-[#0D631B]"
+                >Jenis Penyerahan Sampah</label
+              >
+              <select
+                name="metode-penyerahan"
+                id="metode-penyerahan"
+                class="cursor-pointer border-2 border-gray-700/20 rounded-md px-2 py-1 w-full text-sm font-semibold text-gray-800/70 focus:ring-4 focus:ring-[#0D631B]/10 duration-200"
+              >
                 <option value="">Pilih-jenis-penyerahan</option>
-                <option value="dropoff">Antar Sendiri (Drop-off) ke Unit Sampah</option>
-                <option value="pickup">Jemput Sampah (Pick-up) oleh Petugas - Disarankan jika kuantitas besar</option>
+                <option value="Drop-off">
+                  Antar Sendiri (Drop-off) ke Unit Sampah
+                </option>
+                <option value="Pick-up">
+                  Jemput Sampah (Pick-up) oleh Petugas - Disarankan jika
+                  kuantitas besar
+                </option>
               </select>
             </div>
             <div class="flex flex-col gap-2">
-              <label for="setor-note" class="font-bold text-[#0D631B]">Catatan (Opsional)</label>
-              <textarea name="setor-note" id="setor-note" placeholder="Tutup plastik botol sudah kami pisahkan" class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200"></textarea>
+              <label for="setor-note" class="font-bold text-[#0D631B]"
+                >Catatan (Opsional)</label
+              >
+              <textarea
+                name="setor-note"
+                id="setor-note"
+                placeholder="Tutup plastik botol sudah kami pisahkan"
+                class="border-2 border-gray-700/20 rounded-md px-2 py-1 w-full focus:ring-4 focus:ring-[#0D631B]/10 duration-200 min-h-[100px]"
+              ></textarea>
             </div>
-            <button
-              id="submit-step-2"
-              type="button"
-              class="text-lg font-semibold bg-[#0D631B] text-[#F7FBF0] p-3 rounded-xl hover:bg-[#2E7D32] duration-200 flex flex-row justify-center items-center gap-2"
-            >
-              Lanjutkan
-              <img
-                src="../../assets/icon/arrow-ekor.svg"
-                alt="arrow"
-                class="w-4 h-4"
-              />
-            </button>
+            <div class="flex flex-row gap-2 w-full">
+              <button
+                id="back-1"
+                type="button"
+                class="text-lg font-semibold bg-red-800 text-[#F7FBF0] p-3 rounded-xl hover:bg-red-800/90 duration-200 flex flex-row justify-center items-center gap-2 min-w-max flex-initial"
+              >
+                Kembali
+              </button>
+              <button
+                id="submit-step-2"
+                type="button"
+                class="text-lg font-semibold bg-[#0D631B] text-[#F7FBF0] p-3 rounded-xl hover:bg-[#2E7D32] duration-200 flex flex-row justify-center items-center gap-2 w-full flex-1 min-w-0"
+              >
+                Lanjutkan
+                <img
+                  src="../../assets/icon/arrow-ekor.svg"
+                  alt="arrow"
+                  class="w-4 h-4 select-none"
+                />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div id="step-3" class="flex flex-col justify-center items-center w-full gap-5 py-2 hidden">
+        <div
+          id="step-3"
+          class="flex flex-col justify-center items-center w-full gap-5 py-2 hidden"
+        >
           <div class="flex flex-row justify-between items-center w-[50%]">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">1</p>
-                  <p class="font-semibold text-[#0D631B]">Jenis</p>
-              </div>
-              <img src="../../assets/icon/bar.svg" alt="bar">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">2</p>
-                  <p class="font-semibold text-[#0D631B]">Detail</p>
-              </div>
-              <img src="../../assets/icon/bar.svg" alt="bar">
-              <div class="flex flex-col justify-center items-center gap-1">
-                  <p class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold">3</p>
-                  <p class="font-semibold text-[#0D631B]">Konfirmasi</p>
-              </div>
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                1
+              </p>
+              <p class="font-semibold text-[#0D631B]">Jenis</p>
+            </div>
+            <img
+              src="../../assets/icon/bar.svg"
+              alt="bar"
+              class="select-none"
+            />
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                2
+              </p>
+              <p class="font-semibold text-[#0D631B]">Detail</p>
+            </div>
+            <img
+              src="../../assets/icon/bar.svg"
+              alt="bar"
+              class="select-none"
+            />
+            <div class="flex flex-col justify-center items-center gap-1">
+              <p
+                class="bg-[#0D631B] text-[#F7FBF0] w-10 h-10 rounded-full flex justify-center items-center text-md font-bold"
+              >
+                3
+              </p>
+              <p class="font-semibold text-[#0D631B]">Konfirmasi</p>
+            </div>
           </div>
 
           <div class="flex flex-col gap-5 w-[70%]">
-            <div class="flex flex-col gap-2">
-              <h1 class="text-4xl font-bold text-[#0D631B]">
-                Konfirmasi
-              </h1>
+            <div class="flex flex-col gap-2 mb-3">
+              <h1 class="text-4xl font-bold text-[#0D631B]">Konfirmasi</h1>
               <p class="text-md text-[#40493D]">
                 Periksa kembali data setoran sampah Anda
               </p>
             </div>
-
-            
+            <div class="flex flex-row gap-2 w-full">
+              <div class="flex flex-col gap-3 min-w-max flex-initial">
+                <p
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                >
+                  Jenis Sampah
+                </p>
+                <p
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                >
+                  Estimasi Berat Sampah
+                </p>
+                <p
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                >
+                  Jadwal Penyerahan Sampah
+                </p>
+                <p
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                >
+                  Jenis Penyerahan Sampah
+                </p>
+                <p
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                >
+                  Catatan
+                </p>
+              </div>
+              <div class="flex flex-col gap-3 flex-1 min-w-0">
+                <span
+                  id="konfirmasi-jenis-sampah"
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                  >test</span
+                >
+                <span
+                  id="konfirmasi-estimasi-berat"
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                  >test</span
+                >
+                <span
+                  id="konfirmasi-jadwal-penyerahan"
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                  >test</span
+                >
+                <span
+                  id="konfirmasi-jenis-penyerahan"
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                  >test</span
+                >
+                <span
+                  id="konfirmasi-catatan"
+                  class="bg-white py-5 px-4 rounded-md shadow-md font-bold text-[#0D631B] hover:bg-[#0D631B]/10 duration-200"
+                  >-</span
+                >
+              </div>
+            </div>
+            <div class="flex flex-row justify-between items-center gap-5">
+              <button
+                id="setor-lagi"
+                type="button"
+                class="text-lg font-semibold bg-[#0D631B] text-[#F7FBF0] p-3 rounded-xl hover:bg-[#2E7D32] duration-200 flex flex-row justify-center items-center gap-2 cursor-pointer"
+              >
+                Setor Sampah Lainnya
+              </button>
+              <div class="flex flex-row gap-2">
+                <div class="flex flex-col gap-2 text-[#0D631B]">
+                  <p
+                    class="font-bold text-md bg-white py-1 px-3 rounded-md shadow-md"
+                  >
+                    Subtotal Nominal Sampah
+                  </p>
+                  <p
+                    class="font-bold text-md bg-white py-1 px-3 rounded-md shadow-md"
+                  >
+                    Total Nominal Setoran
+                  </p>
+                </div>
+                <div class="flex flex-col gap-2 text-[#0D631B]">
+                  <p
+                    class="font-bold text-md bg-white py-1 px-3 rounded-md shadow-md"
+                  >
+                    Rp <span class="font-extrabold">9000</span>
+                  </p>
+                  <p
+                    class="font-bold text-md bg-white py-1 px-3 rounded-md shadow-md"
+                  >
+                    Rp <span class="font-extrabold">2000</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <input
+              id="submit-form-setor"
+              type="submit"
+              class="text-lg font-semibold bg-[#0D631B] text-[#F7FBF0] p-3 rounded-xl hover:bg-[#2E7D32] duration-200 flex flex-row justify-center items-center gap-2 cursor-pointer mt-3"
+            />
           </div>
         </div>
       </form>
     </section>
 
-    <script src=""></script>
+    <script src="../../script/nasabah/setor_sampah.js"></script>
   </body>
 </html>
