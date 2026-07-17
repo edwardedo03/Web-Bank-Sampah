@@ -24,6 +24,7 @@
                     'success' => true,
                     'message' => 'Login berhasil',
                     'user' => [
+                        'id_akun' => $user['id_akun'],
                         'username' => $user['username'],
                         'email' => $user['email'],
                         'role' => $user['role']

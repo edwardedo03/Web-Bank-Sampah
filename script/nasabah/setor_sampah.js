@@ -28,9 +28,8 @@ $.ajax({
   },
 });
 
-let subtotalNominal = 0; // per jenis sampah
-let totalBerat = 0; // berat total dalam satu setoran
-let totalNominal = 0; // seluruh sampah dalam satu setoran
+// let totalBerat = 0; // berat total dalam satu setoran
+// let totalNominal = 0; // seluruh sampah dalam satu setoran
 
 //
 
@@ -55,6 +54,7 @@ $(document).ready(function () {
 
 const dataSetorSampah = {
   detailTransaksi: [],
+  idNasabah: "",
   tanggalPenyerahan: "",
   metodePenyerahan: "",
   totalNominal: 0,
@@ -102,12 +102,7 @@ $("#submit-step-2").on("click", () => {
   let hargaSampah = 0;
   hargaSampah = parseFloat(sampahTerpilih.harga_sampah_per_kg) || 0;
 
-  subtotalNominal = detailTransaksi.beratSampah * hargaSampah;
-  detailTransaksi.subtotalNominal = subtotalNominal;
-
-  dataSetorSampah.totalNominal = totalNominal;
-  dataSetorSampah.totalBerat = totalBerat;
-  dataSetorSampah.detailTransaksi.push({ ...detailTransaksi });
+  detailTransaksi.subtotalNominal = detailTransaksi.beratSampah * hargaSampah;
 
   $("#konfirmasi-jenis-sampah").text(detailTransaksi.jenisSampah);
   $("#konfirmasi-estimasi-berat").text(detailTransaksi.beratSampah + " Kg");
@@ -138,21 +133,28 @@ $("#setor-lagi").on("click", () => {
   $("#estimasi-berat").val("");
   $("#setor-note").val("");
 
-  totalNominal += subtotalNominal;
-  totalBerat += parseFloat(detailTransaksi.beratSampah);
+  dataSetorSampah.totalNominal += detailTransaksi.subtotalNominal;
+  dataSetorSampah.totalBerat += parseFloat(detailTransaksi.beratSampah);
+
+  dataSetorSampah.detailTransaksi.push({ ...detailTransaksi });
+
+  detailTransaksi = {
+    jenisSampah: "",
+    beratSampah: 0,
+    subtotalNominal: 0,
+    catatan: "",
+  };
 
   $("#step-3").addClass("hidden");
   $("#step-1").removeClass("hidden");
 
-  // test
+  // test data untuk masuk database
   // dataSetorSampah.detailTransaksi.forEach((sampah, index) => {
   //   console.log(
   //     `sampah ke ${index + 1} ${sampah.jenisSampah} ${sampah.beratSampah} ${sampah.catatan} ${sampah.subtotalNominal}`,
   //   );
   // });
 });
-
-//
 
 $("#back-step-2").on("click", () => {
   $("#step-2").addClass("hidden");
@@ -163,3 +165,35 @@ $("#back-step-3").on("click", () => {
   $("#step-3").addClass("hidden");
   $("#step-2").removeClass("hidden");
 });
+
+// push ke database
+
+$("#submit-form-setor").on("click", () => {
+  dataSetorSampah.idNasabah = sessionStorage.getItem("id_akun") || 1;
+
+  dataSetorSampah.totalNominal += detailTransaksi.subtotalNominal;
+  dataSetorSampah.totalBerat += parseFloat(detailTransaksi.beratSampah);
+
+  dataSetorSampah.detailTransaksi.push({ ...detailTransaksi });
+
+  $.ajax({
+    url: "../../backend/database/transaksi/post_transaksi.php",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(dataSetorSampah),
+    success: function (res) {
+      if (res.success) {
+        alert("Sukses: " + res.message);
+        window.location.href = "./riwayat_transaksi.html";
+      } else {
+        alert("Gagal menyimpan data setoran" + res.message);
+      }
+    },
+    error: function (xhr) {
+      console.log(xhr.responseText);
+      alert("Kesalahan pada server saat menyimpan data setoran");
+    },
+  });
+});
+
+console.log(sessionStorage.getItem("id_akun"));

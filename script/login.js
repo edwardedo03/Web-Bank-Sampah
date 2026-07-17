@@ -26,6 +26,7 @@ $("#login-form").on("submit", function (e) {
       success: function (res) {
         if (res.success) {
           sessionStorage.setItem("username", res.user.username);
+          sessionStorage.setItem("id_akun", res.user.id_akun);
 
           setTimeout(() => {
             if (res.user.role === "admin") {
