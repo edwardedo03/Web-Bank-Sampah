@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin — Bank Sampah Selaras</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar__brand">
+            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
+            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+        </div>
+
+        <ul class="sidebar__nav">
+            <li><a class="sidebar__link is-active" href="admin_dashboard.html">Dashboard</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
+            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
+        </ul>
+
+        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+    </aside>
+
+    <div class="main">
+
+        <header class="topbar">
+            <div class="topbar__brand">Bank Sampah Selaras</div>
+            <div class="topbar__actions">
+                <span class="topbar__help">?</span>
+                <div class="avatar" id="adminInitials">AD</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="page-head">
+                <div>
+                    <h1>Dashboard Admin</h1>
+                    <p>Monitoring real-time aktivitas pengelolaan sampah.</p>
+                </div>
+                <div class="page-head__filters">
+                    <div class="select">
+                        <label for="periode">Periode</label>
+                        <select id="periode" name="periode">
+                            <option>Bulan Ini</option>
+                            <option>Minggu Ini</option>
+                            <option>Tahun Ini</option>
+                        </select>
+                    </div>
+                    <div class="select">
+                        <label for="jenis">Jenis Sampah</label>
+                        <select id="jenis" name="jenis">
+                            <option>Semua Jenis</option>
+                            <option>Plastik</option>
+                            <option>Kertas</option>
+                            <option>Logam</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="card stat-card">
+                    <div>
+                        <p class="stat-card__label">Total Nasabah</p>
+                        <p class="stat-card__value" id="statNasabah">1,284</p>
+                        <p class="stat-card__meta">↗ +12% dari bulan lalu</p>
+                    </div>
+                    <div class="stat-card__icon">👥</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div>
+                        <p class="stat-card__label">Total Petugas</p>
+                        <p class="stat-card__value" id="statPetugas">12</p>
+                        <p class="stat-card__meta">Semua status aktif</p>
+                    </div>
+                    <div class="stat-card__icon">🛡️</div>
+                </div>
+
+                <div class="card stat-card stat-card--accent">
+                    <div>
+                        <p class="stat-card__label">Total Saldo (IDR)</p>
+                        <p class="stat-card__value" id="statSaldo">Rp 42.500.000</p>
+                        <p class="stat-card__meta">⏱ Dana siap tarik: Rp 8.2M</p>
+                    </div>
+                    <div class="stat-card__icon">💰</div>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="card">
+                    <div class="card__head">
+                        <h3>Sampah Terkumpul (kg)</h3>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar-chart__col">
+                            <div class="bar-chart__bar" style="height: 55%;"></div>
+                            <span class="bar-chart__label">Plastik</span>
+                        </div>
+                        <div class="bar-chart__col">
+                            <div class="bar-chart__bar" style="height: 75%;"></div>
+                            <span class="bar-chart__label">Kertas</span>
+                        </div>
+                        <div class="bar-chart__col">
+                            <div class="bar-chart__bar" style="height: 35%;"></div>
+                            <span class="bar-chart__label">Logam</span>
+                        </div>
+                        <div class="bar-chart__col">
+                            <div class="bar-chart__bar" style="height: 20%;"></div>
+                            <span class="bar-chart__label">Kaca</span>
+                        </div>
+                        <div class="bar-chart__col">
+                            <div class="bar-chart__bar" style="height: 90%;"></div>
+                            <span class="bar-chart__label">Organik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__head">
+                        <h3>Tren Volume Transaksi</h3>
+                        <div class="chart-legend">
+                            <span><i class="dot dot--solid"></i> Setoran</span>
+                            <span><i class="dot dot--dashed"></i> Penarikan</span>
+                        </div>
+                    </div>
+                    <svg viewBox="0 0 320 140" width="100%" height="140" preserveAspectRatio="none">
+                        <polyline points="0,110 45,90 90,95 135,55 180,60 225,30 270,40 315,20"
+                                  fill="none" stroke="#35843f" stroke-width="2.5" />
+                        <polyline points="0,125 45,120 90,118 135,105 180,108 225,95 270,100 315,90"
+                                  fill="none" stroke="#a13a4a" stroke-width="2" stroke-dasharray="4 4" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card__head">
+                    <h3>Transaksi Terbaru</h3>
+                    <a href="admin_riwayat.html">Lihat Semua</a>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nasabah</th>
+                            <th>Jenis Sampah</th>
+                            <th>Berat (kg)</th>
+                            <th>Total (IDR)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaksiTerbaruBody">
+                        <tr>
+                            <td>
+                                <div class="person">
+                                    <span class="person__avatar">AM</span>
+                                    Andi Maulana
+                                </div>
+                            </td>
+                            <td>Plastik PET</td>
+                            <td>4.5 kg</td>
+                            <td class="amount">Rp 12,500</td>
+                            <td><span class="badge badge--success">SELESAI</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="person">
+                                    <span class="person__avatar">SH</span>
+                                    Siti Halimah
+                                </div>
+                            </td>
+                            <td>Kertas/Karton</td>
+                            <td>12.0 kg</td>
+                            <td class="amount">Rp 18,000</td>
+                            <td><span class="badge badge--success">SELESAI</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="person">
+                                    <span class="person__avatar">BP</span>
+                                    Budi Prasetyo
+                                </div>
+                            </td>
+                            <td>Logam Campur</td>
+                            <td>1.2 kg</td>
+                            <td class="amount">Rp 8,400</td>
+                            <td><span class="badge badge--pending">PROSES</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+  Contoh cara ambil data asli dari backend PHP kamu.
+  Bikin file baru misal: backend/database/dashboard_data.php
+  yang isinya query ke database lalu echo json_encode([...]).
+
+  Lalu di sini tinggal fetch seperti ini:
+
+  fetch('../../backend/database/dashboard_data.php')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('statNasabah').textContent = data.total_nasabah;
+      document.getElementById('statPetugas').textContent = data.total_petugas;
+      document.getElementById('statSaldo').textContent = data.total_saldo;
+      // dst, isi tabel transaksiTerbaruBody juga bisa di-generate dari sini
+    })
+    .catch(err => console.error('Gagal ambil data dashboard:', err));
+*/
+</script>
+
+</body>
+</html>
