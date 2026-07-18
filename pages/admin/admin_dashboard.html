@@ -33,7 +33,13 @@
             <div class="topbar__brand">Bank Sampah Selaras</div>
             <div class="topbar__actions">
                 <span class="topbar__help">?</span>
-                <div class="avatar" id="adminInitials">AD</div>
+                <div class="dropdown">
+                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
+                    <div class="dropdown-menu" id="avatarMenu">
+                        <a href="admin_profil.html">Profil Akun</a>
+                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -155,7 +161,7 @@
                         </tr>
                     </thead>
                     <tbody id="transaksiTerbaruBody">
-                        <tr>
+                        <tr class="is-clickable" data-nama="Andi Maulana" data-inisial="AM" data-jenis="Plastik PET" data-berat="4.5 kg" data-total="Rp 12,500" data-status="SELESAI">
                             <td>
                                 <div class="person">
                                     <span class="person__avatar">AM</span>
@@ -167,7 +173,7 @@
                             <td class="amount">Rp 12,500</td>
                             <td><span class="badge badge--success">SELESAI</span></td>
                         </tr>
-                        <tr>
+                        <tr class="is-clickable" data-nama="Siti Halimah" data-inisial="SH" data-jenis="Kertas/Karton" data-berat="12.0 kg" data-total="Rp 18,000" data-status="SELESAI">
                             <td>
                                 <div class="person">
                                     <span class="person__avatar">SH</span>
@@ -179,7 +185,7 @@
                             <td class="amount">Rp 18,000</td>
                             <td><span class="badge badge--success">SELESAI</span></td>
                         </tr>
-                        <tr>
+                        <tr class="is-clickable" data-nama="Budi Prasetyo" data-inisial="BP" data-jenis="Logam Campur" data-berat="1.2 kg" data-total="Rp 8,400" data-status="PROSES">
                             <td>
                                 <div class="person">
                                     <span class="person__avatar">BP</span>
@@ -198,6 +204,25 @@
     </div>
 </div>
 
+<!-- Modal: Detail Transaksi -->
+<div class="modal-overlay" id="modalDetailTransaksi">
+    <div class="modal-box">
+        <div class="modal-box__head">
+            <h3>Detail Transaksi</h3>
+            <button class="modal-box__close" data-modal-close="modalDetailTransaksi">✕</button>
+        </div>
+        <div class="form-field"><label>Nasabah</label><p id="dtNama" style="margin:0;font-weight:600;"></p></div>
+        <div class="form-field"><label>Jenis Sampah</label><p id="dtJenis" style="margin:0;"></p></div>
+        <div class="form-field"><label>Berat</label><p id="dtBerat" style="margin:0;"></p></div>
+        <div class="form-field"><label>Total</label><p id="dtTotal" style="margin:0;font-weight:700;color:var(--green-700);"></p></div>
+        <div class="form-field"><label>Status</label><p id="dtStatus" style="margin:0;"></p></div>
+        <div class="modal-box__actions">
+            <button type="button" class="btn btn--outline" data-modal-close="modalDetailTransaksi">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../assets/js/admin.js"></script>
 <script>
 /*
   Contoh cara ambil data asli dari backend PHP kamu.
@@ -216,6 +241,38 @@
     })
     .catch(err => console.error('Gagal ambil data dashboard:', err));
 */
+
+// Menu dropdown di avatar admin (Profil Akun / Keluar)
+setupDropdown('avatarTrigger', 'avatarMenu');
+
+document.getElementById('btnLogout').addEventListener('click', function () {
+    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
+    showToast('Logout akan aktif setelah backend terhubung.');
+});
+
+// Filter Periode & Jenis Sampah
+// TODO: saat backend siap, ganti isi fungsi ini dengan fetch ulang data dashboard
+// berdasarkan nilai filter, contoh:
+// fetch(`../../backend/database/dashboard_data.php?periode=${periode}&jenis=${jenis}`)
+function terapkanFilterDashboard() {
+    const periode = document.getElementById('periode').value;
+    const jenis = document.getElementById('jenis').value;
+    showToast(`Menampilkan data: ${periode} — ${jenis}`);
+}
+document.getElementById('periode').addEventListener('change', terapkanFilterDashboard);
+document.getElementById('jenis').addEventListener('change', terapkanFilterDashboard);
+
+// Klik baris "Transaksi Terbaru" untuk lihat detail
+document.querySelectorAll('#transaksiTerbaruBody tr').forEach(function (row) {
+    row.addEventListener('click', function () {
+        document.getElementById('dtNama').textContent = row.dataset.nama;
+        document.getElementById('dtJenis').textContent = row.dataset.jenis;
+        document.getElementById('dtBerat').textContent = row.dataset.berat;
+        document.getElementById('dtTotal').textContent = row.dataset.total;
+        document.getElementById('dtStatus').textContent = row.dataset.status;
+        openModal('modalDetailTransaksi');
+    });
+});
 </script>
 
 </body>

@@ -33,7 +33,13 @@
             <div class="topbar__brand">Bank Sampah Selaras</div>
             <div class="topbar__actions">
                 <span class="topbar__help">?</span>
-                <div class="avatar" id="adminInitials">AD</div>
+                <div class="dropdown">
+                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
+                    <div class="dropdown-menu" id="avatarMenu">
+                        <a href="admin_profil.html">Profil Akun</a>
+                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -138,7 +144,15 @@
     </div>
 </div>
 
+<script src="../../assets/js/admin.js"></script>
 <script>
+
+// Menu dropdown di avatar admin (Profil Akun / Keluar)
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
+    showToast('Logout akan aktif setelah backend terhubung.');
+});
 /*
   Contoh alur kerja untuk halaman ini:
 
@@ -146,21 +160,35 @@
     .then(res => res.json())
     .then(data => { ...render ke #riwayatTableBody... });
 
-  Filter "Jenis Transaksi" dan "Status" sebaiknya juga dikirim sebagai parameter
-  ke backend supaya query-nya sudah terfilter dari database, contoh:
+  Filter "Jenis Transaksi" dan "Status" sekarang sudah berfungsi di sisi
+  browser (client-side). Nanti kalau data sudah datang dari backend dan
+  jumlahnya besar, sebaiknya filter ini dikirim sebagai parameter ke server
+  supaya query-nya sudah terfilter dari database, contoh:
 
   fetch('../../backend/database/get_riwayat_transaksi.php?jenis=setoran&status=selesai')
-
-  Di bawah ini contoh pencarian sederhana berdasarkan nama yang jalan
-  langsung di browser (tanpa ke server):
 */
-document.getElementById('cariRiwayat').addEventListener('input', function (e) {
-    const keyword = e.target.value.toLowerCase();
+
+function terapkanFilterRiwayat() {
+    const keyword = document.getElementById('cariRiwayat').value.toLowerCase();
+    const jenis = document.getElementById('filterJenis').value;
+    const status = document.getElementById('filterStatus').value;
+
     document.querySelectorAll('#riwayatTableBody tr').forEach(function (row) {
         const teks = row.textContent.toLowerCase();
-        row.style.display = teks.includes(keyword) ? '' : 'none';
+        const jenisRow = row.children[1].textContent.trim();
+        const statusRow = row.children[5].textContent.trim();
+
+        const cocokKeyword = teks.includes(keyword);
+        const cocokJenis = jenis === 'Semua' || jenisRow === jenis;
+        const cocokStatus = status === 'Semua' || statusRow.toUpperCase() === status.toUpperCase();
+
+        row.style.display = (cocokKeyword && cocokJenis && cocokStatus) ? '' : 'none';
     });
-});
+}
+
+document.getElementById('cariRiwayat').addEventListener('input', terapkanFilterRiwayat);
+document.getElementById('filterJenis').addEventListener('change', terapkanFilterRiwayat);
+document.getElementById('filterStatus').addEventListener('change', terapkanFilterRiwayat);
 </script>
 
 </body>

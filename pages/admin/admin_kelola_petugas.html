@@ -107,7 +107,13 @@
             <div class="topbar__brand">Bank Sampah Selaras</div>
             <div class="topbar__actions">
                 <span class="topbar__help">?</span>
-                <div class="avatar" id="adminInitials">AD</div>
+                <div class="dropdown">
+                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
+                    <div class="dropdown-menu" id="avatarMenu">
+                        <a href="admin_profil.html">Profil Akun</a>
+                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -190,7 +196,7 @@
                 </table>
 
                 <div class="pagination">
-                    <span>Menampilkan 3 dari 42 petugas</span>
+                    <span id="paginationInfo">Menampilkan 3 dari 42 petugas</span>
                     <div class="pagination__btns">
                         <button type="button" id="btnPrevPage">‹</button>
                         <button type="button" id="btnNextPage">›</button>
@@ -201,7 +207,43 @@
     </div>
 </div>
 
+<!-- Modal: Tambah / Edit Petugas -->
+<div class="modal-overlay" id="modalPetugas">
+    <div class="modal-box">
+        <div class="modal-box__head">
+            <h3 id="modalPetugasTitle">Tambah Petugas Baru</h3>
+            <button class="modal-box__close" data-modal-close="modalPetugas">✕</button>
+        </div>
+        <form id="formPetugas">
+            <div class="form-field">
+                <label for="ptgNama">Nama Lengkap</label>
+                <input type="text" id="ptgNama" required placeholder="Contoh: Rina Wulandari">
+            </div>
+            <div class="form-field">
+                <label for="ptgId">ID Petugas</label>
+                <input type="text" id="ptgId" required placeholder="Contoh: SS-00130">
+            </div>
+            <div class="form-field">
+                <label for="ptgWilayah">Wilayah Tugas</label>
+                <input type="text" id="ptgWilayah" required placeholder="Contoh: Blok D - Kebayoran">
+            </div>
+            <div class="modal-box__actions">
+                <button type="button" class="btn btn--outline" data-modal-close="modalPetugas">Batal</button>
+                <button type="submit" class="btn btn--primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../../assets/js/admin.js"></script>
 <script>
+
+// Menu dropdown di avatar admin (Profil Akun / Keluar)
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
+    showToast('Logout akan aktif setelah backend terhubung.');
+});
 /*
   Contoh alur kerja untuk halaman ini:
 
@@ -217,17 +259,81 @@
        body: JSON.stringify({ id_petugas: idPetugas, aktif: checkbox.checked })
      });
 
-  3. Tombol "+ Tambah Petugas Baru" dan ikon pensil (edit) sebaiknya membuka
-     form/modal, lalu POST ke backend/database/simpan_petugas.php
-
-  Di bawah ini contoh pencarian sederhana yang jalan langsung di browser:
+  3. Tombol "+ Tambah Petugas Baru" dan ikon pensil (edit) sekarang sudah
+     membuka modal (lihat kode di bawah). Saat form disubmit, tinggal ganti
+     jadi fetch POST ke backend/database/simpan_petugas.php
 */
+
+// Pencarian sederhana di browser
 document.getElementById('cariPetugas').addEventListener('input', function (e) {
     const keyword = e.target.value.toLowerCase();
     document.querySelectorAll('#petugasTableBody tr').forEach(function (row) {
         const teks = row.textContent.toLowerCase();
         row.style.display = teks.includes(keyword) ? '' : 'none';
     });
+});
+
+const formPetugas = document.getElementById('formPetugas');
+
+// Tombol "+ Tambah Petugas Baru"
+document.getElementById('btnTambahPetugas').addEventListener('click', function () {
+    document.getElementById('modalPetugasTitle').textContent = 'Tambah Petugas Baru';
+    formPetugas.reset();
+    formPetugas.dataset.mode = 'tambah';
+    document.getElementById('ptgId').disabled = false;
+    openModal('modalPetugas');
+});
+
+// Ikon pensil (edit) per baris
+document.querySelectorAll('.edit-icon-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const row = btn.closest('tr');
+        document.getElementById('modalPetugasTitle').textContent = 'Edit Petugas';
+        document.getElementById('ptgNama').value = row.querySelector('.person').textContent.trim();
+        document.getElementById('ptgId').value = row.dataset.id;
+        document.getElementById('ptgId').disabled = true; // ID gak boleh diubah saat edit
+        document.getElementById('ptgWilayah').value = row.querySelector('.pill-tag').textContent;
+        formPetugas.dataset.mode = 'edit';
+        formPetugas.dataset.rowId = row.dataset.id;
+        openModal('modalPetugas');
+    });
+});
+
+formPetugas.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const nama = document.getElementById('ptgNama').value;
+    const mode = formPetugas.dataset.mode;
+    // TODO: ganti dengan fetch POST ke backend/database/simpan_petugas.php
+    // sertakan { mode, id, nama, wilayah }
+    showToast(mode === 'tambah'
+        ? `Petugas "${nama}" berhasil ditambahkan (sementara belum tersimpan ke database).`
+        : `Data petugas "${nama}" berhasil diperbarui (sementara belum tersimpan ke database).`);
+    closeModal('modalPetugas');
+});
+
+// Toggle status aktif
+document.querySelectorAll('.toggle input[type="checkbox"]').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+        const row = checkbox.closest('tr');
+        const nama = row.querySelector('.person').textContent.trim();
+        // TODO: ganti dengan fetch POST ke backend/database/update_status_petugas.php
+        // body: JSON.stringify({ id_petugas: row.dataset.id, aktif: checkbox.checked })
+        showToast(`Status ${nama} diubah menjadi ${checkbox.checked ? 'Aktif' : 'Nonaktif'}.`);
+    });
+});
+
+// Pagination (placeholder, siap disambungkan ke backend)
+let currentPage = 1;
+document.getElementById('btnPrevPage').addEventListener('click', function () {
+    if (currentPage <= 1) return;
+    currentPage--;
+    // TODO: fetch('../../backend/database/get_petugas.php?page=' + currentPage)
+    showToast('Menampilkan halaman ' + currentPage);
+});
+document.getElementById('btnNextPage').addEventListener('click', function () {
+    currentPage++;
+    // TODO: fetch('../../backend/database/get_petugas.php?page=' + currentPage)
+    showToast('Menampilkan halaman ' + currentPage);
 });
 </script>
 

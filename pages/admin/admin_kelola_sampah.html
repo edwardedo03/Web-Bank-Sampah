@@ -33,7 +33,13 @@
             <div class="topbar__brand">Bank Sampah Selaras</div>
             <div class="topbar__actions">
                 <span class="topbar__help">?</span>
-                <div class="avatar" id="adminInitials">AD</div>
+                <div class="dropdown">
+                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
+                    <div class="dropdown-menu" id="avatarMenu">
+                        <a href="admin_profil.html">Profil Akun</a>
+                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -111,7 +117,83 @@
     </div>
 </div>
 
+<!-- Modal: Tambah Kategori Baru -->
+<div class="modal-overlay" id="modalTambahKategori">
+    <div class="modal-box">
+        <div class="modal-box__head">
+            <h3>Tambah Kategori Sampah Baru</h3>
+            <button class="modal-box__close" data-modal-close="modalTambahKategori">✕</button>
+        </div>
+        <form id="formTambahKategori">
+            <div class="form-field">
+                <label for="katNama">Nama Jenis Sampah</label>
+                <input type="text" id="katNama" required placeholder="Contoh: Botol Kaca">
+            </div>
+            <div class="form-field">
+                <label for="katDeskripsi">Deskripsi Singkat</label>
+                <input type="text" id="katDeskripsi" placeholder="Contoh: Kaca Bening & Berwarna">
+            </div>
+            <div class="form-field">
+                <label for="katHarga">Harga Awal /kg (Rp)</label>
+                <input type="number" id="katHarga" required min="0" placeholder="0">
+            </div>
+            <div class="modal-box__actions">
+                <button type="button" class="btn btn--outline" data-modal-close="modalTambahKategori">Batal</button>
+                <button type="submit" class="btn btn--primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Edit Harga -->
+<div class="modal-overlay" id="modalEditHarga">
+    <div class="modal-box">
+        <div class="modal-box__head">
+            <h3>Edit Harga — <span id="edhNamaJenis"></span></h3>
+            <button class="modal-box__close" data-modal-close="modalEditHarga">✕</button>
+        </div>
+        <form id="formEditHarga">
+            <div class="form-field">
+                <label for="edhHargaBaru">Harga Baru /kg (Rp)</label>
+                <input type="number" id="edhHargaBaru" required min="0">
+            </div>
+            <div class="modal-box__actions">
+                <button type="button" class="btn btn--outline" data-modal-close="modalEditHarga">Batal</button>
+                <button type="submit" class="btn btn--primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Tambah Stok -->
+<div class="modal-overlay" id="modalTambahStok">
+    <div class="modal-box">
+        <div class="modal-box__head">
+            <h3>Tambah Stok — <span id="tsNamaJenis"></span></h3>
+            <button class="modal-box__close" data-modal-close="modalTambahStok">✕</button>
+        </div>
+        <form id="formTambahStok">
+            <div class="form-field">
+                <label for="tsJumlah">Jumlah Tambahan (kg)</label>
+                <input type="number" id="tsJumlah" required min="0" step="0.1">
+            </div>
+            <div class="modal-box__actions">
+                <button type="button" class="btn btn--outline" data-modal-close="modalTambahStok">Batal</button>
+                <button type="submit" class="btn btn--primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../../assets/js/admin.js"></script>
 <script>
+
+// Menu dropdown di avatar admin (Profil Akun / Keluar)
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
+    showToast('Logout akan aktif setelah backend terhubung.');
+});
 /*
   Contoh alur kerja untuk halaman ini:
 
@@ -120,26 +202,81 @@
        .then(res => res.json())
        .then(data => { ...isi #sampahTableBody dari data... });
 
-  2. Tombol "Edit Harga" / "Tambah Stok" harusnya buka modal/form kecil,
-     lalu kirim perubahan ke backend, misalnya:
+  2. Tombol "Edit Harga" / "Tambah Stok" sekarang sudah buka modal (lihat kode di bawah).
+     Saat form modal di-submit, kirim perubahan ke backend, misalnya:
      fetch('../../backend/database/update_harga_sampah.php', {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({ id: id, harga_baru: hargaBaru })
      });
 
-  3. Tombol "+ Tambah Kategori Baru" sebaiknya membuka form/modal untuk input
-     jenis sampah baru, lalu POST ke backend/database/tambah_jenis_sampah.php
-
-  Di bawah ini contoh pencarian sederhana yang jalan langsung di browser
-  (tanpa ke server) berdasarkan isi tabel yang sudah ada:
+  3. Tombol "+ Tambah Kategori Baru" sekarang sudah buka modal input jenis sampah baru,
+     lalu nanti tinggal POST ke backend/database/tambah_jenis_sampah.php
 */
+
+// Pencarian sederhana di browser
 document.getElementById('cariSampah').addEventListener('input', function (e) {
     const keyword = e.target.value.toLowerCase();
     document.querySelectorAll('#sampahTableBody tr').forEach(function (row) {
         const teks = row.textContent.toLowerCase();
         row.style.display = teks.includes(keyword) ? '' : 'none';
     });
+});
+
+// Tombol "+ Tambah Kategori Baru"
+document.getElementById('btnTambahKategori').addEventListener('click', function () {
+    document.getElementById('formTambahKategori').reset();
+    openModal('modalTambahKategori');
+});
+
+document.getElementById('formTambahKategori').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const nama = document.getElementById('katNama').value;
+    // TODO: ganti dengan fetch POST ke backend/database/tambah_jenis_sampah.php
+    showToast(`Kategori "${nama}" berhasil ditambahkan (sementara belum tersimpan ke database).`);
+    closeModal('modalTambahKategori');
+});
+
+// Tombol "Edit Harga" per baris
+document.querySelectorAll('.btn-edit-harga').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const row = btn.closest('tr');
+        const namaJenis = row.querySelector('strong').textContent;
+        document.getElementById('edhNamaJenis').textContent = namaJenis;
+        document.getElementById('formEditHarga').dataset.id = row.dataset.id;
+        document.getElementById('edhHargaBaru').value = '';
+        openModal('modalEditHarga');
+    });
+});
+
+document.getElementById('formEditHarga').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const id = this.dataset.id;
+    const hargaBaru = document.getElementById('edhHargaBaru').value;
+    // TODO: ganti dengan fetch POST ke backend/database/update_harga_sampah.php
+    // body: JSON.stringify({ id: id, harga_baru: hargaBaru })
+    showToast(`Harga berhasil diubah menjadi Rp ${hargaBaru} (sementara belum tersimpan ke database).`);
+    closeModal('modalEditHarga');
+});
+
+// Tombol "Tambah Stok" per baris
+document.querySelectorAll('.btn-tambah-stok').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const row = btn.closest('tr');
+        const namaJenis = row.querySelector('strong').textContent;
+        document.getElementById('tsNamaJenis').textContent = namaJenis;
+        document.getElementById('formTambahStok').dataset.id = row.dataset.id;
+        document.getElementById('tsJumlah').value = '';
+        openModal('modalTambahStok');
+    });
+});
+
+document.getElementById('formTambahStok').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const jumlah = document.getElementById('tsJumlah').value;
+    // TODO: ganti dengan fetch POST ke backend/database/tambah_stok_sampah.php
+    showToast(`Stok berhasil ditambah ${jumlah} kg (sementara belum tersimpan ke database).`);
+    closeModal('modalTambahStok');
 });
 </script>
 
