@@ -162,3 +162,42 @@ export function postNasabahProfile(dataProfile, rootPath = ".") {
     },
   });
 }
+
+// GET Detail Transaksi
+
+export function getDetailTransaksi(idAKun, rootPath = ".") {
+  return $.ajax({
+    url: `${rootPath}/backend/database/transaksi/get_detail_transaksi.php`,
+    type: "GET",
+    dataType: "json",
+    data: { id_akun: idAkun },
+    success: function (res) {
+      if (res.success && res.history.length > 0) {
+        res.history.forEach((item) => {
+          const dateTime = new Date(item.tanggal_penyerahan);
+
+          const formatTanggal = {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          };
+          const tanggal = new Intl.DateTimeFormat(
+            "id-ID",
+            formatTanggal,
+          ).format(dateTime);
+
+          const formatWaktu = {
+            hour: "2-digit",
+            minute: "2-digit",
+          };
+          const waktu = new Intl.DateTimeFormat("id-ID", formatWaktu).format(
+            dateTime,
+          );
+        });
+      }
+    },
+    error: function (xhr) {
+      console.log("Error", xhr.responseText);
+    },
+  });
+}
