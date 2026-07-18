@@ -2,228 +2,204 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kelola Sampah & Harga — Bank Sampah Selaras</title>
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
-<div class="app-shell">
+<div class="flex w-full h-screen overflow-hidden">
 
-    <aside class="sidebar">
-        <div class="sidebar__brand">
-            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
-            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
         </div>
-
-        <ul class="sidebar__nav">
-            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
-            <li><a class="sidebar__link is-active" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
-            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
-            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
-            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
-        </ul>
-
-        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
     </aside>
 
-    <div class="main">
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
 
-        <header class="topbar">
-            <div class="topbar__brand">Bank Sampah Selaras</div>
-            <div class="topbar__actions">
-                <span class="topbar__help">?</span>
-                <div class="dropdown">
-                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
-                    <div class="dropdown-menu" id="avatarMenu">
-                        <a href="admin_profil.html">Profil Akun</a>
-                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="content">
-            <div class="page-head">
+        <div class="p-8">
+            <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
                 <div>
-                    <h1>Manajemen Jenis Sampah</h1>
-                    <p>Atur harga pasar dan pantau ketersediaan stok gudang secara real-time.</p>
+                    <h1 class="text-2xl font-bold m-0 mb-1">Manajemen Jenis Sampah</h1>
+                    <p class="text-sm text-gray-500 m-0">Atur harga pasar dan pantau ketersediaan stok gudang secara real-time.</p>
                 </div>
-                <div class="card stat-card" style="min-width: 160px;">
-                    <div>
-                        <p class="stat-card__label">Total Jenis</p>
-                        <p class="stat-card__value" id="statTotalJenis">12</p>
-                    </div>
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 min-w-[160px]">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Total Jenis</p>
+                    <p class="text-2xl font-bold m-0" id="statTotalJenis">–</p>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card__head" style="gap: 12px; flex-wrap: wrap;">
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                <div class="flex gap-3 flex-wrap mb-4">
                     <input type="text" id="cariSampah" placeholder="Cari jenis sampah..."
-                           style="flex: 1; min-width: 220px; padding: 9px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 13px; font-family: inherit;">
-                    <button type="button" class="btn btn--primary" id="btnTambahKategori">+ Tambah Kategori Baru</button>
+                           class="flex-1 min-w-[220px] border border-gray-200 rounded-lg px-3.5 py-2 text-sm">
+                    <button type="button" id="btnTambahKategori" class="rounded-full bg-[#2E7D32] text-white text-sm font-semibold px-4 py-2">+ Tambah Kategori Baru</button>
                 </div>
 
-                <table class="table">
+                <table class="w-full text-sm border-collapse">
                     <thead>
                         <tr>
-                            <th>Jenis Sampah</th>
-                            <th>Harga /kg</th>
-                            <th>Stok Gudang</th>
-                            <th>Aksi</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Jenis Sampah</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Harga /kg</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Stok Gudang</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="sampahTableBody">
-                        <tr data-id="1">
-                            <td>
-                                <strong>Kardus & Karton</strong><br>
-                                <span style="font-size:12px;color:var(--text-400)">Kertas Bergelombang</span>
-                            </td>
-                            <td>Rp 2.500<br><span style="font-size:11px;color:var(--text-400)">Stabil</span></td>
-                            <td>1,240 kg</td>
-                            <td>
-                                <button class="btn btn--outline btn-edit-harga" data-id="1">Edit Harga</button>
-                                <button class="btn btn--primary btn-tambah-stok" data-id="1">Tambah Stok</button>
-                            </td>
-                        </tr>
-                        <tr data-id="2">
-                            <td>
-                                <strong>Botol PET Bening</strong><br>
-                                <span style="font-size:12px;color:var(--text-400)">Plastik Minuman</span>
-                            </td>
-                            <td>Rp 4.200<br><span style="font-size:11px;color:var(--red-600)">↘ -Rp 300</span></td>
-                            <td>450 kg</td>
-                            <td>
-                                <button class="btn btn--outline btn-edit-harga" data-id="2">Edit Harga</button>
-                                <button class="btn btn--primary btn-tambah-stok" data-id="2">Tambah Stok</button>
-                            </td>
-                        </tr>
-                        <tr data-id="3">
-                            <td>
-                                <strong>Logam Besi</strong><br>
-                                <span style="font-size:12px;color:var(--text-400)">Besi & Baja Bekas</span>
-                            </td>
-                            <td>Rp 3.800<br><span style="font-size:11px;color:var(--green-600)">↗ +Rp 500</span></td>
-                            <td>2,890 kg</td>
-                            <td>
-                                <button class="btn btn--outline btn-edit-harga" data-id="3">Edit Harga</button>
-                                <button class="btn btn--primary btn-tambah-stok" data-id="3">Tambah Stok</button>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="sampahTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal: Tambah Kategori Baru -->
-<div class="modal-overlay" id="modalTambahKategori">
-    <div class="modal-box">
-        <div class="modal-box__head">
-            <h3>Tambah Kategori Sampah Baru</h3>
-            <button class="modal-box__close" data-modal-close="modalTambahKategori">✕</button>
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalTambahKategori">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold m-0">Tambah Kategori Sampah Baru</h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalTambahKategori">✕</button>
         </div>
         <form id="formTambahKategori">
-            <div class="form-field">
-                <label for="katNama">Nama Jenis Sampah</label>
-                <input type="text" id="katNama" required placeholder="Contoh: Botol Kaca">
+            <div class="mb-3.5">
+                <label for="katNama" class="block text-xs font-semibold text-gray-600 mb-1.5">Nama Jenis Sampah</label>
+                <input type="text" id="katNama" required placeholder="Contoh: Botol Kaca" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="form-field">
-                <label for="katDeskripsi">Deskripsi Singkat</label>
-                <input type="text" id="katDeskripsi" placeholder="Contoh: Kaca Bening & Berwarna">
+            <div class="mb-3.5">
+                <label for="katHarga" class="block text-xs font-semibold text-gray-600 mb-1.5">Harga Awal /kg (Rp)</label>
+                <input type="number" id="katHarga" required min="0" placeholder="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="form-field">
-                <label for="katHarga">Harga Awal /kg (Rp)</label>
-                <input type="number" id="katHarga" required min="0" placeholder="0">
-            </div>
-            <div class="modal-box__actions">
-                <button type="button" class="btn btn--outline" data-modal-close="modalTambahKategori">Batal</button>
-                <button type="submit" class="btn btn--primary">Simpan</button>
+            <div class="flex gap-2.5 mt-4">
+                <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalTambahKategori">Batal</button>
+                <button type="submit" class="flex-1 bg-[#2E7D32] text-white rounded-full py-2.5 font-semibold text-sm">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modal: Edit Harga -->
-<div class="modal-overlay" id="modalEditHarga">
-    <div class="modal-box">
-        <div class="modal-box__head">
-            <h3>Edit Harga — <span id="edhNamaJenis"></span></h3>
-            <button class="modal-box__close" data-modal-close="modalEditHarga">✕</button>
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalEditHarga">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold m-0">Edit Harga — <span id="edhNamaJenis"></span></h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalEditHarga">✕</button>
         </div>
         <form id="formEditHarga">
-            <div class="form-field">
-                <label for="edhHargaBaru">Harga Baru /kg (Rp)</label>
-                <input type="number" id="edhHargaBaru" required min="0">
+            <div class="mb-3.5">
+                <label for="edhHargaBaru" class="block text-xs font-semibold text-gray-600 mb-1.5">Harga Baru /kg (Rp)</label>
+                <input type="number" id="edhHargaBaru" required min="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="modal-box__actions">
-                <button type="button" class="btn btn--outline" data-modal-close="modalEditHarga">Batal</button>
-                <button type="submit" class="btn btn--primary">Simpan</button>
+            <div class="flex gap-2.5 mt-4">
+                <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalEditHarga">Batal</button>
+                <button type="submit" class="flex-1 bg-[#2E7D32] text-white rounded-full py-2.5 font-semibold text-sm">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modal: Tambah Stok -->
-<div class="modal-overlay" id="modalTambahStok">
-    <div class="modal-box">
-        <div class="modal-box__head">
-            <h3>Tambah Stok — <span id="tsNamaJenis"></span></h3>
-            <button class="modal-box__close" data-modal-close="modalTambahStok">✕</button>
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalTambahStok">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold m-0">Tambah Stok — <span id="tsNamaJenis"></span></h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalTambahStok">✕</button>
         </div>
         <form id="formTambahStok">
-            <div class="form-field">
-                <label for="tsJumlah">Jumlah Tambahan (kg)</label>
-                <input type="number" id="tsJumlah" required min="0" step="0.1">
+            <div class="mb-3.5">
+                <label for="tsJumlah" class="block text-xs font-semibold text-gray-600 mb-1.5">Jumlah Tambahan (kg)</label>
+                <input type="number" id="tsJumlah" required min="0" step="0.1" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="modal-box__actions">
-                <button type="button" class="btn btn--outline" data-modal-close="modalTambahStok">Batal</button>
-                <button type="submit" class="btn btn--primary">Simpan</button>
+            <div class="flex gap-2.5 mt-4">
+                <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalTambahStok">Batal</button>
+                <button type="submit" class="flex-1 bg-[#2E7D32] text-white rounded-full py-2.5 font-semibold text-sm">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<script src="../../assets/js/admin.js"></script>
+<script src="../../script/admin/admin.js"></script>
 <script>
+const API_BASE = '../../backend/database/admin';
 
-// Menu dropdown di avatar admin (Profil Akun / Keluar)
-setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
-    showToast('Logout akan aktif setelah backend terhubung.');
-});
-/*
-  Contoh alur kerja untuk halaman ini:
+function formatRupiah(angka) {
+    return 'Rp ' + Number(angka).toLocaleString('id-ID');
+}
 
-  1. Load data saat halaman dibuka:
-     fetch('../../backend/database/get_jenis_sampah.php')
-       .then(res => res.json())
-       .then(data => { ...isi #sampahTableBody dari data... });
+function renderSampahRow(s) {
+    const tr = document.createElement('tr');
+    tr.dataset.id = s.id;
+    tr.innerHTML = `
+        <td class="py-3 border-b border-gray-100"><strong>${s.nama}</strong></td>
+        <td class="py-3 border-b border-gray-100">${formatRupiah(s.harga)}</td>
+        <td class="py-3 border-b border-gray-100">${s.stok.toLocaleString('id-ID')} kg</td>
+        <td class="py-3 border-b border-gray-100 space-x-2">
+            <button class="btn-edit-harga border border-[#2E7D32] text-[#2E7D32] rounded-full px-3.5 py-1.5 text-xs font-semibold">Edit Harga</button>
+            <button class="btn-tambah-stok bg-[#2E7D32] text-white rounded-full px-3.5 py-1.5 text-xs font-semibold">Tambah Stok</button>
+        </td>
+    `;
+    tr.querySelector('.btn-edit-harga').addEventListener('click', function () {
+        document.getElementById('edhNamaJenis').textContent = s.nama;
+        document.getElementById('formEditHarga').dataset.id = s.id;
+        document.getElementById('edhHargaBaru').value = s.harga;
+        openModal('modalEditHarga');
+    });
+    tr.querySelector('.btn-tambah-stok').addEventListener('click', function () {
+        document.getElementById('tsNamaJenis').textContent = s.nama;
+        document.getElementById('formTambahStok').dataset.id = s.id;
+        document.getElementById('tsJumlah').value = '';
+        openModal('modalTambahStok');
+    });
+    return tr;
+}
 
-  2. Tombol "Edit Harga" / "Tambah Stok" sekarang sudah buka modal (lihat kode di bawah).
-     Saat form modal di-submit, kirim perubahan ke backend, misalnya:
-     fetch('../../backend/database/update_harga_sampah.php', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ id: id, harga_baru: hargaBaru })
-     });
+function muatDataSampah() {
+    fetch(`${API_BASE}/get_jenis_sampah.php`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                showToast(data.message || 'Gagal memuat data sampah', true);
+                return;
+            }
+            const tbody = document.getElementById('sampahTableBody');
+            tbody.innerHTML = '';
+            data.data.forEach(function (s) {
+                tbody.appendChild(renderSampahRow(s));
+            });
+            document.getElementById('statTotalJenis').textContent = data.data.length;
+        })
+        .catch(() => showToast('Gagal terhubung ke server.', true));
+}
 
-  3. Tombol "+ Tambah Kategori Baru" sekarang sudah buka modal input jenis sampah baru,
-     lalu nanti tinggal POST ke backend/database/tambah_jenis_sampah.php
-*/
-
-// Pencarian sederhana di browser
 document.getElementById('cariSampah').addEventListener('input', function (e) {
     const keyword = e.target.value.toLowerCase();
     document.querySelectorAll('#sampahTableBody tr').forEach(function (row) {
-        const teks = row.textContent.toLowerCase();
-        row.style.display = teks.includes(keyword) ? '' : 'none';
+        row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
     });
 });
 
-// Tombol "+ Tambah Kategori Baru"
 document.getElementById('btnTambahKategori').addEventListener('click', function () {
     document.getElementById('formTambahKategori').reset();
     openModal('modalTambahKategori');
@@ -232,52 +208,50 @@ document.getElementById('btnTambahKategori').addEventListener('click', function 
 document.getElementById('formTambahKategori').addEventListener('submit', function (e) {
     e.preventDefault();
     const nama = document.getElementById('katNama').value;
-    // TODO: ganti dengan fetch POST ke backend/database/tambah_jenis_sampah.php
-    showToast(`Kategori "${nama}" berhasil ditambahkan (sementara belum tersimpan ke database).`);
-    closeModal('modalTambahKategori');
-});
-
-// Tombol "Edit Harga" per baris
-document.querySelectorAll('.btn-edit-harga').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        const row = btn.closest('tr');
-        const namaJenis = row.querySelector('strong').textContent;
-        document.getElementById('edhNamaJenis').textContent = namaJenis;
-        document.getElementById('formEditHarga').dataset.id = row.dataset.id;
-        document.getElementById('edhHargaBaru').value = '';
-        openModal('modalEditHarga');
-    });
+    const harga = document.getElementById('katHarga').value;
+    fetch(`${API_BASE}/tambah_jenis_sampah.php`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama, harga }),
+    }).then(res => res.json()).then(data => {
+        showToast(data.message, !data.success);
+        if (data.success) { closeModal('modalTambahKategori'); muatDataSampah(); }
+    }).catch(() => showToast('Gagal terhubung ke server.', true));
 });
 
 document.getElementById('formEditHarga').addEventListener('submit', function (e) {
     e.preventDefault();
     const id = this.dataset.id;
     const hargaBaru = document.getElementById('edhHargaBaru').value;
-    // TODO: ganti dengan fetch POST ke backend/database/update_harga_sampah.php
-    // body: JSON.stringify({ id: id, harga_baru: hargaBaru })
-    showToast(`Harga berhasil diubah menjadi Rp ${hargaBaru} (sementara belum tersimpan ke database).`);
-    closeModal('modalEditHarga');
-});
-
-// Tombol "Tambah Stok" per baris
-document.querySelectorAll('.btn-tambah-stok').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        const row = btn.closest('tr');
-        const namaJenis = row.querySelector('strong').textContent;
-        document.getElementById('tsNamaJenis').textContent = namaJenis;
-        document.getElementById('formTambahStok').dataset.id = row.dataset.id;
-        document.getElementById('tsJumlah').value = '';
-        openModal('modalTambahStok');
-    });
+    fetch(`${API_BASE}/update_harga_sampah.php`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, harga_baru: hargaBaru }),
+    }).then(res => res.json()).then(data => {
+        showToast(data.message, !data.success);
+        if (data.success) { closeModal('modalEditHarga'); muatDataSampah(); }
+    }).catch(() => showToast('Gagal terhubung ke server.', true));
 });
 
 document.getElementById('formTambahStok').addEventListener('submit', function (e) {
     e.preventDefault();
+    const id = this.dataset.id;
     const jumlah = document.getElementById('tsJumlah').value;
-    // TODO: ganti dengan fetch POST ke backend/database/tambah_stok_sampah.php
-    showToast(`Stok berhasil ditambah ${jumlah} kg (sementara belum tersimpan ke database).`);
-    closeModal('modalTambahStok');
+    fetch(`${API_BASE}/tambah_stok_sampah.php`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, jumlah }),
+    }).then(res => res.json()).then(data => {
+        showToast(data.message, !data.success);
+        if (data.success) { closeModal('modalTambahStok'); muatDataSampah(); }
+    }).catch(() => showToast('Gagal terhubung ke server.', true));
 });
+
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    fetch(`${API_BASE}/logout.php`).then(function () {
+        window.location.href = '../login.html';
+    });
+});
+
+muatDataSampah();
 </script>
 
 </body>

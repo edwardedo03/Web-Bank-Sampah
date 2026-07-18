@@ -2,204 +2,85 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kelola Petugas — Bank Sampah Selaras</title>
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .toggle {
-            position: relative;
-            width: 40px;
-            height: 22px;
-            display: inline-block;
-        }
-        .toggle input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle__track {
-            position: absolute;
-            inset: 0;
-            background: #d6dbd1;
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            transition: background 0.15s ease;
-        }
-        .toggle__track::before {
-            content: "";
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            left: 3px;
-            top: 3px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform 0.15s ease;
-        }
-        .toggle input:checked + .toggle__track {
-            background: var(--green-600);
-        }
-        .toggle input:checked + .toggle__track::before {
-            transform: translateX(18px);
-        }
-        .pill-tag {
-            display: inline-flex;
-            padding: 3px 10px;
-            border-radius: var(--radius-pill);
-            background: var(--green-100);
-            color: var(--green-700);
-            font-size: 11.5px;
-            font-weight: 600;
-        }
-        .edit-icon-btn {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-600);
-        }
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 14px;
-            font-size: 12.5px;
-            color: var(--text-600);
-        }
-        .pagination__btns {
-            display: flex;
-            gap: 6px;
-        }
-        .pagination__btns button {
-            width: 28px;
-            height: 28px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            background: #fff;
-            cursor: pointer;
-        }
+        .toggle-track { transition: background-color .15s ease; }
+        .toggle-dot { transition: transform .15s ease; }
+        input:checked + .toggle-track { background-color: #2E7D32; }
+        input:checked + .toggle-track .toggle-dot { transform: translateX(18px); }
     </style>
 </head>
-<body>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
-<div class="app-shell">
+<div class="flex w-full h-screen overflow-hidden">
 
-    <aside class="sidebar">
-        <div class="sidebar__brand">
-            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
-            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
         </div>
-
-        <ul class="sidebar__nav">
-            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
-            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
-            <li><a class="sidebar__link is-active" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
-            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
-            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
-        </ul>
-
-        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
     </aside>
 
-    <div class="main">
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
 
-        <header class="topbar">
-            <div class="topbar__brand">Bank Sampah Selaras</div>
-            <div class="topbar__actions">
-                <span class="topbar__help">?</span>
-                <div class="dropdown">
-                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
-                    <div class="dropdown-menu" id="avatarMenu">
-                        <a href="admin_profil.html">Profil Akun</a>
-                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="content">
-            <div class="page-head">
+        <div class="p-8">
+            <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
                 <div>
-                    <h1>Manajemen Petugas Lapangan</h1>
-                    <p>Daftar petugas aktif yang bertugas mengelola setoran sampah di lapangan.</p>
+                    <h1 class="text-2xl font-bold m-0 mb-1">Manajemen Petugas Lapangan</h1>
+                    <p class="text-sm text-gray-500 m-0">Daftar petugas aktif yang bertugas mengelola setoran sampah di lapangan.</p>
                 </div>
-                <button type="button" class="btn btn--primary" id="btnTambahPetugas">+ Tambah Petugas Baru</button>
+                <button type="button" id="btnTambahPetugas" class="rounded-full bg-[#2E7D32] text-white text-sm font-semibold px-4 py-2">+ Tambah Petugas Baru</button>
             </div>
 
-            <div class="card">
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
                 <input type="text" id="cariPetugas" placeholder="Masukkan nama atau ID petugas..."
-                       style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 13px; font-family: inherit; margin-bottom: 16px;">
+                       class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm mb-4">
 
-                <table class="table">
+                <table class="w-full text-sm border-collapse">
                     <thead>
                         <tr>
-                            <th>Foto & Nama</th>
-                            <th>ID Petugas</th>
-                            <th>Wilayah Tugas</th>
-                            <th>Status Aktif</th>
-                            <th>Aksi</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Foto &amp; Nama</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">ID Petugas</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Wilayah Tugas</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Status Aktif</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="petugasTableBody">
-                        <tr data-id="SS-00124">
-                            <td>
-                                <div class="person">
-                                    <span class="person__avatar">AS</span>
-                                    Ahmad Subardjo
-                                </div>
-                            </td>
-                            <td>SS-00124</td>
-                            <td><span class="pill-tag">Blok A - Kebayoran</span></td>
-                            <td>
-                                <label class="toggle">
-                                    <input type="checkbox" checked>
-                                    <span class="toggle__track"></span>
-                                </label>
-                            </td>
-                            <td><button class="edit-icon-btn" title="Edit petugas">✎</button></td>
-                        </tr>
-                        <tr data-id="SS-00125">
-                            <td>
-                                <div class="person">
-                                    <span class="person__avatar">SA</span>
-                                    Siti Aminah
-                                </div>
-                            </td>
-                            <td>SS-00125</td>
-                            <td><span class="pill-tag">Blok C - Kebayoran</span></td>
-                            <td>
-                                <label class="toggle">
-                                    <input type="checkbox" checked>
-                                    <span class="toggle__track"></span>
-                                </label>
-                            </td>
-                            <td><button class="edit-icon-btn" title="Edit petugas">✎</button></td>
-                        </tr>
-                        <tr data-id="SS-00129">
-                            <td>
-                                <div class="person">
-                                    <span class="person__avatar">BH</span>
-                                    Budi Hartanto
-                                </div>
-                            </td>
-                            <td>SS-00129</td>
-                            <td><span class="pill-tag">Blok B - Pondok Indah</span></td>
-                            <td>
-                                <label class="toggle">
-                                    <input type="checkbox">
-                                    <span class="toggle__track"></span>
-                                </label>
-                            </td>
-                            <td><button class="edit-icon-btn" title="Edit petugas">✎</button></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="petugasTableBody"></tbody>
                 </table>
 
-                <div class="pagination">
-                    <span id="paginationInfo">Menampilkan 3 dari 42 petugas</span>
-                    <div class="pagination__btns">
-                        <button type="button" id="btnPrevPage">‹</button>
-                        <button type="button" id="btnNextPage">›</button>
+                <div class="flex items-center justify-between mt-4 text-xs text-gray-500">
+                    <span id="paginationInfo">Memuat data...</span>
+                    <div class="flex gap-1.5">
+                        <button type="button" id="btnPrevPage" class="w-7 h-7 rounded-lg border border-gray-200 bg-white">‹</button>
+                        <button type="button" id="btnNextPage" class="w-7 h-7 rounded-lg border border-gray-200 bg-white">›</button>
                     </div>
                 </div>
             </div>
@@ -207,134 +88,175 @@
     </div>
 </div>
 
-<!-- Modal: Tambah / Edit Petugas -->
-<div class="modal-overlay" id="modalPetugas">
-    <div class="modal-box">
-        <div class="modal-box__head">
-            <h3 id="modalPetugasTitle">Tambah Petugas Baru</h3>
-            <button class="modal-box__close" data-modal-close="modalPetugas">✕</button>
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalPetugas">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h3 id="modalPetugasTitle" class="text-base font-bold m-0">Tambah Petugas Baru</h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalPetugas">✕</button>
         </div>
         <form id="formPetugas">
-            <div class="form-field">
-                <label for="ptgNama">Nama Lengkap</label>
-                <input type="text" id="ptgNama" required placeholder="Contoh: Rina Wulandari">
+            <div class="mb-3.5">
+                <label for="ptgNama" class="block text-xs font-semibold text-gray-600 mb-1.5">Nama Lengkap</label>
+                <input type="text" id="ptgNama" required placeholder="Contoh: Rina Wulandari" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="form-field">
-                <label for="ptgId">ID Petugas</label>
-                <input type="text" id="ptgId" required placeholder="Contoh: SS-00130">
+            <div class="mb-3.5">
+                <label for="ptgWilayah" class="block text-xs font-semibold text-gray-600 mb-1.5">Wilayah Tugas</label>
+                <input type="text" id="ptgWilayah" required placeholder="Contoh: Blok D - Kebayoran" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="form-field">
-                <label for="ptgWilayah">Wilayah Tugas</label>
-                <input type="text" id="ptgWilayah" required placeholder="Contoh: Blok D - Kebayoran">
+            <div class="mb-3.5" id="fieldEmailPetugas">
+                <label for="ptgEmail" class="block text-xs font-semibold text-gray-600 mb-1.5">Email</label>
+                <input type="email" id="ptgEmail" placeholder="Contoh: rina@gmail.com" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="modal-box__actions">
-                <button type="button" class="btn btn--outline" data-modal-close="modalPetugas">Batal</button>
-                <button type="submit" class="btn btn--primary">Simpan</button>
+            <div class="mb-3.5" id="fieldTeleponPetugas">
+                <label for="ptgTelepon" class="block text-xs font-semibold text-gray-600 mb-1.5">Nomor Telepon</label>
+                <input type="text" id="ptgTelepon" placeholder="Contoh: 0812xxxxxxx" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="mb-3.5" id="fieldPasswordPetugas">
+                <label for="ptgPassword" class="block text-xs font-semibold text-gray-600 mb-1.5">Password Awal</label>
+                <input type="password" id="ptgPassword" placeholder="Password login petugas" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="flex gap-2.5 mt-4">
+                <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalPetugas">Batal</button>
+                <button type="submit" class="flex-1 bg-[#2E7D32] text-white rounded-full py-2.5 font-semibold text-sm">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<script src="../../assets/js/admin.js"></script>
+<script src="../../script/admin/admin.js"></script>
 <script>
+const API_BASE = '../../backend/database/admin';
+let currentPage = 1;
+let currentKeyword = '';
 
-// Menu dropdown di avatar admin (Profil Akun / Keluar)
-setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
-    showToast('Logout akan aktif setelah backend terhubung.');
-});
-/*
-  Contoh alur kerja untuk halaman ini:
+function renderPetugasRow(p) {
+    const tr = document.createElement('tr');
+    tr.dataset.id = p.id;
+    tr.innerHTML = `
+        <td class="py-3 border-b border-gray-100">
+            <div class="flex items-center gap-2.5 person">
+                <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${p.inisial}</span>
+                ${p.nama}
+            </div>
+        </td>
+        <td class="py-3 border-b border-gray-100">${p.id}</td>
+        <td class="py-3 border-b border-gray-100"><span class="pill-tag inline-flex px-2.5 py-1 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-xs font-semibold">${p.wilayah}</span></td>
+        <td class="py-3 border-b border-gray-100">
+            <label class="relative inline-block w-10 h-5.5">
+                <input type="checkbox" class="opacity-0 w-0 h-0" ${p.aktif ? 'checked' : ''}>
+                <span class="toggle-track absolute inset-0 bg-gray-300 rounded-full cursor-pointer">
+                    <span class="toggle-dot absolute w-4 h-4 bg-white rounded-full left-0.5 top-0.5"></span>
+                </span>
+            </label>
+        </td>
+        <td class="py-3 border-b border-gray-100"><button class="edit-icon-btn text-gray-500" title="Edit petugas">✎</button></td>
+    `;
+    return tr;
+}
 
-  1. Ambil daftar petugas dari backend (dengan pagination):
-     fetch('../../backend/database/get_petugas.php?page=1')
-       .then(res => res.json())
-       .then(data => { ...render ke #petugasTableBody... });
-
-  2. Saat toggle status aktif diklik, kirim perubahan ke backend:
-     fetch('../../backend/database/update_status_petugas.php', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ id_petugas: idPetugas, aktif: checkbox.checked })
-     });
-
-  3. Tombol "+ Tambah Petugas Baru" dan ikon pensil (edit) sekarang sudah
-     membuka modal (lihat kode di bawah). Saat form disubmit, tinggal ganti
-     jadi fetch POST ke backend/database/simpan_petugas.php
-*/
-
-// Pencarian sederhana di browser
-document.getElementById('cariPetugas').addEventListener('input', function (e) {
-    const keyword = e.target.value.toLowerCase();
-    document.querySelectorAll('#petugasTableBody tr').forEach(function (row) {
-        const teks = row.textContent.toLowerCase();
-        row.style.display = teks.includes(keyword) ? '' : 'none';
+function attachRowHandlers(row) {
+    row.querySelector('input[type="checkbox"]').addEventListener('change', function () {
+        const nama = row.querySelector('.person').textContent.trim();
+        fetch(`${API_BASE}/update_status_petugas.php`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_petugas: row.dataset.id, aktif: this.checked }),
+        }).then(res => res.json()).then(data => {
+            showToast(data.message || (data.success ? `Status ${nama} diubah menjadi ${this.checked ? 'Aktif' : 'Nonaktif'}.` : 'Gagal update status'), !data.success);
+        }).catch(() => showToast('Gagal terhubung ke server.', true));
     });
+
+    row.querySelector('.edit-icon-btn').addEventListener('click', function () {
+        document.getElementById('modalPetugasTitle').textContent = 'Edit Petugas';
+        document.getElementById('ptgNama').value = row.querySelector('.person').textContent.trim();
+        document.getElementById('ptgWilayah').value = row.querySelector('.pill-tag').textContent;
+        document.getElementById('fieldEmailPetugas').classList.add('hidden');
+        document.getElementById('fieldTeleponPetugas').classList.add('hidden');
+        document.getElementById('fieldPasswordPetugas').classList.add('hidden');
+        formPetugas.dataset.mode = 'edit';
+        formPetugas.dataset.id = row.dataset.id;
+        openModal('modalPetugas');
+    });
+}
+
+function muatDataPetugas() {
+    fetch(`${API_BASE}/get_petugas.php?page=${currentPage}&q=${encodeURIComponent(currentKeyword)}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) { showToast(data.message || 'Gagal memuat data petugas', true); return; }
+            const tbody = document.getElementById('petugasTableBody');
+            tbody.innerHTML = '';
+            data.data.forEach(function (p) {
+                const row = renderPetugasRow(p);
+                tbody.appendChild(row);
+                attachRowHandlers(row);
+            });
+            document.getElementById('paginationInfo').textContent =
+                `Menampilkan ${data.data.length} dari ${data.total} petugas (halaman ${data.page})`;
+        }).catch(() => showToast('Gagal terhubung ke server.', true));
+}
+
+let searchTimeout;
+document.getElementById('cariPetugas').addEventListener('input', function (e) {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function () {
+        currentKeyword = e.target.value;
+        currentPage = 1;
+        muatDataPetugas();
+    }, 300);
 });
 
 const formPetugas = document.getElementById('formPetugas');
 
-// Tombol "+ Tambah Petugas Baru"
 document.getElementById('btnTambahPetugas').addEventListener('click', function () {
     document.getElementById('modalPetugasTitle').textContent = 'Tambah Petugas Baru';
     formPetugas.reset();
     formPetugas.dataset.mode = 'tambah';
-    document.getElementById('ptgId').disabled = false;
+    document.getElementById('fieldEmailPetugas').classList.remove('hidden');
+    document.getElementById('fieldTeleponPetugas').classList.remove('hidden');
+    document.getElementById('fieldPasswordPetugas').classList.remove('hidden');
     openModal('modalPetugas');
-});
-
-// Ikon pensil (edit) per baris
-document.querySelectorAll('.edit-icon-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        const row = btn.closest('tr');
-        document.getElementById('modalPetugasTitle').textContent = 'Edit Petugas';
-        document.getElementById('ptgNama').value = row.querySelector('.person').textContent.trim();
-        document.getElementById('ptgId').value = row.dataset.id;
-        document.getElementById('ptgId').disabled = true; // ID gak boleh diubah saat edit
-        document.getElementById('ptgWilayah').value = row.querySelector('.pill-tag').textContent;
-        formPetugas.dataset.mode = 'edit';
-        formPetugas.dataset.rowId = row.dataset.id;
-        openModal('modalPetugas');
-    });
 });
 
 formPetugas.addEventListener('submit', function (e) {
     e.preventDefault();
-    const nama = document.getElementById('ptgNama').value;
     const mode = formPetugas.dataset.mode;
-    // TODO: ganti dengan fetch POST ke backend/database/simpan_petugas.php
-    // sertakan { mode, id, nama, wilayah }
-    showToast(mode === 'tambah'
-        ? `Petugas "${nama}" berhasil ditambahkan (sementara belum tersimpan ke database).`
-        : `Data petugas "${nama}" berhasil diperbarui (sementara belum tersimpan ke database).`);
-    closeModal('modalPetugas');
+    const nama = document.getElementById('ptgNama').value;
+    const wilayah = document.getElementById('ptgWilayah').value;
+    const payload = { mode, nama, wilayah };
+    if (mode === 'edit') {
+        payload.id = formPetugas.dataset.id;
+    } else {
+        payload.email = document.getElementById('ptgEmail').value;
+        payload.no_telepon = document.getElementById('ptgTelepon').value;
+        payload.password = document.getElementById('ptgPassword').value;
+    }
+    fetch(`${API_BASE}/simpan_petugas.php`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    }).then(res => res.json()).then(data => {
+        showToast(data.message || (data.success ? 'Berhasil disimpan' : 'Gagal menyimpan'), !data.success);
+        if (data.success) { closeModal('modalPetugas'); muatDataPetugas(); }
+    }).catch(() => showToast('Gagal terhubung ke server.', true));
 });
 
-// Toggle status aktif
-document.querySelectorAll('.toggle input[type="checkbox"]').forEach(function (checkbox) {
-    checkbox.addEventListener('change', function () {
-        const row = checkbox.closest('tr');
-        const nama = row.querySelector('.person').textContent.trim();
-        // TODO: ganti dengan fetch POST ke backend/database/update_status_petugas.php
-        // body: JSON.stringify({ id_petugas: row.dataset.id, aktif: checkbox.checked })
-        showToast(`Status ${nama} diubah menjadi ${checkbox.checked ? 'Aktif' : 'Nonaktif'}.`);
-    });
-});
-
-// Pagination (placeholder, siap disambungkan ke backend)
-let currentPage = 1;
 document.getElementById('btnPrevPage').addEventListener('click', function () {
     if (currentPage <= 1) return;
     currentPage--;
-    // TODO: fetch('../../backend/database/get_petugas.php?page=' + currentPage)
-    showToast('Menampilkan halaman ' + currentPage);
+    muatDataPetugas();
 });
 document.getElementById('btnNextPage').addEventListener('click', function () {
     currentPage++;
-    // TODO: fetch('../../backend/database/get_petugas.php?page=' + currentPage)
-    showToast('Menampilkan halaman ' + currentPage);
+    muatDataPetugas();
 });
+
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    fetch(`${API_BASE}/logout.php`).then(function () {
+        window.location.href = '../login.html';
+    });
+});
+
+muatDataPetugas();
 </script>
 
 </body>

@@ -2,294 +2,161 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Validasi Tarik Saldo — Bank Sampah Selaras</title>
-    <link rel="stylesheet" href="../../assets/css/admin.css">
-    <style>
-        .validasi-layout {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 16px;
-            align-items: start;
-        }
-        .detail-panel {
-            display: none;
-        }
-        .detail-panel.is-open {
-            display: block;
-        }
-        .detail-panel__head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-        .detail-panel__close {
-            border: none;
-            background: none;
-            font-size: 16px;
-            color: var(--text-400);
-            cursor: pointer;
-        }
-        .detail-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--green-600);
-            color: #fff;
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-        }
-        .detail-nominal-box {
-            background: var(--green-50);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 12px 14px;
-            margin: 14px 0;
-        }
-        .detail-row {
-            font-size: 12.5px;
-            margin-bottom: 12px;
-        }
-        .detail-row span.label {
-            display: block;
-            font-size: 10.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            color: var(--text-400);
-            margin-bottom: 3px;
-        }
-        .btn-block {
-            display: block;
-            width: 100%;
-            text-align: center;
-            margin-top: 8px;
-        }
-        .icon-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            color: #fff;
-        }
-        .icon-btn--approve { background: var(--green-600); }
-        .icon-btn--reject { background: var(--red-600); }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
-<div class="app-shell">
+<div class="flex w-full h-screen overflow-hidden">
 
-    <aside class="sidebar">
-        <div class="sidebar__brand">
-            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
-            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
         </div>
-
-        <ul class="sidebar__nav">
-            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
-            <li><a class="sidebar__link is-active" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
-            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
-            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
-        </ul>
-
-        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
     </aside>
 
-    <div class="main">
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
 
-        <header class="topbar">
-            <div class="topbar__brand">Bank Sampah Selaras</div>
-            <div class="topbar__actions">
-                <span class="topbar__help">?</span>
-                <div class="dropdown">
-                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
-                    <div class="dropdown-menu" id="avatarMenu">
-                        <a href="admin_profil.html">Profil Akun</a>
-                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="content">
-            <div class="page-head">
-                <div>
-                    <h1>Validasi Penarikan</h1>
-                    <p>Tinjau dan setujui permintaan penarikan saldo dari nasabah.</p>
+        <div class="p-8">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold m-0 mb-1">Validasi Penarikan</h1>
+                <p class="text-sm text-gray-500 m-0">Tinjau dan setujui permintaan penarikan saldo dari nasabah.</p>
+                <div class="mt-3 inline-block bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs rounded-lg px-3 py-2">
+                    ⚠️ Data di bawah masih contoh statis — tabel database untuk penarikan saldo belum tersedia.
                 </div>
             </div>
 
-            <div class="stat-grid">
-                <div class="card stat-card">
-                    <div>
-                        <p class="stat-card__label">Total Pending</p>
-                        <p class="stat-card__value">12 Request</p>
-                    </div>
-                    <div class="stat-card__icon">📋</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Total Pending</p>
+                    <p class="text-2xl font-bold m-0">12 Request</p>
                 </div>
-                <div class="card stat-card">
-                    <div>
-                        <p class="stat-card__label">Nilai Validasi</p>
-                        <p class="stat-card__value">Rp 4.250.000</p>
-                    </div>
-                    <div class="stat-card__icon">💵</div>
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Nilai Validasi</p>
+                    <p class="text-2xl font-bold m-0">Rp 4.250.000</p>
                 </div>
-                <div class="card stat-card stat-card--accent">
-                    <div>
-                        <p class="stat-card__label">Target SLA</p>
-                        <p class="stat-card__value">24 Jam</p>
-                    </div>
-                    <div class="stat-card__icon">⏱️</div>
+                <div class="bg-[#0D631B] text-white rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-white/80 m-0 mb-1.5">Target SLA</p>
+                    <p class="text-2xl font-bold m-0">24 Jam</p>
                 </div>
             </div>
 
-            <div class="validasi-layout">
-                <div class="card">
-                    <table class="table">
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 items-start">
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <table class="w-full text-sm border-collapse">
                         <thead>
                             <tr>
-                                <th>Nama Nasabah</th>
-                                <th>Nominal</th>
-                                <th>Tanggal</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
+                                <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Nama Nasabah</th>
+                                <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Nominal</th>
+                                <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Tanggal</th>
+                                <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Status</th>
+                                <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="penarikanTableBody">
-                            <tr data-id="1" data-nama="Budi Santoso" data-inisial="BS" data-nominal="Rp 250.000"
-                                data-tanggal="12 Okt 2023" data-metode="Bank Central Asia - 1234567890"
-                                data-waktu="12 Okt 2023, 14:20"
-                                data-catatan="Penarikan untuk biaya sekolah anak bulan ini.">
-                                <td>
-                                    <div class="person">
-                                        <span class="person__avatar">BS</span>
-                                        Budi Santoso
-                                    </div>
-                                </td>
-                                <td class="amount">Rp 250.000</td>
-                                <td>12 Okt 2023</td>
-                                <td><span class="badge badge--pending">PENDING</span></td>
-                                <td>
-                                    <button class="icon-btn icon-btn--approve btn-lihat-detail" data-id="1">✓</button>
-                                    <button class="icon-btn icon-btn--reject" data-id="1">✕</button>
+                            <tr data-id="1" data-nama="Budi Santoso" data-inisial="BS" data-nominal="Rp 250.000" data-tanggal="12 Okt 2023" data-metode="Bank Central Asia - 1234567890" data-waktu="12 Okt 2023, 14:20" data-catatan="Penarikan untuk biaya sekolah anak bulan ini.">
+                                <td class="py-3 border-b border-gray-100"><div class="flex items-center gap-2.5"><span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">BS</span>Budi Santoso</div></td>
+                                <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">Rp 250.000</td>
+                                <td class="py-3 border-b border-gray-100">12 Okt 2023</td>
+                                <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-600">PENDING</span></td>
+                                <td class="py-3 border-b border-gray-100 space-x-1.5">
+                                    <button class="btn-lihat-detail w-8 h-8 rounded-full bg-[#2E7D32] text-white">✓</button>
+                                    <button class="btn-tolak w-8 h-8 rounded-full bg-red-600 text-white">✕</button>
                                 </td>
                             </tr>
-                            <tr data-id="2" data-nama="Siti Aminah" data-inisial="SA" data-nominal="Rp 1.100.000"
-                                data-tanggal="12 Okt 2023" data-metode="Bank Rakyat Indonesia - 9988776655"
-                                data-waktu="12 Okt 2023, 10:05"
-                                data-catatan="-">
-                                <td>
-                                    <div class="person">
-                                        <span class="person__avatar">SA</span>
-                                        Siti Aminah
-                                    </div>
-                                </td>
-                                <td class="amount">Rp 1.100.000</td>
-                                <td>12 Okt 2023</td>
-                                <td><span class="badge badge--pending">PENDING</span></td>
-                                <td>
-                                    <button class="icon-btn icon-btn--approve btn-lihat-detail" data-id="2">✓</button>
-                                    <button class="icon-btn icon-btn--reject" data-id="2">✕</button>
+                            <tr data-id="2" data-nama="Siti Aminah" data-inisial="SA" data-nominal="Rp 1.100.000" data-tanggal="12 Okt 2023" data-metode="Bank Rakyat Indonesia - 9988776655" data-waktu="12 Okt 2023, 10:05" data-catatan="-">
+                                <td class="py-3 border-b border-gray-100"><div class="flex items-center gap-2.5"><span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">SA</span>Siti Aminah</div></td>
+                                <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">Rp 1.100.000</td>
+                                <td class="py-3 border-b border-gray-100">12 Okt 2023</td>
+                                <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-600">PENDING</span></td>
+                                <td class="py-3 border-b border-gray-100 space-x-1.5">
+                                    <button class="btn-lihat-detail w-8 h-8 rounded-full bg-[#2E7D32] text-white">✓</button>
+                                    <button class="btn-tolak w-8 h-8 rounded-full bg-red-600 text-white">✕</button>
                                 </td>
                             </tr>
-                            <tr data-id="3" data-nama="Andi Wijaya" data-inisial="AW" data-nominal="Rp 75.000"
-                                data-tanggal="11 Okt 2023" data-metode="Bank Mandiri - 5544332211"
-                                data-waktu="11 Okt 2023, 09:40"
-                                data-catatan="-">
-                                <td>
-                                    <div class="person">
-                                        <span class="person__avatar">AW</span>
-                                        Andi Wijaya
-                                    </div>
-                                </td>
-                                <td class="amount">Rp 75.000</td>
-                                <td>11 Okt 2023</td>
-                                <td><span class="badge badge--pending">PENDING</span></td>
-                                <td>
-                                    <button class="icon-btn icon-btn--approve btn-lihat-detail" data-id="3">✓</button>
-                                    <button class="icon-btn icon-btn--reject" data-id="3">✕</button>
+                            <tr data-id="3" data-nama="Andi Wijaya" data-inisial="AW" data-nominal="Rp 75.000" data-tanggal="11 Okt 2023" data-metode="Bank Mandiri - 5544332211" data-waktu="11 Okt 2023, 09:40" data-catatan="-">
+                                <td class="py-3 border-b border-gray-100"><div class="flex items-center gap-2.5"><span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">AW</span>Andi Wijaya</div></td>
+                                <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">Rp 75.000</td>
+                                <td class="py-3 border-b border-gray-100">11 Okt 2023</td>
+                                <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-600">PENDING</span></td>
+                                <td class="py-3 border-b border-gray-100 space-x-1.5">
+                                    <button class="btn-lihat-detail w-8 h-8 rounded-full bg-[#2E7D32] text-white">✓</button>
+                                    <button class="btn-tolak w-8 h-8 rounded-full bg-red-600 text-white">✕</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="card detail-panel" id="detailPanel">
-                    <div class="detail-panel__head">
-                        <h3 style="margin:0;font-size:14px;">Detail Request</h3>
-                        <button class="detail-panel__close" id="btnCloseDetail">✕</button>
+                <div class="hidden bg-white border border-gray-200 rounded-2xl shadow-sm p-5" id="detailPanel">
+                    <div class="flex items-center justify-between mb-3.5">
+                        <h3 class="text-sm font-bold m-0">Detail Request</h3>
+                        <button class="text-gray-400 text-base" id="btnCloseDetail">✕</button>
                     </div>
-
-                    <div style="text-align:center;">
-                        <div class="detail-avatar" id="detailInisial">BS</div>
-                        <p style="margin:0;font-weight:700;font-size:14px;" id="detailNama">Budi Santoso</p>
-                        <p style="margin:0;font-size:11.5px;color:var(--text-400);" id="detailIdNasabah">ID Nasabah: #BS-2023-001</p>
+                    <div class="text-center">
+                        <div id="detailInisial" class="w-11 h-11 rounded-full bg-[#2E7D32] text-white text-sm font-bold flex items-center justify-center mx-auto mb-2.5">BS</div>
+                        <p id="detailNama" class="m-0 font-bold text-sm">Budi Santoso</p>
+                        <p id="detailIdNasabah" class="m-0 text-[11px] text-gray-400">ID Nasabah: #BS-2023-001</p>
                     </div>
-
-                    <div class="detail-nominal-box" style="text-align:center;">
-                        <p class="detail-row span.label" style="margin:0;font-size:10.5px;text-transform:uppercase;color:var(--text-400);">Nominal Penarikan</p>
-                        <p style="margin:4px 0 0;font-size:20px;font-weight:700;color:var(--green-700);" id="detailNominal">Rp 250.000</p>
+                    <div class="bg-[#F7FBF0] border border-gray-200 rounded-lg px-3.5 py-3 my-3.5 text-center">
+                        <p class="m-0 text-[10px] uppercase text-gray-400">Nominal Penarikan</p>
+                        <p id="detailNominal" class="m-0 mt-1 text-xl font-bold text-[#2E7D32]">Rp 250.000</p>
                     </div>
-
-                    <div class="detail-row">
-                        <span class="label">Metode Pencairan</span>
+                    <div class="mb-3 text-xs">
+                        <span class="block text-[10px] uppercase text-gray-400 mb-0.5">Metode Pencairan</span>
                         <span id="detailMetode">Bank Central Asia - 1234567890</span>
                     </div>
-                    <div class="detail-row">
-                        <span class="label">Waktu Pengajuan</span>
+                    <div class="mb-3 text-xs">
+                        <span class="block text-[10px] uppercase text-gray-400 mb-0.5">Waktu Pengajuan</span>
                         <span id="detailWaktu">12 Okt 2023, 14:20</span>
                     </div>
-                    <div class="detail-row">
-                        <span class="label">Catatan Nasabah</span>
+                    <div class="mb-3 text-xs">
+                        <span class="block text-[10px] uppercase text-gray-400 mb-0.5">Catatan Nasabah</span>
                         <em id="detailCatatan">"Penarikan untuk biaya sekolah anak bulan ini."</em>
                     </div>
-
-                    <button type="button" class="btn btn--primary btn-block" id="btnSetujui">Setujui Sekarang</button>
-                    <button type="button" class="btn btn--outline btn-block" id="btnTolak" style="border-color:var(--red-600);color:var(--red-600);">Tolak Request</button>
+                    <button type="button" id="btnSetujui" class="block w-full text-center mt-2 bg-[#2E7D32] text-white rounded-full py-2.5 font-semibold text-sm">Setujui Sekarang</button>
+                    <button type="button" id="btnTolak" class="block w-full text-center mt-2 border border-red-600 text-red-600 rounded-full py-2.5 font-semibold text-sm">Tolak Request</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="../../assets/js/admin.js"></script>
+<script src="../../script/admin/admin.js"></script>
 <script>
-
-// Menu dropdown di avatar admin (Profil Akun / Keluar)
-setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
-    showToast('Logout akan aktif setelah backend terhubung.');
-});
 /*
-  Contoh alur kerja untuk halaman ini:
-
-  1. Ambil daftar penarikan pending dari backend:
-     fetch('../../backend/database/get_penarikan_pending.php')
-       .then(res => res.json())
-       .then(data => { ...render ke #penarikanTableBody... });
-
-  2. Saat tombol centang (approve) di klik, buka panel detail (kode di bawah),
-     lalu setelah admin klik "Setujui Sekarang" atau "Tolak Request",
-     kirim ke backend, misalnya:
-     fetch('../../backend/database/proses_penarikan.php', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ id: id, aksi: 'setuju' }) // atau 'tolak'
-     });
-
-  Di bawah ini logika buka/tutup panel detail berdasarkan data-* di setiap baris tabel:
+  CATATAN: halaman ini masih pakai data statis (belum fetch ke backend)
+  karena tabel database untuk "penarikan saldo" belum dibuat.
 */
 const detailPanel = document.getElementById('detailPanel');
-let activeRequestId = null; // nyimpen id request yang lagi dibuka di panel detail
+let activeRequestId = null;
 
 function bukaDetail(row) {
     activeRequestId = row.dataset.id;
@@ -300,66 +167,55 @@ function bukaDetail(row) {
     document.getElementById('detailMetode').textContent = row.dataset.metode;
     document.getElementById('detailWaktu').textContent = row.dataset.waktu;
     document.getElementById('detailCatatan').textContent = '"' + row.dataset.catatan + '"';
-    detailPanel.classList.add('is-open');
+    detailPanel.classList.remove('hidden');
 }
 
-/**
- * Menandai baris di tabel sebagai selesai diproses (dihapus dari daftar pending)
- * setelah disetujui/ditolak. Nanti kalau backend sudah nyambung, baris ini
- * cukup di-refresh dari hasil fetch ulang data pending.
- */
 function tandaiSelesai(id) {
     const row = document.querySelector('tr[data-id="' + id + '"]');
     if (row) row.remove();
     if (activeRequestId === id) {
-        detailPanel.classList.remove('is-open');
+        detailPanel.classList.add('hidden');
         activeRequestId = null;
     }
 }
 
 document.querySelectorAll('.btn-lihat-detail').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        bukaDetail(btn.closest('tr'));
-    });
+    btn.addEventListener('click', function () { bukaDetail(btn.closest('tr')); });
 });
 
-// Tombol ✕ (Tolak) langsung dari tabel
-document.querySelectorAll('.icon-btn--reject').forEach(function (btn) {
+document.querySelectorAll('.btn-tolak').forEach(function (btn) {
     btn.addEventListener('click', function () {
         const row = btn.closest('tr');
-        const konfirmasi = confirm('Tolak permintaan penarikan dari ' + row.dataset.nama + '?');
-        if (!konfirmasi) return;
-        // TODO: ganti dengan fetch POST ke backend/database/proses_penarikan.php
-        // body: JSON.stringify({ id: row.dataset.id, aksi: 'tolak' })
+        if (!confirm('Tolak permintaan penarikan dari ' + row.dataset.nama + '?')) return;
         showToast('Permintaan ' + row.dataset.nama + ' ditolak.', true);
         tandaiSelesai(row.dataset.id);
     });
 });
 
 document.getElementById('btnCloseDetail').addEventListener('click', function () {
-    detailPanel.classList.remove('is-open');
+    detailPanel.classList.add('hidden');
 });
 
-// Tombol "Setujui Sekarang" di panel detail
 document.getElementById('btnSetujui').addEventListener('click', function () {
     if (!activeRequestId) return;
     const nama = document.getElementById('detailNama').textContent;
-    // TODO: ganti dengan fetch POST ke backend/database/proses_penarikan.php
-    // body: JSON.stringify({ id: activeRequestId, aksi: 'setuju' })
     showToast('Penarikan ' + nama + ' disetujui.');
     tandaiSelesai(activeRequestId);
 });
 
-// Tombol "Tolak Request" di panel detail
 document.getElementById('btnTolak').addEventListener('click', function () {
     if (!activeRequestId) return;
     const nama = document.getElementById('detailNama').textContent;
-    const konfirmasi = confirm('Tolak permintaan penarikan dari ' + nama + '?');
-    if (!konfirmasi) return;
-    // TODO: ganti dengan fetch POST ke backend/database/proses_penarikan.php
-    // body: JSON.stringify({ id: activeRequestId, aksi: 'tolak' })
+    if (!confirm('Tolak permintaan penarikan dari ' + nama + '?')) return;
     showToast('Penarikan ' + nama + ' ditolak.', true);
     tandaiSelesai(activeRequestId);
+});
+
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    fetch('../../backend/database/admin/logout.php').then(function () {
+        window.location.href = '../login.html';
+    });
 });
 </script>
 
