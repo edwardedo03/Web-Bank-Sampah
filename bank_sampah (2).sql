@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Jul 2026 pada 19.16
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: Jul 18, 2026 at 07:13 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
@@ -38,16 +38,17 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `admin`
+-- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`id_admin`, `username_admin`, `password_admin`, `role`, `nama_admin`, `no_telepon_admin`, `email_admin`) VALUES
-(1, 'admin', '$2y$10$FIUwGsKfwjkQncrGm5s07enK0eXwcV2VXDe9QM0bFIVaf1d/BUqAW', 'admin', '', '', 'admin@gmail.com');
+(1, 'admin', '$2y$10$FIUwGsKfwjkQncrGm5s07enK0eXwcV2VXDe9QM0bFIVaf1d/BUqAW', 'admin', '', '', 'admin@gmail.com'),
+(2, 'pp', '$2y$10$U50NnvXbUph6SdGSFBcUSuCK8oKDkumcc7CAqaSNd7mtSpOa9tbeK', 'admin', '', '', 'dichocornelius@gmail.com');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `akun`
+-- Table structure for table `akun`
 --
 
 CREATE TABLE `akun` (
@@ -59,7 +60,7 @@ CREATE TABLE `akun` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `akun`
+-- Dumping data for table `akun`
 --
 
 INSERT INTO `akun` (`id_akun`, `email`, `username`, `password`, `role`) VALUES
@@ -69,7 +70,7 @@ INSERT INTO `akun` (`id_akun`, `email`, `username`, `password`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detail_transaksi`
+-- Table structure for table `detail_transaksi`
 --
 
 CREATE TABLE `detail_transaksi` (
@@ -83,22 +84,19 @@ CREATE TABLE `detail_transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `detail_transaksi`
+-- Dumping data for table `detail_transaksi`
 --
 
 INSERT INTO `detail_transaksi` (`id_detail`, `id_transaksi`, `id_sampah`, `jenis_sampah`, `subtotal_nominal`, `berat_sampah`, `catatan`) VALUES
 (4, 10, 1, 'Plastik', 8000, 4, 'sudah diikat plastiknya'),
 (5, 10, 2, 'Kertas', 6000, 4, 'kertasnya keras'),
 (6, 11, 3, 'Logam', 16000, 4, 'test 2'),
-(7, 12, 3, 'Logam', 48000, 12, 'test text catatan di history - test text catatan di history - te'),
-(8, 13, 1, 'Plastik', 24000, 12, 'tes status'),
-(9, 14, 1, 'Plastik', 16000, 8, 'saya antar'),
-(10, 14, 3, 'Logam', 12000, 3, 'saya antar juga');
+(7, 12, 3, 'Logam', 48000, 12, 'test text catatan di history - test text catatan di history - te');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `nasabah`
+-- Table structure for table `nasabah`
 --
 
 CREATE TABLE `nasabah` (
@@ -119,16 +117,16 @@ CREATE TABLE `nasabah` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `nasabah`
+-- Dumping data for table `nasabah`
 --
 
 INSERT INTO `nasabah` (`id_nasabah`, `username_nasabah`, `password_nasabah`, `role`, `tanggal_bergabung`, `nama_nasabah`, `jumlah_tabungan`, `no_telepon_nasabah`, `email_nasabah`, `alamat_nasabah`, `kecamatan`, `kelurahan`, `rw`, `rt`) VALUES
-(1, 'edwardedo', '$2y$10$bWvNYfdNn4IeBMa6bNk0muZc3PLrC7/m3VXtOPHeWVgLhUGW/0IfO', 'nasabah', '2026-07-17', 'Edward Antonio', 130000, '0895342413657', 'edwardahhutauruk@gmail.com', 'Jl. Raya Cisauk Indah', 'Gunung Putri', 'Bojong Menteng', '012', '05');
+(1, 'edwardedo', '$2y$10$bWvNYfdNn4IeBMa6bNk0muZc3PLrC7/m3VXtOPHeWVgLhUGW/0IfO', 'nasabah', '2026-07-17', 'Edward Antonio', 78000, '0895342413657', 'edwardahhutauruk@gmail.com', 'Jl. Raya Cisauk Indah', 'Gunung Putri', 'Bojong Menteng', '012', '05');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `petugas_lapangan`
+-- Table structure for table `petugas_lapangan`
 --
 
 CREATE TABLE `petugas_lapangan` (
@@ -143,16 +141,17 @@ CREATE TABLE `petugas_lapangan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `petugas_lapangan`
+-- Dumping data for table `petugas_lapangan`
 --
 
 INSERT INTO `petugas_lapangan` (`id_petugas`, `username_petugas`, `password_petugas`, `role`, `nama_petugas`, `no_telepon_petugas`, `email_petugas`, `wilayah_tugas`) VALUES
-(1, 'petugas', '$2y$10$eR0tHurfkUkMh99IxzPYkOmPmEDMW9P/jbuqZGwNH7PPdYy6SGkP6', 'petugas', '', '', 'petugas@gmail.com', '');
+(1, 'petugas', '$2y$10$eR0tHurfkUkMh99IxzPYkOmPmEDMW9P/jbuqZGwNH7PPdYy6SGkP6', 'petugas', 'pp', '', 'petugas@gmail.com', 'pp'),
+(2, 'andi675', '$2y$10$IpqvAX5mh8JQ/KWJV.gL7Oco46kbZBiPw0.rsxmJ3I8KzE70KuNDW', 'petugas', 'Andi', '00000', 'andi@gmail', 'Grogol');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sampah`
+-- Table structure for table `sampah`
 --
 
 CREATE TABLE `sampah` (
@@ -163,18 +162,19 @@ CREATE TABLE `sampah` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `sampah`
+-- Dumping data for table `sampah`
 --
 
 INSERT INTO `sampah` (`id_sampah`, `jenis_sampah`, `harga_sampah_per_kg`, `jumlah_sampah_gudang`) VALUES
 (1, 'Plastik', 2000, 0),
-(2, 'Kertas', 1500, 0),
-(3, 'Logam', 4000, 0);
+(2, 'Kertas', 15000000, 10),
+(3, 'Logam', 4000, 0),
+(4, 'Ayam', 10, 0);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `transaksi`
+-- Table structure for table `transaksi`
 --
 
 CREATE TABLE `transaksi` (
@@ -185,33 +185,30 @@ CREATE TABLE `transaksi` (
   `total_nominal` double NOT NULL,
   `total_berat` double NOT NULL,
   `tanggal_penyerahan` datetime NOT NULL,
-  `metode_penyerahan` varchar(16) NOT NULL,
-  `status` varchar(32) NOT NULL
+  `metode_penyerahan` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `transaksi`
+-- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `id_nasabah`, `id_petugas`, `tanggal_transaksi`, `total_nominal`, `total_berat`, `tanggal_penyerahan`, `metode_penyerahan`, `status`) VALUES
-(10, 1, NULL, '2026-07-18 14:20:06', 14000, 8, '2026-07-23 14:19:00', 'Drop-off', 'Menunggu Validasi'),
-(11, 1, NULL, '2026-07-18 15:37:50', 16000, 4, '2026-07-23 15:37:00', 'Drop-off', 'Menunggu Validasi'),
-(12, 1, NULL, '2026-07-18 19:34:06', 48000, 12, '2026-07-21 19:33:00', 'Pick-up', 'Menunggu Validasi'),
-(13, 1, NULL, '2026-07-18 20:20:55', 24000, 12, '2026-07-22 20:20:00', 'Drop-off', 'Menunggu Validasi'),
-(14, 1, NULL, '2026-07-18 22:48:29', 28000, 11, '2026-07-25 22:48:00', 'Drop-off', 'Menunggu Validasi');
+INSERT INTO `transaksi` (`id_transaksi`, `id_nasabah`, `id_petugas`, `tanggal_transaksi`, `total_nominal`, `total_berat`, `tanggal_penyerahan`, `metode_penyerahan`) VALUES
+(10, 1, NULL, '2026-07-18 14:20:06', 14000, 8, '2026-07-23 14:19:00', 'Drop-off'),
+(11, 1, NULL, '2026-07-18 15:37:50', 16000, 4, '2026-07-23 15:37:00', 'Drop-off'),
+(12, 1, NULL, '2026-07-18 19:34:06', 48000, 12, '2026-07-21 19:33:00', 'Pick-up');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Indeks untuk tabel `akun`
+-- Indexes for table `akun`
 --
 ALTER TABLE `akun`
   ADD PRIMARY KEY (`id_akun`),
@@ -219,7 +216,7 @@ ALTER TABLE `akun`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indeks untuk tabel `detail_transaksi`
+-- Indexes for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
   ADD PRIMARY KEY (`id_detail`),
@@ -227,27 +224,27 @@ ALTER TABLE `detail_transaksi`
   ADD KEY `id_sampah` (`id_sampah`);
 
 --
--- Indeks untuk tabel `nasabah`
+-- Indexes for table `nasabah`
 --
 ALTER TABLE `nasabah`
   ADD PRIMARY KEY (`id_nasabah`),
   ADD UNIQUE KEY `username_nasabah` (`username_nasabah`);
 
 --
--- Indeks untuk tabel `petugas_lapangan`
+-- Indexes for table `petugas_lapangan`
 --
 ALTER TABLE `petugas_lapangan`
   ADD PRIMARY KEY (`id_petugas`);
 
 --
--- Indeks untuk tabel `sampah`
+-- Indexes for table `sampah`
 --
 ALTER TABLE `sampah`
   ADD PRIMARY KEY (`id_sampah`),
   ADD UNIQUE KEY `jenis_sampah` (`jenis_sampah`);
 
 --
--- Indeks untuk tabel `transaksi`
+-- Indexes for table `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
@@ -255,64 +252,64 @@ ALTER TABLE `transaksi`
   ADD KEY `id_petugas` (`id_petugas`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_admin` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `akun`
+-- AUTO_INCREMENT for table `akun`
 --
 ALTER TABLE `akun`
   MODIFY `id_akun` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
--- AUTO_INCREMENT untuk tabel `detail_transaksi`
+-- AUTO_INCREMENT for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_detail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT untuk tabel `nasabah`
+-- AUTO_INCREMENT for table `nasabah`
 --
 ALTER TABLE `nasabah`
   MODIFY `id_nasabah` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `petugas_lapangan`
+-- AUTO_INCREMENT for table `petugas_lapangan`
 --
 ALTER TABLE `petugas_lapangan`
-  MODIFY `id_petugas` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_petugas` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `sampah`
+-- AUTO_INCREMENT for table `sampah`
 --
 ALTER TABLE `sampah`
-  MODIFY `id_sampah` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_sampah` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT untuk tabel `transaksi`
+-- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_transaksi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `detail_transaksi`
+-- Constraints for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
   ADD CONSTRAINT `detail_transaksi_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `detail_transaksi_ibfk_2` FOREIGN KEY (`id_sampah`) REFERENCES `sampah` (`id_sampah`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `transaksi`
+-- Constraints for table `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_nasabah`) REFERENCES `nasabah` (`id_nasabah`) ON DELETE CASCADE ON UPDATE CASCADE,
