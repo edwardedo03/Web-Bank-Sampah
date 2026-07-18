@@ -1,14 +1,15 @@
-const username = sessionStorage.getItem("username");
+import { getTabungan } from "../../backend/global_function.js";
+import { getLogoutFunction } from "../../backend/global_function.js";
+import { getTotalSampah } from "../../backend/global_function.js";
 
-if (!username) {
+const username = sessionStorage.getItem("username");
+const idAkun = sessionStorage.getItem("id_akun");
+
+if (!username || !idAkun) {
   window.location.href = "../../pages/login.html";
 }
 
-$("#logout").on("click", () => {
-  sessionStorage.removeItem("username");
-
-  window.location.href = "../../pages/login.html";
-});
+getLogoutFunction("../..");
 
 $(".btn-filter").on("click", function () {
   $(".btn-filter")
@@ -25,3 +26,7 @@ $(".btn-filter").on("click", function () {
 
   $(`#${targetId}`).removeClass("hidden");
 });
+
+getTabungan("saldo-tabungan", idAkun, "../..");
+
+getTotalSampah("total-sampah", idAkun, "../..");

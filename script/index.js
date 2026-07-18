@@ -1,3 +1,6 @@
+import { getTabungan } from "../backend/global_function.js";
+import { getLogoutFunction } from "../backend/global_function.js";
+
 const username = sessionStorage.getItem("username");
 const idAkun = sessionStorage.getItem("id_akun");
 
@@ -9,20 +12,6 @@ if (!username || !idAkun) {
   $("#nama-user").text(`${username}`);
 }
 
-$("#logout").on("click", () => {
-  sessionStorage.clear();
+getLogoutFunction(".");
 
-  window.location.href = "./pages/login.html";
-});
-
-$("#setor-sampah-dashboard").on("click", function () {
-  window.location.href = "./pages/nasabah/setor_sampah.html";
-});
-
-$("#riwayat-transaksi-dashboard").on("click", function () {
-  window.location.href = "./pages/nasabah/riwayat_transaksi.html";
-});
-
-$("#tarik-saldo-dashboard").on("click", function () {
-  window.location.href = "./pages/nasabah/riwayat_transaksi.html";
-});
+getTabungan("saldo-user", idAkun, ".");

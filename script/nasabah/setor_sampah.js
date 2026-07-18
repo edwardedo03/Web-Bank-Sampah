@@ -1,3 +1,5 @@
+import { getLogoutFunction } from "../../backend/global_function.js";
+
 const username = sessionStorage.getItem("username");
 const idAkun = sessionStorage.getItem("id_akun");
 
@@ -5,11 +7,7 @@ if (!username || !idAkun) {
   window.location.href = "../../pages/login.html";
 }
 
-$("#logout").on("click", () => {
-  sessionStorage.clear();
-
-  window.location.href = "../../pages/login.html";
-});
+getLogoutFunction("../..");
 
 let listSampah = [];
 
@@ -19,6 +17,13 @@ $.ajax({
   success: function (res) {
     if (res.success) {
       listSampah = res.data;
+      console.log(res.data);
+
+      listSampah.forEach(function (sampah) {
+        $(`#harga-${sampah.jenis_sampah}`).text(
+          Number(sampah.harga_sampah_per_kg).toLocaleString("id-ID"),
+        );
+      });
     } else {
       console.log("Gagal mengambil data dari db", res.message);
     }
@@ -169,7 +174,9 @@ $("#back-step-3").on("click", () => {
 
 // push ke database
 
-$("#submit-form-setor").on("click", () => {
+$("#submit-form-setor").on("click", (e) => {
+  e.preventDefault();
+
   dataSetorSampah.idNasabah = sessionStorage.getItem("id_akun");
 
   if (!dataSetorSampah.idNasabah) {
