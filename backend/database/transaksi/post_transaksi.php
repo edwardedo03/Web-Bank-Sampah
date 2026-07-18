@@ -30,12 +30,16 @@
     try {
         $statement_transaksi = $conn->prepare('INSERT INTO transaksi (id_nasabah, tanggal_transaksi, tanggal_penyerahan, metode_penyerahan, total_nominal, total_berat) VALUES (?, ?, ?, ?, ?, ?)');
         
-        $statement_transaksi->bind_param('isssdd', $id_nasabah, $tanggal_transaksi, $tanggal_penyerahan, $metode_penyerahan, $total_nominal, $total_berat);
-    
+        $statement_transaksi->bind_param('isssdd', $id_nasabah, $tanggal_transaksi, $tanggal_penyerahan, $metode_penyerahan, $total_nominal, $total_berat);    
         $statement_transaksi->execute();
+
         $id_transaksi = $conn->insert_id;
-    
         $statement_transaksi->close();
+
+        $statement_update_tabungan = $conn->prepare('UPDATE nasabah SET jumlah_tabungan = jumlah_tabungan + ? WHERE id_nasabah = ?');
+        $statement_update_tabungan->bind_param('di', $total_nominal, $id_nasabah);
+        $statement_update_tabungan->execute();
+        $statement_update_tabungan->close();
     
             $statement_detail = $conn->prepare('INSERT INTO detail_transaksi (id_transaksi, id_sampah, jenis_sampah, subtotal_nominal, berat_sampah, catatan) VALUES (?, ?, ?, ?, ?, ?)');
 

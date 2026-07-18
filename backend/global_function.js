@@ -61,3 +61,33 @@ export function getTotalSampah(idHTML, idAkun, rootPath = ".") {
     },
   });
 }
+
+// GET Total Setoran
+
+export function getTotalSetoran(idHTML, idAkun, rootPath = ".") {
+  return $.ajax({
+    url: `${rootPath}/backend/database/nasabah/get_jumlah_setoran.php`,
+    type: "GET",
+    dataType: "json",
+    data: { id_akun: idAkun },
+    success: function (res) {
+      if (res.success) {
+        console.log("berhasil dapat total setoran nasabah");
+        const totalSetoranNasabah = res.jumlah_setoran;
+
+        $(`#${idHTML}`).text(totalSetoranNasabah);
+      } else {
+        console.log("Gagal mengambil total setoran:", res.message);
+      }
+    },
+
+    error: function (xhr, status, error) {
+      console.log(
+        "Gagal mengambil total setoran:",
+        status,
+        error,
+        xhr.responseText,
+      );
+    },
+  });
+}

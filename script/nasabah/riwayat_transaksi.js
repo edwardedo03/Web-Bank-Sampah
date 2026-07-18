@@ -1,6 +1,7 @@
 import { getTabungan } from "../../backend/global_function.js";
 import { getLogoutFunction } from "../../backend/global_function.js";
 import { getTotalSampah } from "../../backend/global_function.js";
+import { getTotalSetoran } from "../../backend/global_function.js";
 
 const username = sessionStorage.getItem("username");
 const idAkun = sessionStorage.getItem("id_akun");
@@ -30,3 +31,5 @@ $(".btn-filter").on("click", function () {
 getTabungan("saldo-tabungan", idAkun, "../..");
 
 getTotalSampah("total-sampah", idAkun, "../..");
+
+getTotalSetoran("jumlah-setoran", idAkun, "../..");

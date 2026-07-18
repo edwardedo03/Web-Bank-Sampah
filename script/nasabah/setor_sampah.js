@@ -101,7 +101,7 @@ $("#submit-step-2").on("click", () => {
     return;
   }
 
-  sampahTerpilih = listSampah.find(
+  let sampahTerpilih = listSampah.find(
     (sampah) => sampah.jenis_sampah === detailTransaksi.jenisSampah,
   );
 
