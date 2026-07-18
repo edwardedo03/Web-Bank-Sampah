@@ -133,7 +133,9 @@
             class="border-4 rounded-full border-[#A3F69C]/70 select-none shadow-md"
           />
           <div class="flex flex-col gap-2 items-start justify-between">
-            <h2 class="text-2xl font-bold text-black">Your Name</h2>
+            <h2 class="text-2xl font-bold text-black" id="username-title">
+              Your Name
+            </h2>
             <p class="font-light text-md text-black mb-1">
               ID Nasabah: #<span id="id-nasabah">0000</span>
             </p>
@@ -156,7 +158,7 @@
             />
             <p class="font-semibold">
               Bergabung sejak
-              <span id="tanggal-bergabung-nasabah">12 Januari 2023</span>
+              <span id="tanggal-bergabung-nasabah">-</span>
             </p>
           </div>
           <div class="flex flex-row gap-3 items-center">
@@ -197,10 +199,35 @@
             <div
               class="flex flex-col items-start gap-2 text-md font-semibold w-full"
             >
+              <p>Username</p>
+              <input
+                id="username"
+                type="text"
+                placeholder="Budi.Herman98"
+                class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
+              />
+            </div>
+
+            <div
+              class="flex flex-col items-start gap-2 text-md font-semibold w-full"
+            >
               <p>Nama Lengkap</p>
               <input
+                id="nama"
                 type="text"
                 placeholder="Budi Hermanus"
+                class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
+              />
+            </div>
+
+            <div
+              class="flex flex-col items-start gap-2 text-md font-semibold w-full"
+            >
+              <p>Email</p>
+              <input
+                id="email"
+                type="email"
+                placeholder="budi.hermanus@gmail.com"
                 class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
               />
             </div>
@@ -212,11 +239,24 @@
               <div class="flex flex-row gap-3 items-center w-full">
                 <p>+62</p>
                 <input
+                  id="no-telepon"
                   type="number"
                   placeholder="89512345678"
                   class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
                 />
               </div>
+            </div>
+
+            <div
+              class="flex flex-col items-start gap-2 text-md font-semibold w-full"
+            >
+              <p>Alamat</p>
+              <input
+                id="alamat"
+                type="text"
+                placeholder="Jl. Kebon Jeruk No. 78"
+                class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
+              />
             </div>
 
             <div
@@ -227,6 +267,7 @@
               >
                 <p>RT</p>
                 <input
+                  id="rt"
                   type="number"
                   placeholder="005"
                   class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
@@ -237,6 +278,7 @@
               >
                 <p>RW</p>
                 <input
+                  id="rw"
                   type="number"
                   placeholder="012"
                   class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
@@ -249,6 +291,7 @@
             >
               <p>Kelurahan</p>
               <input
+                id="kelurahan"
                 type="text"
                 placeholder="Sukatani"
                 class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
@@ -260,6 +303,7 @@
             >
               <p>Kecamatan</p>
               <input
+                id="kecamatan"
                 type="text"
                 placeholder="Tapos"
                 class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"

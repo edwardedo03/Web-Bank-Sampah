@@ -91,3 +91,46 @@ export function getTotalSetoran(idHTML, idAkun, rootPath = ".") {
     },
   });
 }
+
+// Get Profile Nasabah
+
+export function getNasabahProfile(idAkun, rootPath = "") {
+  return $.ajax({
+    url: `${rootPath}/backend/database/nasabah/get_profile_nasabah.php`,
+    type: "GET",
+    dataType: "json",
+    data: { id_akun: idAkun },
+    success: function (res) {
+      if (res.success) {
+        const user = res.data_nasabah;
+
+        const tanggalMentah = user.tanggal_bergabung;
+        const objekTanggal = new Date(tanggalMentah);
+
+        const tanggalIndonesia = new Intl.DateTimeFormat("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(objekTanggal);
+
+        $("#username-title").text(user.username_nasabah);
+        $("#id-nasabah").text(user.id_nasabah);
+        $("#tanggal-bergabung-nasabah").text(tanggalIndonesia);
+        $("#username").val(user.username_nasabah);
+        $("#nama").val(user.nama_nasabah);
+        $("#email").val(user.email_nasabah);
+        $("#no-telepon").val(user.no_telepon_nasabah);
+        $("#alamat").val(user.alamat_nasabah);
+        $("#rt").val(user.rt);
+        $("#rw").val(user.rw);
+        $("#kelurahan").val(user.kelurahan);
+        $("#kecamatan").val(user.kecamatan);
+      }
+    },
+    error: function (xhr) {
+      console.log("Error", xhr.responseText);
+    },
+  });
+}
+
+// POST Profile Nasabah
