@@ -1,5 +1,6 @@
 import { getLogoutFunction } from "../../backend/global_function.js";
 import { getNasabahProfile } from "../../backend/global_function.js";
+import { postNasabahProfile } from "../../backend/global_function.js";
 
 const username = sessionStorage.getItem("username");
 const idAkun = sessionStorage.getItem("id_akun");
@@ -11,3 +12,21 @@ if (!username || !idAkun) {
 getLogoutFunction("../..");
 
 getNasabahProfile(idAkun, "../..");
+
+$("#form-update-profile").on("submit", (e) => {
+  e.preventDefault();
+
+  const dataProfile = {
+    id_akun: idAkun,
+    namaLengkap: $("#nama").val(),
+    email: $("#email").val(),
+    nomorTelepon: "0" + $("#no-telepon").val(),
+    alamat: $("#alamat").val(),
+    rt: $("#rt").val(),
+    rw: $("#rw").val(),
+    kelurahan: $("#kelurahan").val(),
+    kecamatan: $("#kecamatan").val(),
+  };
+
+  postNasabahProfile(dataProfile, "../..");
+});

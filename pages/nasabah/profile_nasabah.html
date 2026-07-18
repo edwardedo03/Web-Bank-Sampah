@@ -205,6 +205,7 @@
                 type="text"
                 placeholder="Budi.Herman98"
                 class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
+                disabled
               />
             </div>
 
@@ -241,7 +242,8 @@
                 <input
                   id="no-telepon"
                   type="number"
-                  placeholder="89512345678"
+                  pattern="[0-9]*"
+                  placeholder="895 1234 5678"
                   class="focus:ring-4 focus:ring-[#0D631B]/10 duration-200 border-2 border-[#0D631B]/20 w-full shadow-md rounded-lg p-2"
                 />
               </div>
@@ -311,7 +313,8 @@
             </div>
 
             <button
-              type="button"
+              id="simpan-perubahan"
+              type="submit"
               class="flex flex-row gap-2 items-center text-md font-bold text-white bg-[#0D631B] p-3 rounded-xl hover:bg-[#2E7D32] duration-200 w-full justify-center"
             >
               <img src="../../assets/icon/save.png" alt="save-icon" />

@@ -113,13 +113,21 @@ export function getNasabahProfile(idAkun, rootPath = "") {
           year: "numeric",
         }).format(objekTanggal);
 
+        let noTelepon = user.no_telepon_nasabah
+          ? user.no_telepon_nasabah.toString().trim()
+          : "";
+
+        if (noTelepon.startsWith("0")) {
+          noTelepon = noTelepon.substring(1);
+        }
+
         $("#username-title").text(user.username_nasabah);
         $("#id-nasabah").text(user.id_nasabah);
         $("#tanggal-bergabung-nasabah").text(tanggalIndonesia);
         $("#username").val(user.username_nasabah);
         $("#nama").val(user.nama_nasabah);
         $("#email").val(user.email_nasabah);
-        $("#no-telepon").val(user.no_telepon_nasabah);
+        $("#no-telepon").val(noTelepon);
         $("#alamat").val(user.alamat_nasabah);
         $("#rt").val(user.rt);
         $("#rw").val(user.rw);
@@ -134,3 +142,23 @@ export function getNasabahProfile(idAkun, rootPath = "") {
 }
 
 // POST Profile Nasabah
+
+export function postNasabahProfile(dataProfile, rootPath = ".") {
+  return $.ajax({
+    url: `${rootPath}/backend/database/nasabah/post_profile_nasabah.php`,
+    type: "POST",
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify(dataProfile),
+    success: function (res) {
+      if (res.success) {
+        console.log("Success", res.message);
+
+        window.location.reload();
+      }
+    },
+    error: function (xhr) {
+      console.log("Error", xhr.responseText);
+    },
+  });
+}
