@@ -88,7 +88,13 @@
             <div class="topbar__brand">Bank Sampah Selaras</div>
             <div class="topbar__actions">
                 <span class="topbar__help">?</span>
-                <div class="avatar" id="adminInitials">AD</div>
+                <div class="dropdown">
+                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
+                    <div class="dropdown-menu" id="avatarMenu">
+                        <a href="admin_profil.html">Profil Akun</a>
+                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -159,6 +165,7 @@
     </div>
 </div>
 
+<script src="../../assets/js/admin.js"></script>
 <script>
 /*
   Contoh alur kerja untuk halaman ini:
@@ -184,12 +191,19 @@
 */
 document.getElementById('formProfil').addEventListener('submit', function (e) {
     e.preventDefault();
-    alert('Perubahan profil akan tersimpan setelah backend terhubung.');
+    showToast('Perubahan profil akan tersimpan setelah backend terhubung.');
 });
 
 document.getElementById('formPassword').addEventListener('submit', function (e) {
     e.preventDefault();
-    alert('Kata sandi akan berubah setelah backend terhubung.');
+    showToast('Kata sandi akan berubah setelah backend terhubung.');
+});
+
+// Menu dropdown di avatar admin (Profil Akun / Keluar)
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
+    showToast('Logout akan aktif setelah backend terhubung.');
 });
 </script>
 

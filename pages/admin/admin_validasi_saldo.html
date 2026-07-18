@@ -109,7 +109,13 @@
             <div class="topbar__brand">Bank Sampah Selaras</div>
             <div class="topbar__actions">
                 <span class="topbar__help">?</span>
-                <div class="avatar" id="adminInitials">AD</div>
+                <div class="dropdown">
+                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
+                    <div class="dropdown-menu" id="avatarMenu">
+                        <a href="admin_profil.html">Profil Akun</a>
+                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -254,7 +260,15 @@
     </div>
 </div>
 
+<script src="../../assets/js/admin.js"></script>
 <script>
+
+// Menu dropdown di avatar admin (Profil Akun / Keluar)
+setupDropdown('avatarTrigger', 'avatarMenu');
+document.getElementById('btnLogout').addEventListener('click', function () {
+    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
+    showToast('Logout akan aktif setelah backend terhubung.');
+});
 /*
   Contoh alur kerja untuk halaman ini:
 
@@ -275,23 +289,77 @@
   Di bawah ini logika buka/tutup panel detail berdasarkan data-* di setiap baris tabel:
 */
 const detailPanel = document.getElementById('detailPanel');
+let activeRequestId = null; // nyimpen id request yang lagi dibuka di panel detail
+
+function bukaDetail(row) {
+    activeRequestId = row.dataset.id;
+    document.getElementById('detailInisial').textContent = row.dataset.inisial;
+    document.getElementById('detailNama').textContent = row.dataset.nama;
+    document.getElementById('detailIdNasabah').textContent = 'ID Nasabah: #' + row.dataset.inisial + '-' + row.dataset.id;
+    document.getElementById('detailNominal').textContent = row.dataset.nominal;
+    document.getElementById('detailMetode').textContent = row.dataset.metode;
+    document.getElementById('detailWaktu').textContent = row.dataset.waktu;
+    document.getElementById('detailCatatan').textContent = '"' + row.dataset.catatan + '"';
+    detailPanel.classList.add('is-open');
+}
+
+/**
+ * Menandai baris di tabel sebagai selesai diproses (dihapus dari daftar pending)
+ * setelah disetujui/ditolak. Nanti kalau backend sudah nyambung, baris ini
+ * cukup di-refresh dari hasil fetch ulang data pending.
+ */
+function tandaiSelesai(id) {
+    const row = document.querySelector('tr[data-id="' + id + '"]');
+    if (row) row.remove();
+    if (activeRequestId === id) {
+        detailPanel.classList.remove('is-open');
+        activeRequestId = null;
+    }
+}
 
 document.querySelectorAll('.btn-lihat-detail').forEach(function (btn) {
     btn.addEventListener('click', function () {
+        bukaDetail(btn.closest('tr'));
+    });
+});
+
+// Tombol ✕ (Tolak) langsung dari tabel
+document.querySelectorAll('.icon-btn--reject').forEach(function (btn) {
+    btn.addEventListener('click', function () {
         const row = btn.closest('tr');
-        document.getElementById('detailInisial').textContent = row.dataset.inisial;
-        document.getElementById('detailNama').textContent = row.dataset.nama;
-        document.getElementById('detailIdNasabah').textContent = 'ID Nasabah: #' + row.dataset.inisial + '-' + row.dataset.id;
-        document.getElementById('detailNominal').textContent = row.dataset.nominal;
-        document.getElementById('detailMetode').textContent = row.dataset.metode;
-        document.getElementById('detailWaktu').textContent = row.dataset.waktu;
-        document.getElementById('detailCatatan').textContent = '"' + row.dataset.catatan + '"';
-        detailPanel.classList.add('is-open');
+        const konfirmasi = confirm('Tolak permintaan penarikan dari ' + row.dataset.nama + '?');
+        if (!konfirmasi) return;
+        // TODO: ganti dengan fetch POST ke backend/database/proses_penarikan.php
+        // body: JSON.stringify({ id: row.dataset.id, aksi: 'tolak' })
+        showToast('Permintaan ' + row.dataset.nama + ' ditolak.', true);
+        tandaiSelesai(row.dataset.id);
     });
 });
 
 document.getElementById('btnCloseDetail').addEventListener('click', function () {
     detailPanel.classList.remove('is-open');
+});
+
+// Tombol "Setujui Sekarang" di panel detail
+document.getElementById('btnSetujui').addEventListener('click', function () {
+    if (!activeRequestId) return;
+    const nama = document.getElementById('detailNama').textContent;
+    // TODO: ganti dengan fetch POST ke backend/database/proses_penarikan.php
+    // body: JSON.stringify({ id: activeRequestId, aksi: 'setuju' })
+    showToast('Penarikan ' + nama + ' disetujui.');
+    tandaiSelesai(activeRequestId);
+});
+
+// Tombol "Tolak Request" di panel detail
+document.getElementById('btnTolak').addEventListener('click', function () {
+    if (!activeRequestId) return;
+    const nama = document.getElementById('detailNama').textContent;
+    const konfirmasi = confirm('Tolak permintaan penarikan dari ' + nama + '?');
+    if (!konfirmasi) return;
+    // TODO: ganti dengan fetch POST ke backend/database/proses_penarikan.php
+    // body: JSON.stringify({ id: activeRequestId, aksi: 'tolak' })
+    showToast('Penarikan ' + nama + ' ditolak.', true);
+    tandaiSelesai(activeRequestId);
 });
 </script>
 
