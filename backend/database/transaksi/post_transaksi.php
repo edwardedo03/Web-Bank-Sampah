@@ -15,6 +15,7 @@
     $metode_penyerahan = $decode['metodePenyerahan'] ?? '';
     $total_nominal = $decode['totalNominal'] ?? '';
     $total_berat = $decode['totalBerat'] ?? '';
+    $status = 'Menunggu Validasi';
     $detail_items = $decode['detailTransaksi'] ?? [];
 
     if (!$id_nasabah) {
@@ -28,9 +29,9 @@
     $conn->begin_transaction();
 
     try {
-        $statement_transaksi = $conn->prepare('INSERT INTO transaksi (id_nasabah, tanggal_transaksi, tanggal_penyerahan, metode_penyerahan, total_nominal, total_berat) VALUES (?, ?, ?, ?, ?, ?)');
+        $statement_transaksi = $conn->prepare('INSERT INTO transaksi (id_nasabah, tanggal_transaksi, tanggal_penyerahan, metode_penyerahan, total_nominal, total_berat, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
         
-        $statement_transaksi->bind_param('isssdd', $id_nasabah, $tanggal_transaksi, $tanggal_penyerahan, $metode_penyerahan, $total_nominal, $total_berat);    
+        $statement_transaksi->bind_param('isssdds', $id_nasabah, $tanggal_transaksi, $tanggal_penyerahan, $metode_penyerahan, $total_nominal, $total_berat, $status);    
         $statement_transaksi->execute();
 
         $id_transaksi = $conn->insert_id;
