@@ -2,209 +2,164 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil Akun — Bank Sampah Selaras</title>
-    <link rel="stylesheet" href="../../assets/css/admin.css">
-    <style>
-        .profile-card {
-            max-width: 520px;
-        }
-        .profile-avatar-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .profile-avatar-big {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--green-600);
-            color: #fff;
-            font-size: 20px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .field {
-            margin-bottom: 16px;
-        }
-        .field label {
-            display: block;
-            font-size: 12.5px;
-            font-weight: 600;
-            color: var(--text-600);
-            margin-bottom: 6px;
-        }
-        .field input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-size: 13.5px;
-            font-family: inherit;
-        }
-        .field input:disabled {
-            background: var(--green-50);
-            color: var(--text-400);
-        }
-        .field-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 24px 0;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
-<div class="app-shell">
+<div class="flex w-full h-screen overflow-hidden">
 
-    <aside class="sidebar">
-        <div class="sidebar__brand">
-            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
-            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
         </div>
-
-        <ul class="sidebar__nav">
-            <li><a class="sidebar__link" href="admin_dashboard.html">Dashboard</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
-            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
-            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
-            <li><a class="sidebar__link is-active" href="admin_profil.html">Profil Akun</a></li>
-        </ul>
-
-        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
     </aside>
 
-    <div class="main">
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
 
-        <header class="topbar">
-            <div class="topbar__brand">Bank Sampah Selaras</div>
-            <div class="topbar__actions">
-                <span class="topbar__help">?</span>
-                <div class="dropdown">
-                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
-                    <div class="dropdown-menu" id="avatarMenu">
-                        <a href="admin_profil.html">Profil Akun</a>
-                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="content">
-            <div class="page-head">
-                <div>
-                    <h1>Profil Akun</h1>
-                    <p>Kelola informasi akun dan keamanan login admin.</p>
-                </div>
+        <div class="p-8">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold m-0 mb-1">Profil Akun</h1>
+                <p class="text-sm text-gray-500 m-0">Kelola informasi akun dan keamanan login admin.</p>
             </div>
 
-            <div class="card profile-card">
-                <div class="profile-avatar-row">
-                    <div class="profile-avatar-big" id="profileInisial">AD</div>
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 max-w-lg">
+                <div class="flex items-center gap-4 mb-6">
+                    <div id="profileInisial" class="w-16 h-16 rounded-full bg-[#2E7D32] text-white text-xl font-bold flex items-center justify-center">AD</div>
                     <div>
-                        <p style="margin:0;font-weight:700;font-size:15px;" id="profileNama">Admin Utama</p>
-                        <p style="margin:0;font-size:12.5px;color:var(--text-400);">Administrator</p>
+                        <p id="profileNama" class="m-0 font-bold text-[15px]">–</p>
+                        <p class="m-0 text-xs text-gray-400">Administrator</p>
                     </div>
                 </div>
 
                 <form id="formProfil">
-                    <div class="field">
-                        <label for="namaAdmin">Nama Lengkap</label>
-                        <input type="text" id="namaAdmin" name="nama" value="Admin Utama">
+                    <div class="mb-3.5">
+                        <label for="namaAdmin" class="block text-xs font-semibold text-gray-600 mb-1.5">Nama Lengkap</label>
+                        <input type="text" id="namaAdmin" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
                     </div>
-
-                    <div class="field-row">
-                        <div class="field">
-                            <label for="idAdmin">ID Admin</label>
-                            <input type="text" id="idAdmin" value="ADM-0001" disabled>
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <div class="mb-3.5">
+                            <label for="idAdmin" class="block text-xs font-semibold text-gray-600 mb-1.5">Username</label>
+                            <input type="text" id="idAdmin" disabled class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-[#F7FBF0] text-gray-400">
                         </div>
-                        <div class="field">
-                            <label for="emailAdmin">Email</label>
-                            <input type="email" id="emailAdmin" name="email" value="admin@banksampahselaras.id">
+                        <div class="mb-3.5">
+                            <label for="emailAdmin" class="block text-xs font-semibold text-gray-600 mb-1.5">Email</label>
+                            <input type="email" id="emailAdmin" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
                         </div>
                     </div>
-
-                    <div class="field">
-                        <label for="teleponAdmin">Nomor Telepon</label>
-                        <input type="text" id="teleponAdmin" name="telepon" value="0812-0000-0000">
+                    <div class="mb-3.5">
+                        <label for="teleponAdmin" class="block text-xs font-semibold text-gray-600 mb-1.5">Nomor Telepon</label>
+                        <input type="text" id="teleponAdmin" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
                     </div>
-
-                    <button type="submit" class="btn btn--primary">Simpan Perubahan</button>
+                    <button type="submit" class="bg-[#2E7D32] text-white rounded-full px-4 py-2.5 text-sm font-semibold">Simpan Perubahan</button>
                 </form>
 
-                <hr class="divider">
+                <hr class="border-gray-200 my-6">
 
-                <h3 style="font-size: 14.5px; margin: 0 0 14px;">Ubah Kata Sandi</h3>
+                <h3 class="text-sm font-bold mb-3.5">Ubah Kata Sandi</h3>
                 <form id="formPassword">
-                    <div class="field">
-                        <label for="passLama">Kata Sandi Saat Ini</label>
-                        <input type="password" id="passLama" name="password_lama" placeholder="••••••••">
+                    <div class="mb-3.5">
+                        <label for="passLama" class="block text-xs font-semibold text-gray-600 mb-1.5">Kata Sandi Saat Ini</label>
+                        <input type="password" id="passLama" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
                     </div>
-                    <div class="field-row">
-                        <div class="field">
-                            <label for="passBaru">Kata Sandi Baru</label>
-                            <input type="password" id="passBaru" name="password_baru" placeholder="••••••••">
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <div class="mb-3.5">
+                            <label for="passBaru" class="block text-xs font-semibold text-gray-600 mb-1.5">Kata Sandi Baru</label>
+                            <input type="password" id="passBaru" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
                         </div>
-                        <div class="field">
-                            <label for="passKonfirmasi">Konfirmasi Kata Sandi</label>
-                            <input type="password" id="passKonfirmasi" name="password_konfirmasi" placeholder="••••••••">
+                        <div class="mb-3.5">
+                            <label for="passKonfirmasi" class="block text-xs font-semibold text-gray-600 mb-1.5">Konfirmasi Kata Sandi</label>
+                            <input type="password" id="passKonfirmasi" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn--outline">Ubah Kata Sandi</button>
+                    <button type="submit" class="border border-[#2E7D32] text-[#2E7D32] rounded-full px-4 py-2.5 text-sm font-semibold">Ubah Kata Sandi</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<script src="../../assets/js/admin.js"></script>
+<script src="../../script/admin/admin.js"></script>
 <script>
-/*
-  Contoh alur kerja untuk halaman ini:
+const API_BASE = '../../backend/database/admin';
 
-  1. Saat halaman dibuka, ambil data admin yang sedang login:
-     fetch('../../backend/database/get_profil_admin.php')
-       .then(res => res.json())
-       .then(data => { ...isi value di setiap input... });
+function muatProfil() {
+    fetch(`${API_BASE}/get_profil_admin.php`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) { showToast(data.message || 'Gagal memuat profil', true); return; }
+            document.getElementById('profileInisial').textContent = data.inisial;
+            document.getElementById('profileNama').textContent = data.nama;
+            document.getElementById('namaAdmin').value = data.nama;
+            document.getElementById('idAdmin').value = data.username;
+            document.getElementById('emailAdmin').value = data.email;
+            document.getElementById('teleponAdmin').value = data.telepon;
+        }).catch(() => showToast('Gagal terhubung ke server.', true));
+}
 
-  2. Saat form profil disubmit, kirim perubahan ke backend:
-     fetch('../../backend/database/update_profil_admin.php', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ nama: ..., email: ..., telepon: ... })
-     });
-
-  3. Form ubah password sebaiknya kirim ke endpoint terpisah yang
-     memvalidasi password lama sebelum mengganti ke yang baru, misalnya
-     backend/database/update_password_admin.php
-
-  Untuk sekarang, kedua form ini masih mencegah reload halaman (preventDefault)
-  dan cuma menampilkan alert sebagai placeholder:
-*/
 document.getElementById('formProfil').addEventListener('submit', function (e) {
     e.preventDefault();
-    showToast('Perubahan profil akan tersimpan setelah backend terhubung.');
+    const nama = document.getElementById('namaAdmin').value;
+    const email = document.getElementById('emailAdmin').value;
+    const telepon = document.getElementById('teleponAdmin').value;
+    fetch(`${API_BASE}/update_profil_admin.php`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama, email, telepon }),
+    }).then(res => res.json()).then(data => {
+        showToast(data.message, !data.success);
+        if (data.success) muatProfil();
+    }).catch(() => showToast('Gagal terhubung ke server.', true));
 });
 
 document.getElementById('formPassword').addEventListener('submit', function (e) {
     e.preventDefault();
-    showToast('Kata sandi akan berubah setelah backend terhubung.');
+    const password_lama = document.getElementById('passLama').value;
+    const password_baru = document.getElementById('passBaru').value;
+    const password_konfirmasi = document.getElementById('passKonfirmasi').value;
+    fetch(`${API_BASE}/update_password_admin.php`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password_lama, password_baru, password_konfirmasi }),
+    }).then(res => res.json()).then(data => {
+        showToast(data.message, !data.success);
+        if (data.success) document.getElementById('formPassword').reset();
+    }).catch(() => showToast('Gagal terhubung ke server.', true));
 });
 
-// Menu dropdown di avatar admin (Profil Akun / Keluar)
 setupDropdown('avatarTrigger', 'avatarMenu');
 document.getElementById('btnLogout').addEventListener('click', function () {
-    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
-    showToast('Logout akan aktif setelah backend terhubung.');
+    fetch(`${API_BASE}/logout.php`).then(function () {
+        window.location.href = '../login.html';
+    });
 });
+
+muatProfil();
 </script>
 
 </body>

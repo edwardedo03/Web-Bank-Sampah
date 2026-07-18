@@ -2,65 +2,66 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Admin — Bank Sampah Selaras</title>
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
-<div class="app-shell">
+<div class="flex w-full h-screen overflow-hidden">
 
-    <aside class="sidebar">
-        <div class="sidebar__brand">
-            <p class="sidebar__brand-name">Bank Sampah Selaras</p>
-            <p class="sidebar__brand-sub">Community Waste Mgmt</p>
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
         </div>
-
-        <ul class="sidebar__nav">
-            <li><a class="sidebar__link is-active" href="admin_dashboard.html">Dashboard</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_sampah.html">Kelola Sampah & Harga</a></li>
-            <li><a class="sidebar__link" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
-            <li><a class="sidebar__link" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
-            <li><a class="sidebar__link" href="admin_riwayat.html">Riwayat Transaksi</a></li>
-            <li><a class="sidebar__link" href="admin_profil.html">Profil Akun</a></li>
-        </ul>
-
-        <button type="button" class="sidebar__help">Bantuan Petugas</button>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
     </aside>
 
-    <div class="main">
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
 
-        <header class="topbar">
-            <div class="topbar__brand">Bank Sampah Selaras</div>
-            <div class="topbar__actions">
-                <span class="topbar__help">?</span>
-                <div class="dropdown">
-                    <div class="avatar" id="avatarTrigger" style="cursor:pointer;">AD</div>
-                    <div class="dropdown-menu" id="avatarMenu">
-                        <a href="admin_profil.html">Profil Akun</a>
-                        <button type="button" class="danger" id="btnLogout">Keluar</button>
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5 relative">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="content">
-            <div class="page-head">
+        <div class="p-8">
+            <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
                 <div>
-                    <h1>Dashboard Admin</h1>
-                    <p>Monitoring real-time aktivitas pengelolaan sampah.</p>
+                    <h1 class="text-2xl font-bold m-0 mb-1">Dashboard Admin</h1>
+                    <p class="text-sm text-gray-500 m-0">Monitoring real-time aktivitas pengelolaan sampah.</p>
                 </div>
-                <div class="page-head__filters">
-                    <div class="select">
-                        <label for="periode">Periode</label>
-                        <select id="periode" name="periode">
+                <div class="flex gap-2.5">
+                    <div class="flex flex-col gap-1">
+                        <label for="periode" class="text-[10px] font-bold uppercase text-gray-400">Periode</label>
+                        <select id="periode" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white">
                             <option>Bulan Ini</option>
                             <option>Minggu Ini</option>
                             <option>Tahun Ini</option>
                         </select>
                     </div>
-                    <div class="select">
-                        <label for="jenis">Jenis Sampah</label>
-                        <select id="jenis" name="jenis">
+                    <div class="flex flex-col gap-1">
+                        <label for="jenis" class="text-[10px] font-bold uppercase text-gray-400">Jenis Sampah</label>
+                        <select id="jenis" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white">
                             <option>Semua Jenis</option>
                             <option>Plastik</option>
                             <option>Kertas</option>
@@ -70,209 +71,140 @@
                 </div>
             </div>
 
-            <div class="stat-grid">
-                <div class="card stat-card">
-                    <div>
-                        <p class="stat-card__label">Total Nasabah</p>
-                        <p class="stat-card__value" id="statNasabah">1,284</p>
-                        <p class="stat-card__meta">↗ +12% dari bulan lalu</p>
-                    </div>
-                    <div class="stat-card__icon">👥</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Total Nasabah</p>
+                    <p class="text-2xl font-bold m-0" id="statNasabah">–</p>
+                    <p class="text-[11px] text-[#2E7D32] mt-1.5 mb-0">↗ dari database</p>
                 </div>
-
-                <div class="card stat-card">
-                    <div>
-                        <p class="stat-card__label">Total Petugas</p>
-                        <p class="stat-card__value" id="statPetugas">12</p>
-                        <p class="stat-card__meta">Semua status aktif</p>
-                    </div>
-                    <div class="stat-card__icon">🛡️</div>
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Total Petugas</p>
+                    <p class="text-2xl font-bold m-0" id="statPetugas">–</p>
+                    <p class="text-[11px] text-gray-500 mt-1.5 mb-0">Semua status aktif</p>
                 </div>
-
-                <div class="card stat-card stat-card--accent">
-                    <div>
-                        <p class="stat-card__label">Total Saldo (IDR)</p>
-                        <p class="stat-card__value" id="statSaldo">Rp 42.500.000</p>
-                        <p class="stat-card__meta">⏱ Dana siap tarik: Rp 8.2M</p>
-                    </div>
-                    <div class="stat-card__icon">💰</div>
+                <div class="bg-[#0D631B] text-white rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-white/80 m-0 mb-1.5">Total Saldo (IDR)</p>
+                    <p class="text-2xl font-bold m-0" id="statSaldo">–</p>
+                    <p class="text-[11px] text-white/80 mt-1.5 mb-0">Dana tabungan nasabah</p>
                 </div>
             </div>
 
-            <div class="two-col">
-                <div class="card">
-                    <div class="card__head">
-                        <h3>Sampah Terkumpul (kg)</h3>
-                    </div>
-                    <div class="bar-chart">
-                        <div class="bar-chart__col">
-                            <div class="bar-chart__bar" style="height: 55%;"></div>
-                            <span class="bar-chart__label">Plastik</span>
-                        </div>
-                        <div class="bar-chart__col">
-                            <div class="bar-chart__bar" style="height: 75%;"></div>
-                            <span class="bar-chart__label">Kertas</span>
-                        </div>
-                        <div class="bar-chart__col">
-                            <div class="bar-chart__bar" style="height: 35%;"></div>
-                            <span class="bar-chart__label">Logam</span>
-                        </div>
-                        <div class="bar-chart__col">
-                            <div class="bar-chart__bar" style="height: 20%;"></div>
-                            <span class="bar-chart__label">Kaca</span>
-                        </div>
-                        <div class="bar-chart__col">
-                            <div class="bar-chart__bar" style="height: 90%;"></div>
-                            <span class="bar-chart__label">Organik</span>
-                        </div>
-                    </div>
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                <div class="flex items-center justify-between mb-3.5">
+                    <h3 class="text-sm font-bold m-0">Transaksi Terbaru</h3>
+                    <a href="admin_riwayat.html" class="text-xs font-semibold text-[#2E7D32]">Lihat Semua</a>
                 </div>
-
-                <div class="card">
-                    <div class="card__head">
-                        <h3>Tren Volume Transaksi</h3>
-                        <div class="chart-legend">
-                            <span><i class="dot dot--solid"></i> Setoran</span>
-                            <span><i class="dot dot--dashed"></i> Penarikan</span>
-                        </div>
-                    </div>
-                    <svg viewBox="0 0 320 140" width="100%" height="140" preserveAspectRatio="none">
-                        <polyline points="0,110 45,90 90,95 135,55 180,60 225,30 270,40 315,20"
-                                  fill="none" stroke="#35843f" stroke-width="2.5" />
-                        <polyline points="0,125 45,120 90,118 135,105 180,108 225,95 270,100 315,90"
-                                  fill="none" stroke="#a13a4a" stroke-width="2" stroke-dasharray="4 4" />
-                    </svg>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card__head">
-                    <h3>Transaksi Terbaru</h3>
-                    <a href="admin_riwayat.html">Lihat Semua</a>
-                </div>
-                <table class="table">
+                <table class="w-full text-sm border-collapse">
                     <thead>
                         <tr>
-                            <th>Nasabah</th>
-                            <th>Jenis Sampah</th>
-                            <th>Berat (kg)</th>
-                            <th>Total (IDR)</th>
-                            <th>Status</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Nasabah</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Jenis Sampah</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Berat</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Total</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="transaksiTerbaruBody">
-                        <tr class="is-clickable" data-nama="Andi Maulana" data-inisial="AM" data-jenis="Plastik PET" data-berat="4.5 kg" data-total="Rp 12,500" data-status="SELESAI">
-                            <td>
-                                <div class="person">
-                                    <span class="person__avatar">AM</span>
-                                    Andi Maulana
-                                </div>
-                            </td>
-                            <td>Plastik PET</td>
-                            <td>4.5 kg</td>
-                            <td class="amount">Rp 12,500</td>
-                            <td><span class="badge badge--success">SELESAI</span></td>
-                        </tr>
-                        <tr class="is-clickable" data-nama="Siti Halimah" data-inisial="SH" data-jenis="Kertas/Karton" data-berat="12.0 kg" data-total="Rp 18,000" data-status="SELESAI">
-                            <td>
-                                <div class="person">
-                                    <span class="person__avatar">SH</span>
-                                    Siti Halimah
-                                </div>
-                            </td>
-                            <td>Kertas/Karton</td>
-                            <td>12.0 kg</td>
-                            <td class="amount">Rp 18,000</td>
-                            <td><span class="badge badge--success">SELESAI</span></td>
-                        </tr>
-                        <tr class="is-clickable" data-nama="Budi Prasetyo" data-inisial="BP" data-jenis="Logam Campur" data-berat="1.2 kg" data-total="Rp 8,400" data-status="PROSES">
-                            <td>
-                                <div class="person">
-                                    <span class="person__avatar">BP</span>
-                                    Budi Prasetyo
-                                </div>
-                            </td>
-                            <td>Logam Campur</td>
-                            <td>1.2 kg</td>
-                            <td class="amount">Rp 8,400</td>
-                            <td><span class="badge badge--pending">PROSES</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="transaksiTerbaruBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal: Detail Transaksi -->
-<div class="modal-overlay" id="modalDetailTransaksi">
-    <div class="modal-box">
-        <div class="modal-box__head">
-            <h3>Detail Transaksi</h3>
-            <button class="modal-box__close" data-modal-close="modalDetailTransaksi">✕</button>
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalDetailTransaksi">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold m-0">Detail Transaksi</h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalDetailTransaksi">✕</button>
         </div>
-        <div class="form-field"><label>Nasabah</label><p id="dtNama" style="margin:0;font-weight:600;"></p></div>
-        <div class="form-field"><label>Jenis Sampah</label><p id="dtJenis" style="margin:0;"></p></div>
-        <div class="form-field"><label>Berat</label><p id="dtBerat" style="margin:0;"></p></div>
-        <div class="form-field"><label>Total</label><p id="dtTotal" style="margin:0;font-weight:700;color:var(--green-700);"></p></div>
-        <div class="form-field"><label>Status</label><p id="dtStatus" style="margin:0;"></p></div>
-        <div class="modal-box__actions">
-            <button type="button" class="btn btn--outline" data-modal-close="modalDetailTransaksi">Tutup</button>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Nasabah</label><p id="dtNama" class="m-0 font-semibold"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Jenis Sampah</label><p id="dtJenis" class="m-0"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Berat</label><p id="dtBerat" class="m-0"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Total</label><p id="dtTotal" class="m-0 font-bold text-[#2E7D32]"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Status</label><p id="dtStatus" class="m-0"></p></div>
+        <div class="flex gap-2.5 mt-4">
+            <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalDetailTransaksi">Tutup</button>
         </div>
     </div>
 </div>
 
-<script src="../../assets/js/admin.js"></script>
+<script src="../../script/admin/admin.js"></script>
 <script>
-/*
-  Contoh cara ambil data asli dari backend PHP kamu.
-  Bikin file baru misal: backend/database/dashboard_data.php
-  yang isinya query ke database lalu echo json_encode([...]).
+const API_BASE = '../../backend/database/admin';
 
-  Lalu di sini tinggal fetch seperti ini:
+function renderTransaksiRow(t) {
+    const statusClass = t.status === 'SELESAI' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+    const tr = document.createElement('tr');
+    tr.className = 'cursor-pointer hover:bg-[#F7FBF0]';
+    tr.dataset.nama = t.nama;
+    tr.dataset.jenis = t.jenis_sampah;
+    tr.dataset.berat = t.berat;
+    tr.dataset.total = t.total;
+    tr.dataset.status = t.status;
+    tr.innerHTML = `
+        <td class="py-3 border-b border-gray-100">
+            <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${t.inisial}</span>
+                ${t.nama}
+            </div>
+        </td>
+        <td class="py-3 border-b border-gray-100">${t.jenis_sampah}</td>
+        <td class="py-3 border-b border-gray-100">${t.berat}</td>
+        <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${t.total}</td>
+        <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${statusClass}">${t.status}</span></td>
+    `;
+    tr.addEventListener('click', function () {
+        document.getElementById('dtNama').textContent = tr.dataset.nama;
+        document.getElementById('dtJenis').textContent = tr.dataset.jenis;
+        document.getElementById('dtBerat').textContent = tr.dataset.berat;
+        document.getElementById('dtTotal').textContent = tr.dataset.total;
+        document.getElementById('dtStatus').textContent = tr.dataset.status;
+        openModal('modalDetailTransaksi');
+    });
+    return tr;
+}
 
-  fetch('../../backend/database/dashboard_data.php')
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('statNasabah').textContent = data.total_nasabah;
-      document.getElementById('statPetugas').textContent = data.total_petugas;
-      document.getElementById('statSaldo').textContent = data.total_saldo;
-      // dst, isi tabel transaksiTerbaruBody juga bisa di-generate dari sini
-    })
-    .catch(err => console.error('Gagal ambil data dashboard:', err));
-*/
+function muatDataDashboard() {
+    fetch(`${API_BASE}/dashboard_data.php`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                showToast(data.message || 'Gagal memuat dashboard', true);
+                return;
+            }
+            document.getElementById('statNasabah').textContent = data.total_nasabah.toLocaleString('id-ID');
+            document.getElementById('statPetugas').textContent = data.total_petugas;
+            document.getElementById('statSaldo').textContent = 'Rp ' + data.total_saldo.toLocaleString('id-ID');
 
-// Menu dropdown di avatar admin (Profil Akun / Keluar)
+            const tbody = document.getElementById('transaksiTerbaruBody');
+            tbody.innerHTML = '';
+            if (data.transaksi_terbaru.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-400 py-4">Belum ada transaksi</td></tr>';
+            } else {
+                data.transaksi_terbaru.forEach(function (t) {
+                    tbody.appendChild(renderTransaksiRow(t));
+                });
+            }
+        })
+        .catch(() => showToast('Gagal terhubung ke server.', true));
+}
+
 setupDropdown('avatarTrigger', 'avatarMenu');
-
 document.getElementById('btnLogout').addEventListener('click', function () {
-    // TODO: ganti dengan fetch ke backend/database/logout.php lalu redirect ke login.html
-    showToast('Logout akan aktif setelah backend terhubung.');
+    fetch(`${API_BASE}/logout.php`).then(function () {
+        window.location.href = '../login.html';
+    });
 });
 
-// Filter Periode & Jenis Sampah
-// TODO: saat backend siap, ganti isi fungsi ini dengan fetch ulang data dashboard
-// berdasarkan nilai filter, contoh:
-// fetch(`../../backend/database/dashboard_data.php?periode=${periode}&jenis=${jenis}`)
 function terapkanFilterDashboard() {
     const periode = document.getElementById('periode').value;
     const jenis = document.getElementById('jenis').value;
-    showToast(`Menampilkan data: ${periode} — ${jenis}`);
+    showToast(`Filter belum didukung backend: ${periode} — ${jenis}`);
 }
 document.getElementById('periode').addEventListener('change', terapkanFilterDashboard);
 document.getElementById('jenis').addEventListener('change', terapkanFilterDashboard);
 
-// Klik baris "Transaksi Terbaru" untuk lihat detail
-document.querySelectorAll('#transaksiTerbaruBody tr').forEach(function (row) {
-    row.addEventListener('click', function () {
-        document.getElementById('dtNama').textContent = row.dataset.nama;
-        document.getElementById('dtJenis').textContent = row.dataset.jenis;
-        document.getElementById('dtBerat').textContent = row.dataset.berat;
-        document.getElementById('dtTotal').textContent = row.dataset.total;
-        document.getElementById('dtStatus').textContent = row.dataset.status;
-        openModal('modalDetailTransaksi');
-    });
-});
+muatDataDashboard();
 </script>
 
 </body>
