@@ -19,9 +19,11 @@
             dt.subtotal_nominal,
             dt.berat_sampah,
             dt.jenis_sampah,
-            dt.status
+            dt.status,  
+            s.harga_sampah_per_kg
           FROM detail_transaksi dt
           JOIN transaksi t ON dt.id_transaksi = t.id_transaksi
+          JOIN sampah s ON dt.jenis_sampah = s.jenis_sampah
           WHERE t.id_nasabah = ? AND dt.status = 'Menunggu Validasi'");
 
         $statement_transaksi->bind_param("i", $id_nasabah);

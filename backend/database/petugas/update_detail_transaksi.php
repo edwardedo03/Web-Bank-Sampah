@@ -4,16 +4,17 @@
 
     require_once '../db.php';
 
-    $data = json_decode(file_get_contents('php://input'), true);
+    $decode = json_decode(file_get_contents('php://input'), true);
 
-    $id_detail = $data['id_detail'] ?? '';
-    $status = $data['status'] ?? '';
-    $berat_aktual = $data['berat_aktual'] ?? null;
+    $id_detail = $decode['id_detail'] ?? '';
+    $status = $decode['status'] ?? '';
+    $berat_aktual = $decode['berat_aktual'] ?? null;
+    $subtotal_aktual = $decode['subtotal_aktual'] ?? null;
 
     try {
         if ($status === 'Proses') {
-            $statement = $conn->prepare("UPDATE detail_transaksi SET status = ?, berat_sampah_aktual = ? WHERE id_detail = ?");
-            $statement->bind_param("sdi", $status, $berat_aktual, $id_detail);
+            $statement = $conn->prepare("UPDATE detail_transaksi SET status = ?, berat_sampah_aktual = ?, subtotal_nominal_aktual = ? WHERE id_detail = ?");
+            $statement->bind_param("sddi", $status, $berat_aktual, $subtotal_aktual, $id_detail);
         } else {
             $statement = $conn->prepare("UPDATE detail_transaksi SET status = ? WHERE id_detail = ?");
             $statement->bind_param("si", $status, $id_detail);

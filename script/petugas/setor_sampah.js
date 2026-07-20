@@ -125,8 +125,8 @@ function renderPopup(nasabah, listTransaksi) {
   container.empty();
 
   const profileNasabah = `
-    <div class="flex flex-row justify-end px-2">
-      <button type="button" class="text-gray-400 text-lg hover:text-red-800 active:scale-95 duration-200" id="close-popup">
+    <div class="flex flex-row justify-end items-center">
+      <button type="button" class="text-gray-400 text-lg hover:text-red-800 active:scale-95 duration-200 w-8 h-8 font-bold" id="close-popup">
         ✕
       </button>
     </div>
@@ -159,8 +159,10 @@ function renderPopup(nasabah, listTransaksi) {
 
   if (listTransaksi && listTransaksi.length > 0) {
     listTransaksi.forEach((item) => {
+      const hargaSampah = item.harga_sampah_per_kg;
+
       let cardTransaksi = `
-        <div class="card-transaksi flex flex-col gap-2 border-b border-black/20 pb-5 w-full">
+        <div class="card-transaksi flex flex-col gap-2 border-b border-black/20 pb-5 w-full" data-harga-per-kg="${hargaSampah}">
           <div class="flex flex-col items-start justify-between gap-2 mb-2">
             <p class="font-semibold text-[#0D631B]">
               ID Transaksi: #<span id="id-transaksi">${item.id_detail}</span>
@@ -219,7 +221,7 @@ function renderPopup(nasabah, listTransaksi) {
                 <div class="flex flex-col">
                   <p class="font-semibold text-md">Berat Aktual</p>
                   <p class="font-light text-sm">
-                    Rp <span id="harga-aktual-nasabah">-</span>
+                    Rp <span id="harga-aktual-nasabah" class="harga-aktual-nasabah">0</span>
                   </p>
                 </div>
               </div>
@@ -278,6 +280,18 @@ function renderPopup(nasabah, listTransaksi) {
   }, 10);
 }
 
+$(document).on("input", ".input-berat-aktual", function () {
+  const parentCard = $(this).closest(".card-transaksi");
+  const berat = parseFloat($(this).val());
+  const hargaPerKg = parseFloat(parentCard.attr("data-harga-per-kg"));
+
+  const totalHargaAktual = berat * hargaPerKg;
+
+  parentCard
+    .find(".harga-aktual-nasabah")
+    .text(totalHargaAktual.toLocaleString("id-ID"));
+});
+
 $(document).on("click", "#close-popup", function () {
   $("#overlay-popup").removeClass("opacity-100").addClass("opacity-0");
   $("#popup-detail").removeClass("translate-x-0").addClass("translate-x-full");
@@ -288,7 +302,13 @@ $(document).on("click", "#close-popup", function () {
   }, 300);
 });
 
-function updateDetailTransaksi(idDetail, status, beratAktual, parentCard) {
+function updateDetailTransaksi(
+  idDetail,
+  status,
+  beratAktual,
+  subtotalAktual,
+  parentCard,
+) {
   $.ajax({
     url: "../../backend/database/petugas/update_detail_transaksi.php",
     type: "POST",
@@ -297,6 +317,7 @@ function updateDetailTransaksi(idDetail, status, beratAktual, parentCard) {
       id_detail: idDetail,
       status: status,
       berat_aktual: beratAktual,
+      subtotal_aktual: subtotalAktual,
     }),
     dataType: "json",
     success: function (res) {
@@ -304,7 +325,7 @@ function updateDetailTransaksi(idDetail, status, beratAktual, parentCard) {
         parentCard.fadeOut(300, function () {
           $(this).remove();
 
-          const sisaKartu = $(".card-item-transaksi").length;
+          const sisaKartu = $(".card-transaksi").length;
 
           if (sisaKartu === 0) {
             $("#popup-detail").append(`
@@ -328,13 +349,22 @@ $(document).on("click", ".btn-simpan-detail", function () {
   const idDetail = $(this).attr("data-id-detail");
   const parentCard = $(this).closest(".card-transaksi");
   const beratAktual = parentCard.find(".input-berat-aktual").val();
+  const hargaPerKg = parseFloat(parentCard.attr("data-harga-per-kg"));
 
   if (!beratAktual || parseFloat(beratAktual) <= 0) {
     alert("Masukkan berat aktual terlebih dahulu!");
     return;
   }
 
-  updateDetailTransaksi(idDetail, "Proses", beratAktual, parentCard);
+  const subtotalAktual = beratAktual * hargaPerKg;
+
+  updateDetailTransaksi(
+    idDetail,
+    "Proses",
+    beratAktual,
+    subtotalAktual,
+    parentCard,
+  );
 });
 
 $(document).on("click", ".btn-tolak-detail", function () {
