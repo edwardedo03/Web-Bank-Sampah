@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 20 Jul 2026 pada 07.03
+-- Waktu pembuatan: 20 Jul 2026 pada 14.42
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -32,6 +32,7 @@ CREATE TABLE `admin` (
   `username_admin` varchar(32) NOT NULL,
   `password_admin` varchar(64) NOT NULL,
   `role` varchar(16) NOT NULL,
+  `tanggal_bergabung` date DEFAULT NULL,
   `nama_admin` varchar(32) NOT NULL,
   `no_telepon_admin` varchar(16) NOT NULL,
   `email_admin` varchar(32) NOT NULL
@@ -41,8 +42,8 @@ CREATE TABLE `admin` (
 -- Dumping data untuk tabel `admin`
 --
 
-INSERT INTO `admin` (`id_admin`, `username_admin`, `password_admin`, `role`, `nama_admin`, `no_telepon_admin`, `email_admin`) VALUES
-(1, 'admin', '$2y$10$FIUwGsKfwjkQncrGm5s07enK0eXwcV2VXDe9QM0bFIVaf1d/BUqAW', 'admin', '', '', 'admin@gmail.com');
+INSERT INTO `admin` (`id_admin`, `username_admin`, `password_admin`, `role`, `tanggal_bergabung`, `nama_admin`, `no_telepon_admin`, `email_admin`) VALUES
+(1, 'admin', '$2y$10$FIUwGsKfwjkQncrGm5s07enK0eXwcV2VXDe9QM0bFIVaf1d/BUqAW', 'admin', '2026-07-17', '', '', 'admin@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -57,21 +58,24 @@ CREATE TABLE `detail_transaksi` (
   `jenis_sampah` varchar(16) NOT NULL,
   `subtotal_nominal` double NOT NULL,
   `berat_sampah` double NOT NULL,
-  `catatan` varchar(64) NOT NULL
+  `berat_sampah_aktual` double NOT NULL,
+  `catatan` varchar(64) NOT NULL,
+  `status` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `detail_transaksi`
 --
 
-INSERT INTO `detail_transaksi` (`id_detail`, `id_transaksi`, `id_sampah`, `jenis_sampah`, `subtotal_nominal`, `berat_sampah`, `catatan`) VALUES
-(4, 10, 1, 'Plastik', 8000, 4, 'sudah diikat plastiknya'),
-(5, 10, 2, 'Kertas', 6000, 4, 'kertasnya keras'),
-(6, 11, 3, 'Logam', 16000, 4, 'test 2'),
-(7, 12, 3, 'Logam', 48000, 12, 'test text catatan di history - test text catatan di history - te'),
-(8, 13, 1, 'Plastik', 24000, 12, 'tes status'),
-(9, 14, 1, 'Plastik', 16000, 8, 'saya antar'),
-(10, 14, 3, 'Logam', 12000, 3, 'saya antar juga');
+INSERT INTO `detail_transaksi` (`id_detail`, `id_transaksi`, `id_sampah`, `jenis_sampah`, `subtotal_nominal`, `berat_sampah`, `berat_sampah_aktual`, `catatan`, `status`) VALUES
+(4, 10, 1, 'Plastik', 8000, 4, 1, 'sudah diikat plastiknya', 'Gagal'),
+(5, 10, 2, 'Kertas', 6000, 4, 2, 'kertasnya keras', 'Proses'),
+(6, 11, 3, 'Logam', 16000, 4, 5, 'test 2', 'Proses'),
+(7, 12, 3, 'Logam', 48000, 12, 2, 'test text catatan di history - test text catatan di history - te', 'Proses'),
+(8, 13, 1, 'Plastik', 24000, 12, 0, 'tes status', 'Menunggu Validasi'),
+(9, 14, 1, 'Plastik', 16000, 8, 0, 'saya antar', 'Menunggu Validasi'),
+(10, 14, 3, 'Logam', 12000, 3, 0, 'saya antar juga', 'Menunggu Validasi'),
+(11, 15, 1, 'Plastik', 16000, 8, 0, 'tolong di ambil depan rumah', 'Menunggu Validasi');
 
 -- --------------------------------------------------------
 
@@ -101,7 +105,9 @@ CREATE TABLE `nasabah` (
 --
 
 INSERT INTO `nasabah` (`id_nasabah`, `username_nasabah`, `password_nasabah`, `role`, `tanggal_bergabung`, `nama_nasabah`, `jumlah_tabungan`, `no_telepon_nasabah`, `email_nasabah`, `alamat_nasabah`, `kecamatan`, `kelurahan`, `rw`, `rt`) VALUES
-(1, 'edwardedo', '$2y$10$bWvNYfdNn4IeBMa6bNk0muZc3PLrC7/m3VXtOPHeWVgLhUGW/0IfO', 'nasabah', '2026-07-17', 'Edward Antonio', 130000, '0895342413657', 'edwardahhutauruk@gmail.com', 'Jl. Raya Cisauk Indah', 'Gunung Putri', 'Bojong Menteng', '012', '05');
+(1, 'edwardedo', '$2y$10$bWvNYfdNn4IeBMa6bNk0muZc3PLrC7/m3VXtOPHeWVgLhUGW/0IfO', 'nasabah', '2026-07-17', 'Edward Antonio', 130000, '0895342413657', 'edwardahhutauruk@gmail.com', 'Jl. Raya Cisauk Indah', 'Gunung Putri', 'Bojong Menteng', '012', '05'),
+(2, 'udin.123', '$2y$10$I6tm7jHUQ50t0rF8yv8rVeJwnxhSuZvRk3PYEPrHDR4ypefmdCk7C', 'nasabah', '2026-07-20', 'Udin Kurniawan', 16000, '0', 'udin@gmail.com', '', '', '', '', ''),
+(3, 'abdi', '$2y$10$yLDd16zs/sO6tOcP6S19xOsk4F.Nj38szMHMGhx8J8TKaRWH8uM02', 'nasabah', '2026-07-20', '', 0, '', 'abdi@gmail.com', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -114,6 +120,7 @@ CREATE TABLE `petugas_lapangan` (
   `username_petugas` varchar(32) NOT NULL,
   `password_petugas` varchar(64) NOT NULL,
   `role` varchar(16) NOT NULL,
+  `tanggal_bergabung` date DEFAULT NULL,
   `nama_petugas` varchar(64) NOT NULL,
   `no_telepon_petugas` varchar(32) NOT NULL,
   `email_petugas` varchar(32) NOT NULL,
@@ -124,8 +131,8 @@ CREATE TABLE `petugas_lapangan` (
 -- Dumping data untuk tabel `petugas_lapangan`
 --
 
-INSERT INTO `petugas_lapangan` (`id_petugas`, `username_petugas`, `password_petugas`, `role`, `nama_petugas`, `no_telepon_petugas`, `email_petugas`, `wilayah_tugas`) VALUES
-(1, 'petugas', '$2y$10$eR0tHurfkUkMh99IxzPYkOmPmEDMW9P/jbuqZGwNH7PPdYy6SGkP6', 'petugas', '', '', 'petugas@gmail.com', '');
+INSERT INTO `petugas_lapangan` (`id_petugas`, `username_petugas`, `password_petugas`, `role`, `tanggal_bergabung`, `nama_petugas`, `no_telepon_petugas`, `email_petugas`, `wilayah_tugas`) VALUES
+(1, 'petugas', '$2y$10$eR0tHurfkUkMh99IxzPYkOmPmEDMW9P/jbuqZGwNH7PPdYy6SGkP6', 'petugas', '2026-07-18', 'Budi Arhan', '089734619873', 'petugas@gmail.com', 'Cisauk');
 
 -- --------------------------------------------------------
 
@@ -164,20 +171,20 @@ CREATE TABLE `transaksi` (
   `total_nominal` double NOT NULL,
   `total_berat` double NOT NULL,
   `tanggal_penyerahan` datetime NOT NULL,
-  `metode_penyerahan` varchar(16) NOT NULL,
-  `status` varchar(32) NOT NULL
+  `metode_penyerahan` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `id_nasabah`, `id_petugas`, `tanggal_transaksi`, `total_nominal`, `total_berat`, `tanggal_penyerahan`, `metode_penyerahan`, `status`) VALUES
-(10, 1, NULL, '2026-07-18 14:20:06', 14000, 8, '2026-07-23 14:19:00', 'Drop-off', 'Menunggu Validasi'),
-(11, 1, NULL, '2026-07-18 15:37:50', 16000, 4, '2026-07-23 15:37:00', 'Drop-off', 'Menunggu Validasi'),
-(12, 1, NULL, '2026-07-18 19:34:06', 48000, 12, '2026-07-21 19:33:00', 'Pick-up', 'Menunggu Validasi'),
-(13, 1, NULL, '2026-07-18 20:20:55', 24000, 12, '2026-07-22 20:20:00', 'Drop-off', 'Menunggu Validasi'),
-(14, 1, NULL, '2026-07-18 22:48:29', 28000, 11, '2026-07-25 22:48:00', 'Drop-off', 'Menunggu Validasi');
+INSERT INTO `transaksi` (`id_transaksi`, `id_nasabah`, `id_petugas`, `tanggal_transaksi`, `total_nominal`, `total_berat`, `tanggal_penyerahan`, `metode_penyerahan`) VALUES
+(10, 1, NULL, '2026-07-18 14:20:06', 14000, 8, '2026-07-23 14:19:00', 'Drop-off'),
+(11, 1, NULL, '2026-07-18 15:37:50', 16000, 4, '2026-07-23 15:37:00', 'Drop-off'),
+(12, 1, NULL, '2026-07-18 19:34:06', 48000, 12, '2026-07-21 19:33:00', 'Pick-up'),
+(13, 1, NULL, '2026-07-18 20:20:55', 24000, 12, '2026-07-22 20:20:00', 'Drop-off'),
+(14, 1, NULL, '2026-07-18 22:48:29', 28000, 11, '2026-07-25 22:48:00', 'Drop-off'),
+(15, 2, NULL, '2026-07-20 14:47:48', 16000, 8, '2026-07-21 14:47:00', 'Pick-up');
 
 --
 -- Indexes for dumped tables
@@ -239,13 +246,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_detail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `nasabah`
 --
 ALTER TABLE `nasabah`
-  MODIFY `id_nasabah` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_nasabah` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `petugas_lapangan`
@@ -263,7 +270,7 @@ ALTER TABLE `sampah`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_transaksi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

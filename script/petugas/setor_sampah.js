@@ -160,7 +160,7 @@ function renderPopup(nasabah, listTransaksi) {
   if (listTransaksi && listTransaksi.length > 0) {
     listTransaksi.forEach((item) => {
       let cardTransaksi = `
-        <div class="flex flex-col gap-2 border-b border-black/20 pb-5 w-full">
+        <div class="card-transaksi flex flex-col gap-2 border-b border-black/20 pb-5 w-full">
           <div class="flex flex-col items-start justify-between gap-2 mb-2">
             <p class="font-semibold text-[#0D631B]">
               ID Transaksi: #<span id="id-transaksi">${item.id_detail}</span>
@@ -231,7 +231,7 @@ function renderPopup(nasabah, listTransaksi) {
                   type="number"
                   step="0.1"
                   placeholder="0.0"
-                  class="font-semibold text-xl text-black outline-none bg-transparent w-full min-w-0 text-right appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  class="input-berat-aktual font-semibold text-xl text-black outline-none bg-transparent w-full min-w-0 text-right appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 <p class="font-semibold text-sm">kg</p>
               </div>
@@ -240,16 +240,16 @@ function renderPopup(nasabah, listTransaksi) {
   
           <div class="flex flex-row justify-start mt-2 w-full gap-3">
             <button
-              id="id-transaksi-${item.id_transaksi}"
+              data-id-detail="${item.id_detail}"
               type="button"
-              class="bg-red-800 py-2 px-3 rounded-lg font-semibold text-white text-md active:scale-95 hover:bg-red-800/90 duration-200 w-full"
+              class="btn-tolak-detail bg-red-800 py-2 px-3 rounded-lg font-semibold text-white text-md active:scale-95 hover:bg-red-800/90 duration-200 w-full"
             >
               Tolak
             </button>
             <button
-              id="id-transaksi-${item.id_transaksi}"
+              data-id-detail="${item.id_detail}"
               type="button"
-              class="bg-[#0D631B] py-2 px-3 rounded-lg font-semibold text-white text-md active:scale-95 hover:bg-[#2E7D32] duration-200 w-full"
+              class="btn-simpan-detail bg-[#0D631B] py-2 px-3 rounded-lg font-semibold text-white text-md active:scale-95 hover:bg-[#2E7D32] duration-200 w-full"
             >
               Simpan
             </button>
@@ -286,4 +286,62 @@ $(document).on("click", "#close-popup", function () {
     $("#overlay-popup").addClass("hidden");
     $("#popup-detail").addClass("hidden");
   }, 300);
+});
+
+function updateDetailTransaksi(idDetail, status, beratAktual, parentCard) {
+  $.ajax({
+    url: "../../backend/database/petugas/update_detail_transaksi.php",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({
+      id_detail: idDetail,
+      status: status,
+      berat_aktual: beratAktual,
+    }),
+    dataType: "json",
+    success: function (res) {
+      if (res.success) {
+        parentCard.fadeOut(300, function () {
+          $(this).remove();
+
+          const sisaKartu = $(".card-item-transaksi").length;
+
+          if (sisaKartu === 0) {
+            $("#popup-detail").append(`
+              <p class="text-center text-gray-500 py-6 font-md">
+                Semua transaksi nasabah ini telah selesai diproses.
+              </p>
+            `);
+          }
+        });
+      } else {
+        alert("Gagal: " + res.message);
+      }
+    },
+    error: function (xhr) {
+      console.log("Error:", xhr.responseText);
+    },
+  });
+}
+
+$(document).on("click", ".btn-simpan-detail", function () {
+  const idDetail = $(this).attr("data-id-detail");
+  const parentCard = $(this).closest(".card-transaksi");
+  const beratAktual = parentCard.find(".input-berat-aktual").val();
+
+  if (!beratAktual || parseFloat(beratAktual) <= 0) {
+    alert("Masukkan berat aktual terlebih dahulu!");
+    return;
+  }
+
+  updateDetailTransaksi(idDetail, "Proses", beratAktual, parentCard);
+});
+
+$(document).on("click", ".btn-tolak-detail", function () {
+  const idDetail = $(this).attr("data-id-detail");
+  const parentCard = $(this).closest(".card-transaksi");
+
+  if (confirm("Apakah Anda yakin ingin menolak transaksi sampah ini?")) {
+    updateDetailTransaksi(idDetail, "Gagal", null, parentCard);
+  }
 });
