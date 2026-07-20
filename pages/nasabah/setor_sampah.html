@@ -165,7 +165,7 @@
             </div>
           </div>
 
-          <div class="flex flex-col gap-5 w-[70%]">
+          <div id="card-step-1" class="flex flex-col gap-5 w-[70%]">
             <div class="flex flex-col gap-2">
               <h1 class="text-4xl font-bold text-[#0D631B]">
                 Pilih Jenis Sampah
@@ -175,93 +175,8 @@
               </p>
             </div>
 
-            <label
-              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md"
-            >
-              <div class="flex flex-row gap-5 items-center">
-                <img
-                  src="../../assets/icon/setor-sampah/sampah/plastik.svg"
-                  alt="plastik"
-                  class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
-                />
-                <div class="flex flex-col">
-                  <h3 class="text-xl font-semibold">Plastik</h3>
-                  <p class="text-sm">Botol, kantong plastik, kemasan makanan</p>
-                </div>
-              </div>
-              <div class="flex flex-row items-center gap-5">
-                <p
-                  class="text-sm font-bold text-[#0D631B] bg-[#D9E6DA] py-2 px-4 rounded-full shadow-md border-2 border-[#0D631B]/10"
-                >
-                  Harga saat ini Rp <span id="harga-Plastik">5000</span>
-                </p>
-                <input
-                  type="radio"
-                  name="sampah"
-                  id="plastic"
-                  value="Plastik"
-                  class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
-                />
-              </div>
-            </label>
-            <label
-              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md"
-            >
-              <div class="flex flex-row gap-5 items-center">
-                <img
-                  src="../../assets/icon/setor-sampah/sampah/paper.svg"
-                  alt="paper"
-                  class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
-                />
-                <div class="flex flex-col">
-                  <h3 class="text-xl font-semibold">Kertas</h3>
-                  <p class="text-sm">Koran, majalah, kardus bekas</p>
-                </div>
-              </div>
-              <div class="flex flex-row items-center gap-5">
-                <p
-                  class="text-sm font-bold text-[#0D631B] bg-[#D9E6DA] py-2 px-4 rounded-full shadow-md border-2 border-[#0D631B]/10"
-                >
-                  Harga saat ini Rp <span id="harga-Kertas">2000</span>
-                </p>
-                <input
-                  type="radio"
-                  name="sampah"
-                  id="paper"
-                  value="Kertas"
-                  class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
-                />
-              </div>
-            </label>
-            <label
-              class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md"
-            >
-              <div class="flex flex-row gap-5 items-center">
-                <img
-                  src="../../assets/icon/setor-sampah/sampah/metal.svg"
-                  alt="metal"
-                  class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
-                />
-                <div class="flex flex-col">
-                  <h3 class="text-xl font-semibold">Logam</h3>
-                  <p class="text-sm">Kaleng minuman, besi tua, kawat</p>
-                </div>
-              </div>
-              <div class="flex flex-row items-center gap-5">
-                <p
-                  class="text-sm font-bold text-[#0D631B] bg-[#D9E6DA] py-2 px-4 rounded-full shadow-md border-2 border-[#0D631B]/10"
-                >
-                  Harga saat ini Rp <span id="harga-Logam">7000</span>
-                </p>
-                <input
-                  type="radio"
-                  name="sampah"
-                  id="logam"
-                  value="Logam"
-                  class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
-                />
-              </div>
-            </label>
+            <!-- Card Sampah -->
+
             <button
               id="submit-step-1"
               type="button"

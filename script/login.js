@@ -34,7 +34,7 @@ $("#login-form").on("submit", function (e) {
             if (res.user.role === "admin") {
               window.location.href = "../pages/admin/admin_dashboard.html";
             } else if (res.user.role === "petugas") {
-              window.location.href = "../pages/petugas/petugas_dashboard.html";
+              window.location.href = "../pages/petugas/setor_berat.html";
             } else {
               window.location.href = "../index.html";
             }

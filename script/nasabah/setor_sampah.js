@@ -19,10 +19,40 @@ $.ajax({
       listSampah = res.data;
       console.log(res.data);
 
-      listSampah.forEach(function (sampah) {
-        $(`#harga-${sampah.jenis_sampah}`).text(
-          Number(sampah.harga_sampah_per_kg).toLocaleString("id-ID"),
-        );
+      res.data.forEach((item) => {
+        const cardHTML = `
+          <label
+            class="border-2 border-[#0D631B]/70 w-full rounded-xl py-7 px-7 flex flex-row justify-between items-center shadow-md hover:shadow-lg duration-200 cursor-pointer has-[:checked]:bg-[#0D631B]/10 has-[:checked]:shadow-md"
+          >
+            <div class="flex flex-row gap-5 items-center">
+              <img
+                src="../../assets/icon/setor-sampah/sampah/${item.jenis_sampah}.svg"
+                alt="${item.jenis_sampah}"
+                class="bg-[#D9E6DA] p-4 rounded-2xl select-none"
+              />
+              <div class="flex flex-col">
+                <h3 class="text-xl font-semibold">${item.jenis_sampah}</h3>
+                <p class="text-sm">${item.deskripsi_sampah}</p>
+              </div>
+            </div>
+            <div class="flex flex-row items-center gap-5">
+              <p
+                class="text-sm font-bold text-[#0D631B] bg-[#D9E6DA] py-2 px-4 rounded-full shadow-md border-2 border-[#0D631B]/10"
+              >
+                Harga saat ini Rp <span id="harga-${item.jenis_sampah}">${Number(item.harga_sampah_per_kg).toLocaleString("id-ID")}</span>
+              </p>
+              <input
+                type="radio"
+                name="sampah"
+                id="${item.jenis_sampah}"
+                value="${item.jenis_sampah}"
+                class="appearance-none w-7 h-7 rounded-full border-2 border-gray-300 bg-transparent p-[3px] bg-clip-content cursor-pointer transition-all duration-200 checked:border-[#0D631B] checked:bg-[#0D631B]"
+              />
+            </div>
+          </label>
+        `;
+
+        $(cardHTML).insertBefore("#submit-step-1");
       });
     } else {
       console.log("Gagal mengambil data dari db", res.message);

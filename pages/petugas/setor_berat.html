@@ -25,13 +25,6 @@
           <hr class="border-t-2 border-black/10 mt-5" />
         </div>
         <ul class="flex flex-col gap-1">
-          <a href="./kelola_nasabah.html">
-            <li
-              class="font-bold text-[#40493D] hover:bg-[#2E7D32] hover:text-[#CBFFC2] px-4 py-3 text-sm rounded-lg duration-200 cursor-pointer active:scale-95"
-            >
-              Kelola Nasabah
-            </li>
-          </a>
           <a href="#">
             <li
               class="font-bold bg-[#2E7D32] text-[#CBFFC2] px-4 py-3 text-sm rounded-lg duration-200 cursor-pointer hover:scale-95 active:scale-95"
@@ -63,7 +56,7 @@
       class="flex-1 flex flex-col items-center p-10 gap-7 h-screen overflow-y-auto"
     >
       <div
-        class="bg-white w-[70%] flex flex-col gap-5 py-8 px-10 rounded-xl shadow-md"
+        class="bg-white w-[80%] flex flex-col gap-5 py-8 px-10 rounded-xl shadow-md border-2 border-[#0D631B]/20"
       >
         <div class="flex flex-col gap-1">
           <h1 class="text-2xl font-bold text-black">Cari Nasabah</h1>
@@ -108,14 +101,20 @@
                 class="p-1 w-14 h-14 rounded-full bg-[#D9E6DA] select-none shadow-sm border-2 border-[#0D631B]/10"
               />
               <div class="flex flex-col">
-                <p id="nama-nasabah" class="text-lg font-bold text-[#0D631B]">
+                <p
+                  id="nama-nasabah-pencarian"
+                  class="text-lg font-bold text-[#0D631B]"
+                >
                   Budi Susanto
                 </p>
-                <p id="id-nasabah" class="text-sm font-semibold text-[#0D631B]">
+                <p
+                  id="id-nasabah-pencarian"
+                  class="text-sm font-semibold text-[#0D631B]"
+                >
                   #84
                 </p>
                 <p
-                  id="no-telepon-nasabah"
+                  id="no-telepon-nasabah-pencarian"
                   class="text-sm font-semibold text-[#0D631B]"
                 >
                   0897 1234 5678
@@ -127,6 +126,73 @@
               class="py-2 px-5 bg-[#0D631B] text-white rounded-lg font-semibold hover:bg-[#2E7D32] duration-200 active:scale-95"
             >
               Pilih
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="flex flex-col gap-5 bg-white w-[80%] py-4 pt-0 rounded-xl shadow-md border-2 border-[#0D631B]/20"
+      >
+        <div
+          class="grid grid-cols-5 bg-[#EBEFE5] px-2 py-4 justify-between items-center rounded-t-xl font-semibold pl-8"
+        >
+          <div>
+            <p>Nasabah</p>
+          </div>
+          <div>
+            <p>ID Nasabah</p>
+          </div>
+          <div>
+            <p>Wilayah</p>
+          </div>
+          <div>
+            <p>Status</p>
+          </div>
+          <div class="text-center">
+            <p>Aksi</p>
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-5 p-2 justify-between items-center font-semibold pl-8"
+        >
+          <div class="flex flex-row gap-4 items-center">
+            <img
+              src="../../assets/icon/profil-account/profil-account.png"
+              alt=""
+              class="w-10 h-10 select-none"
+            />
+            <span id="nama-nasabah-select" class="font-semibold text-lg"
+              >Ahmad</span
+            >
+          </div>
+          <div>
+            <span id="id-nasabah-select" class="text-gray-800/70">#36</span>
+          </div>
+          <div>
+            <span
+              id="kecamatan"
+              class="bg-[#D9E6DA] text-[#5B675E] py-1 px-3 rounded-full"
+              >Bandung</span
+            >
+          </div>
+          <div>
+            <span
+              id="status-transaksi-select"
+              class="bg-yellow-100 py-1 px-3 rounded-full text-yellow-800"
+              >Menunggu Validasi</span
+            >
+          </div>
+          <div class="text-center">
+            <button
+              type="button"
+              class="hover:bg-[#D9E6DA] duration-200 p-3 rounded-full active:scale-90"
+            >
+              <img
+                src="../../assets/icon/edit.png"
+                alt="edit-icon"
+                class="select-none"
+              />
             </button>
           </div>
         </div>
