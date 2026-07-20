@@ -50,9 +50,9 @@ $("#cari-nasabah").on("input", function () {
                 >
                     <div class="flex flex-row gap-5 items-center py-2">
                         <img
-                            src="../../assets/icon/profil-account/profil-account.png"
+                            src="../../assets/img/orang-profile.png"
                             alt="profile-icon"
-                            class="p-1 w-14 h-14 rounded-full bg-[#D9E6DA] select-none shadow-sm border-2 border-[#0D631B]/10"
+                            class="p-1 w-16 h-16 rounded-full bg-[#D9E6DA] select-none shadow-sm border-2 border-[#0D631B]/10"
                         />
                         <div class="flex flex-col">
                             <p
@@ -103,7 +103,7 @@ $("#cari-nasabah").on("input", function () {
 $(document).on("click", ".btn-pilih-nasabah", function () {
   const usernameNasabah = $(this).attr("data-username");
   $.ajax({
-    url: "../../backend/database/petugas/get_transaksi.php",
+    url: "../../backend/database/petugas/get_detail_transaksi_nasabah.php",
     type: "GET",
     data: { username_nasabah: usernameNasabah },
     dataType: "json",
@@ -125,6 +125,12 @@ function renderPopup(nasabah, listTransaksi) {
   container.empty();
 
   const profileNasabah = `
+    <div class="flex flex-row justify-end px-2">
+      <button type="button" class="text-gray-400 text-lg hover:text-red-800 active:scale-95 duration-200" id="close-popup">
+        ✕
+      </button>
+    </div>
+
     <div
       class="flex flex-row justify-start items-center gap-4 bg-[#EBEFE5] px-3 py-3 rounded-xl border-2 border-[#0D631B]/20 w-full"
     >
@@ -157,7 +163,7 @@ function renderPopup(nasabah, listTransaksi) {
         <div class="flex flex-col gap-2 border-b border-black/20 pb-5 w-full">
           <div class="flex flex-col items-start justify-between gap-2 mb-2">
             <p class="font-semibold text-[#0D631B]">
-              ID Transaksi: #<span id="id-transaksi">${item.id_transaksi}</span>
+              ID Transaksi: #<span id="id-transaksi">${item.id_detail}</span>
             </p>
             <p class="font-semibold text-[#0D631B]">
               Status:
@@ -166,6 +172,9 @@ function renderPopup(nasabah, listTransaksi) {
                 class="bg-yellow-100 px-2 py-1 rounded-full"
                 >${item.status}</span
               >
+            </p>
+            <p class="font-semibold text-[#0D631B]">
+              Jenis Sampah: <span id="id-transaksi">${item.jenis_sampah}</span>
             </p>
           </div>
   
@@ -182,7 +191,7 @@ function renderPopup(nasabah, listTransaksi) {
                 <div class="flex flex-col">
                   <p class="font-semibold text-md">Estimasi Nasabah</p>
                   <p class="font-light text-sm">
-                    Rp <span id="harga-estimasi-nasabah">${Number(item.total_nominal).toLocaleString("id-ID")}</span>
+                    Rp <span id="harga-estimasi-nasabah">${Number(item.subtotal_nominal).toLocaleString("id-ID")}</span>
                   </p>
                 </div>
               </div>
@@ -192,7 +201,7 @@ function renderPopup(nasabah, listTransaksi) {
                 <span
                   id="berat-estimasi-nasabah"
                   class="font-semibold text-xl text-black w-18"
-                  >${item.total_berat}</span
+                  >${item.berat_sampah}</span
                 >
                 <p class="font-semibold text-sm">kg</p>
               </div>
@@ -229,7 +238,14 @@ function renderPopup(nasabah, listTransaksi) {
             </div>
           </div>
   
-          <div class="flex flex-row justify-start mt-2 w-full">
+          <div class="flex flex-row justify-start mt-2 w-full gap-3">
+            <button
+              id="id-transaksi-${item.id_transaksi}"
+              type="button"
+              class="bg-red-800 py-2 px-3 rounded-lg font-semibold text-white text-md active:scale-95 hover:bg-red-800/90 duration-200 w-full"
+            >
+              Tolak
+            </button>
             <button
               id="id-transaksi-${item.id_transaksi}"
               type="button"
@@ -242,6 +258,12 @@ function renderPopup(nasabah, listTransaksi) {
       `;
       container.append(cardTransaksi);
     });
+  } else {
+    container.append(`
+        <div class="font-semibold text-lg text-gray-800/60 text-center">
+          <p>Nasabah belum melakukan transaksi</p>
+        </div>
+      `);
   }
 
   // --

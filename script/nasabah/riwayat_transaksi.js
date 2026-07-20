@@ -99,7 +99,7 @@ $.ajax({
             </div>
             <hr />
             <div class="py-4 px-2 flex flex-row justify-between">
-              <p class="text-[#0D631B]/90">Berat: <span>${item.berat_sampah}</span> Kg</p>
+              <p class="text-[#0D631B]/90">Berat: <span>${item.berat_sampah_aktual}</span> Kg</p>
               <a href="">
                 <p
                   class="font-semibold text-[#0D631B] duration-200 hover:font-bold hover:text-[#2E7D32]"

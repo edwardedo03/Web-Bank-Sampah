@@ -14,12 +14,15 @@
     $id_nasabah = $nasabah['id_nasabah'];
 
         $statement_transaksi = $conn->prepare("SELECT 
-                                    id_transaksi,
-                                    total_nominal,
-                                    total_berat,
-                                    status
-                                FROM transaksi 
-                                WHERE id_nasabah = ? AND status = 'Menunggu Validasi'");
+            dt.id_detail,
+            dt.id_transaksi,
+            dt.subtotal_nominal,
+            dt.berat_sampah,
+            dt.jenis_sampah,
+            dt.status
+          FROM detail_transaksi dt
+          JOIN transaksi t ON dt.id_transaksi = t.id_transaksi
+          WHERE t.id_nasabah = ? AND dt.status = 'Menunggu Validasi'");
 
         $statement_transaksi->bind_param("i", $id_nasabah);
         $statement_transaksi->execute();

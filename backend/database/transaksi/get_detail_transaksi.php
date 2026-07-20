@@ -7,7 +7,7 @@
 
     $id_nasabah = $_GET['id_akun'] ?? ($_SESSION['id_akun'] ?? '');
 
-    $statement = $conn->prepare("SELECT t.tanggal_penyerahan, t.status, d.jenis_sampah, d.berat_sampah, d.subtotal_nominal, d.catatan 
+    $statement = $conn->prepare("SELECT t.tanggal_penyerahan, d.status, d.jenis_sampah, d.berat_sampah_aktual, d.subtotal_nominal, d.catatan 
               FROM transaksi t
               JOIN detail_transaksi d ON t.id_transaksi = d.id_transaksi
               WHERE t.id_nasabah = ? 
