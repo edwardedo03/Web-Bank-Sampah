@@ -372,6 +372,94 @@
           </div>
         </div> -->
       </div>
+
+      <form
+        id="tarik-saldo-form"
+        class="flex flex-col justify-start items-center w-[70%] gap-5 py-2 hidden"
+      >
+        <div
+          class="flex flex-col items-start justify-between gap-1 py-5 px-5 bg-[#BFCABA]/30 rounded-xl w-full border-2 border-[#0D631B]/20 shadow-md"
+        >
+          <p class="font-semibold text-lg text-gray-800/60">Saldo Tersedia</p>
+          <p class="font-bold text-3xl text-[#0D631B]">
+            Rp <span id="saldo-penarikan">0</span>
+          </p>
+        </div>
+
+        <div class="flex flex-col w-full items-start gap-3">
+          <p>Nominal Penarikan</p>
+          <div class="grid grid-cols-2 gap-3 w-full">
+            <div
+              class="flex flex-row gap-2 col-span-full w-full items-center bg-white border-2 border-[#0D631B]/20 rounded-xl px-3 shadow-md"
+            >
+              <p class="font-bold text-xl">Rp</p>
+              <input
+                type="number"
+                step="10000"
+                min="0"
+                id="nominal-penarikan"
+                placeholder="0"
+                class="w-full py-2 px-3 rounded-xl w-full text-lg font-semibold outline-none"
+              />
+            </div>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="50000"
+                class="sr-only radio-nominal"
+              />
+              Rp 50.000
+            </label>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="100000"
+                class="sr-only radio-nominal"
+              />
+              Rp 100.000
+            </label>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="200000"
+                class="sr-only radio-nominal"
+              />
+              Rp 200.000
+            </label>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="tarik-semua"
+                class="sr-only radio-nominal"
+              />
+              Tarik Semua
+            </label>
+
+            <button
+              type="button"
+              class="col-span-full bg-[#0D631B] text-white rounded-xl py-3 font-semibold hover:bg-[#2E7D32] active:scale-95 duration-200"
+            >
+              Tarik Saldo
+            </button>
+          </div>
+        </div>
+      </form>
     </section>
 
     <script

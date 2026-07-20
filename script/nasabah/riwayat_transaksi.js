@@ -23,6 +23,8 @@ $(".btn-filter").on("click", function () {
     .removeClass("bg-gray-800/30 text-gray-800/80")
     .addClass("bg-[#0D631B] text-[#F7FBF0]");
 
+  $("#tarik-saldo-form").addClass("hidden");
+
   $(".content-kategori").addClass("hidden");
 
   const targetId = $(this).attr("data-target");
@@ -31,6 +33,8 @@ $(".btn-filter").on("click", function () {
 });
 
 getTabungan("saldo-tabungan", idAkun, "../..");
+
+getTabungan("saldo-penarikan", idAkun, "../..");
 
 getTotalSampah("total-sampah", idAkun, "../..");
 
@@ -45,7 +49,9 @@ $.ajax({
   data: { id_akun: idAkun },
   success: function (res) {
     if (res.success && res.history.length > 0) {
-      res.history.forEach((item) => {
+      const limitHistory = res.history.slice(0, 6);
+
+      limitHistory.forEach((item) => {
         const dateTime = new Date(item.tanggal_penyerahan);
 
         const formatTanggal = {
@@ -132,4 +138,39 @@ $.ajax({
   error: function (xhr) {
     console.log("Error", xhr.responseText);
   },
+});
+
+// --------------
+
+$("#tarik-saldo").on("click", function () {
+  $("#tarik-saldo-form").removeClass("hidden");
+  $(".content-kategori").addClass("hidden");
+});
+
+$(document).on("click", "label:has(.radio-nominal)", function (e) {
+  const radio = $(this).find(".radio-nominal");
+
+  if (!radio.is(":checked")) {
+    radio.prop("checked", true).trigger("change");
+  }
+});
+
+$(document).on("change", ".radio-nominal", function () {
+  const val = $(this).val();
+
+  if (val === "tarik-semua") {
+    const saldoTersedia =
+      parseInt(
+        $("#saldo-penarikan")
+          .text()
+          .replace(/[^0-9]/g, ""),
+      ) || 0;
+    $("#nominal-penarikan").val(saldoTersedia);
+  } else {
+    $("#nominal-penarikan").val(val);
+  }
+});
+
+$("#nominal-penarikan").on("input", function () {
+  $(".radio-nominal").prop("checked", false);
 });
