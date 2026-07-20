@@ -88,7 +88,7 @@ $.ajax({
               </div>
               <div class="flex flex-col gap-2 items-end justify-center">
                 <h5 class="text-[#0D631B] font-semibold text-lg">
-                  + Rp <span>${Number(item.subtotal_nominal).toLocaleString("id-ID")}</span>
+                  + Rp <span>${Number(item.subtotal_nominal_aktual).toLocaleString("id-ID")}</span>
                 </h5>
                 <p
                   class="${badgeColor} py-1 px-3 rounded-xl text-xs font-bold"
