@@ -20,8 +20,8 @@ if ($nama === '' || $harga === null || !is_numeric($harga)) {
     exit();
 }
 
-$stmt = $conn->prepare("INSERT INTO sampah (jenis_sampah, harga_sampah_per_kg, jumlah_sampah_gudang) VALUES (?, ?, 0)");
-$stmt->bind_param('sd', $nama, $harga);
+$stmt = $conn->prepare("INSERT INTO sampah (jenis_sampah, harga_sampah_per_kg, jumlah_sampah_gudang, deskripsi) VALUES (?, ?, 0, ?)");
+$stmt->bind_param('sds', $nama, $harga, $deskripsi);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Kategori baru berhasil ditambahkan', 'id' => $stmt->insert_id]);
