@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Jul 2026 pada 19.16
+-- Waktu pembuatan: 20 Jul 2026 pada 07.03
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -43,28 +43,6 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id_admin`, `username_admin`, `password_admin`, `role`, `nama_admin`, `no_telepon_admin`, `email_admin`) VALUES
 (1, 'admin', '$2y$10$FIUwGsKfwjkQncrGm5s07enK0eXwcV2VXDe9QM0bFIVaf1d/BUqAW', 'admin', '', '', 'admin@gmail.com');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `akun`
---
-
-CREATE TABLE `akun` (
-  `id_akun` bigint(20) NOT NULL,
-  `email` varchar(64) NOT NULL,
-  `username` varchar(64) NOT NULL,
-  `password` varchar(64) NOT NULL,
-  `role` varchar(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `akun`
---
-
-INSERT INTO `akun` (`id_akun`, `email`, `username`, `password`, `role`) VALUES
-(73, 'superadmin@gmail.com', 'root', '$2y$12$mts3p.ijtHp8BQbznGCwWeYhm7CDblrxj7xaK5VMmpnZl0DTzQ5zy', 'admin'),
-(74, 'edwardahhutauruk@gmail.com', 'edwardedo', '$2y$12$HxZn3HUfbT90z.JpdPochefAX6J8YtUueTgVLhhFixuGRCEDLkZTu', 'nasabah');
 
 -- --------------------------------------------------------
 
@@ -158,6 +136,7 @@ INSERT INTO `petugas_lapangan` (`id_petugas`, `username_petugas`, `password_petu
 CREATE TABLE `sampah` (
   `id_sampah` bigint(20) NOT NULL,
   `jenis_sampah` varchar(64) NOT NULL,
+  `deskripsi_sampah` varchar(64) NOT NULL,
   `harga_sampah_per_kg` double NOT NULL,
   `jumlah_sampah_gudang` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -166,10 +145,10 @@ CREATE TABLE `sampah` (
 -- Dumping data untuk tabel `sampah`
 --
 
-INSERT INTO `sampah` (`id_sampah`, `jenis_sampah`, `harga_sampah_per_kg`, `jumlah_sampah_gudang`) VALUES
-(1, 'Plastik', 2000, 0),
-(2, 'Kertas', 1500, 0),
-(3, 'Logam', 4000, 0);
+INSERT INTO `sampah` (`id_sampah`, `jenis_sampah`, `deskripsi_sampah`, `harga_sampah_per_kg`, `jumlah_sampah_gudang`) VALUES
+(1, 'Plastik', 'Botol, kantong plastik, kemasan makanan', 2000, 0),
+(2, 'Kertas', 'Koran, majalah, kardus bekas', 1500, 0),
+(3, 'Logam', 'Kaleng minuman, besi tua, kawat', 4000, 0);
 
 -- --------------------------------------------------------
 
@@ -209,14 +188,6 @@ INSERT INTO `transaksi` (`id_transaksi`, `id_nasabah`, `id_petugas`, `tanggal_tr
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
-
---
--- Indeks untuk tabel `akun`
---
-ALTER TABLE `akun`
-  ADD PRIMARY KEY (`id_akun`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indeks untuk tabel `detail_transaksi`
@@ -265,12 +236,6 @@ ALTER TABLE `admin`
   MODIFY `id_admin` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `akun`
---
-ALTER TABLE `akun`
-  MODIFY `id_akun` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
-
---
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
@@ -292,7 +257,7 @@ ALTER TABLE `petugas_lapangan`
 -- AUTO_INCREMENT untuk tabel `sampah`
 --
 ALTER TABLE `sampah`
-  MODIFY `id_sampah` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_sampah` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`

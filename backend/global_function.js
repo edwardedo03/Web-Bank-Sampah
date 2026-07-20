@@ -163,6 +163,28 @@ export function postNasabahProfile(dataProfile, rootPath = ".") {
   });
 }
 
+// POST Profile Petugas
+
+export function postPetugasProfile(dataProfile, rootPath = ".") {
+  return $.ajax({
+    url: `${rootPath}/backend/database/petugas/post_profile_petugas.php`,
+    type: "POST",
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify(dataProfile),
+    success: function (res) {
+      if (res.success) {
+        console.log("Success", res.message);
+
+        window.location.reload();
+      }
+    },
+    error: function (xhr) {
+      console.log("Error", xhr.responseText);
+    },
+  });
+}
+
 // GET Detail Transaksi
 
 export function getDetailTransaksi(idAKun, rootPath = ".") {

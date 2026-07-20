@@ -1,3 +1,16 @@
+import { getLogoutFunction } from "../../backend/global_function.js";
+
+const username = sessionStorage.getItem("username");
+const idAkun = sessionStorage.getItem("id_akun");
+
+if (!username || !idAkun) {
+  window.location.href = "../login.html";
+} else {
+  $("#nama-user").text(`${username}`);
+}
+
+getLogoutFunction("../..");
+
 let timerPencarian;
 
 $("#cari-nasabah").on("input", function () {
@@ -5,7 +18,20 @@ $("#cari-nasabah").on("input", function () {
 
   clearTimeout(timerPencarian);
 
+  if (!keyword) {
+    $("#card-nasabah-pencarian").empty();
+    $("#nasabah-ketemu").text("0");
+    return;
+  }
+
   timerPencarian = setTimeout(() => {
+    const currentKeyword = $("#cari-nasabah").val().trim();
+    if (currentKeyword === "") {
+      $("#card-nasabah-pencarian").empty();
+      $("#nasabah-ketemu").text("0");
+      return;
+    }
+
     $.ajax({
       url: "../../backend/database/petugas/get_all_nasabah.php",
       type: "GET",
@@ -14,7 +40,7 @@ $("#cari-nasabah").on("input", function () {
       success: function (res) {
         $("#card-nasabah-pencarian").empty();
 
-        if (res.success && res.nasabah && res.nasabah.length > 0) {
+        if (res.success && res.nasabah.length > 0) {
           $("#nasabah-ketemu").text(res.nasabah.length);
 
           res.nasabah.forEach((item) => {
@@ -37,7 +63,7 @@ $("#cari-nasabah").on("input", function () {
                             <p
                                 class="text-sm font-semibold text-[#0D631B]"
                             >
-                                #${item.id_nasabah}
+                                @${item.username_nasabah}
                             </p>
                             <p
                                 class="text-sm font-semibold text-[#0D631B]"

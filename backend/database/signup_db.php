@@ -10,23 +10,21 @@
     $username = $decode['username'] ?? '';
     $password = $decode['password'] ?? '';
     $role = $decode['role'] ?? '';
+    $tanggal_bergabung = date('Y-m-d');
 
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
-    $statement = $conn->prepare("INSERT INTO akun (email, username, password, role) VALUES (?, ?, ?, ?)");
-    $statement->bind_param("ssss", $email, $username, $password_hash, $role);
 
     try {
 
         if ($role === 'nasabah') {
-            $statement = $conn->prepare("INSERT INTO nasabah (email_nasabah, username_nasabah, password_nasabah, role) VALUES (?, ?, ?, ?)");
-            $statement->bind_param("ssss", $email, $username, $password_hash, $role);
+            $statement = $conn->prepare("INSERT INTO nasabah (email_nasabah, username_nasabah, password_nasabah, role, tanggal_bergabung) VALUES (?, ?, ?, ?, ?)");
+            $statement->bind_param("sssss", $email, $username, $password_hash, $role, $tanggal_bergabung);
         } else if ($role === 'petugas') {
-            $statement = $conn->prepare("INSERT INTO petugas_lapangan (email_petugas, username_petugas, password_petugas, role) VALUES (?, ?, ?, ?)");
-            $statement->bind_param("ssss", $email, $username, $password_hash, $role);
+            $statement = $conn->prepare("INSERT INTO petugas_lapangan (email_petugas, username_petugas, password_petugas, role, tanggal_bergabung) VALUES (?, ?, ?, ?, ?)");
+            $statement->bind_param("sssss", $email, $username, $password_hash, $role, $tanggal_bergabung);
         } else {
-            $statement = $conn->prepare("INSERT INTO admin (email_admin, username_admin, password_admin, role) VALUES (?, ?, ?, ?)");
-            $statement->bind_param("ssss", $email, $username, $password_hash, $role);
+            $statement = $conn->prepare("INSERT INTO admin (email_admin, username_admin, password_admin, role, tanggal_bergabung) VALUES (?, ?, ?, ?, ?)");
+            $statement->bind_param("sssss", $email, $username, $password_hash, $role, $tanggal_bergabung);
         }
 
         $statement->execute();

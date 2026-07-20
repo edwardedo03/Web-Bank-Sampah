@@ -7,11 +7,11 @@
 
     $keyword = $_GET['keyword'] ?? '';
 
-    $statement = $conn->prepare('SELECT * FROM nasabah WHERE nama_nasabah LIKE ? ORDER BY nama_nasabah ASC');
+    $statement = $conn->prepare('SELECT * FROM nasabah WHERE nama_nasabah LIKE ? OR username_nasabah LIKE ? ORDER BY nama_nasabah ASC');
 
     $searchRule = '%' . $keyword . '%';
 
-    $statement->bind_param('s', $searchRule);
+    $statement->bind_param('ss', $searchRule, $searchRule);
     $statement->execute();
     
     $result = $statement->get_result();
