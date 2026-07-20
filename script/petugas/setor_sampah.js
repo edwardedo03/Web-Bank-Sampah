@@ -74,7 +74,8 @@ $("#cari-nasabah").on("input", function () {
                     </div>
                     <button
                         type="button"
-                        class="py-2 px-5 bg-[#0D631B] text-white rounded-lg font-semibold hover:bg-[#2E7D32] duration-200 active:scale-95"
+                        data-username="${item.username_nasabah}"
+                        class="btn-pilih-nasabah py-2 px-5 bg-[#0D631B] text-white rounded-lg font-semibold hover:bg-[#2E7D32] duration-200 active:scale-95"
                     >
                         Pilih
                     </button>
@@ -96,5 +97,171 @@ $("#cari-nasabah").on("input", function () {
         console.log("Error", xhr.responseText);
       },
     });
+  }, 300);
+});
+
+$(document).on("click", ".btn-pilih-nasabah", function () {
+  const usernameNasabah = $(this).attr("data-username");
+  $.ajax({
+    url: "../../backend/database/petugas/get_transaksi.php",
+    type: "GET",
+    data: { username_nasabah: usernameNasabah },
+    dataType: "json",
+    success: function (res) {
+      if (res.success) {
+        renderPopup(res.nasabah, res.transaksi);
+      } else {
+        alert(res.message);
+      }
+    },
+    error: function (xhr) {
+      console.log("Error:", xhr.responseText);
+    },
+  });
+});
+
+function renderPopup(nasabah, listTransaksi) {
+  const container = $("#popup-detail");
+  container.empty();
+
+  const profileNasabah = `
+    <div
+      class="flex flex-row justify-start items-center gap-4 bg-[#EBEFE5] px-3 py-3 rounded-xl border-2 border-[#0D631B]/20 w-full"
+    >
+      <img
+        src="../../assets/img/orang-profile.png"
+        alt="orang"
+        class="rounded-full border-[#0D631B]/20 border-2 w-16 h-16 select-none"
+      />
+      <div class="flex flex-col justify-between items-start">
+        <h3 class="text-lg font-bold" id="username-nasabah-popup">
+          ${nasabah.username_nasabah}
+        </h3>
+        <p class="text-sm font-semibold">
+          ID: #<span id="id-nasabah-popup">${nasabah.id_nasabah}</span>
+        </p>
+        <p class="text-sm font-semibold">
+          Wilayah: <span id="wilayah-nasabah-popup">${nasabah.kecamatan}</span>
+        </p>
+      </div>
+    </div>
+    <hr />
+  `;
+  container.append(profileNasabah);
+
+  // --
+
+  if (listTransaksi && listTransaksi.length > 0) {
+    listTransaksi.forEach((item) => {
+      let cardTransaksi = `
+        <div class="flex flex-col gap-2 border-b border-black/20 pb-5 w-full">
+          <div class="flex flex-col items-start justify-between gap-2 mb-2">
+            <p class="font-semibold text-[#0D631B]">
+              ID Transaksi: #<span id="id-transaksi">${item.id_transaksi}</span>
+            </p>
+            <p class="font-semibold text-[#0D631B]">
+              Status:
+              <span
+                id="status-transaksi"
+                class="bg-yellow-100 px-2 py-1 rounded-full"
+                >${item.status}</span
+              >
+            </p>
+          </div>
+  
+          <div class="flex flex-col gap-3 items-start w-full">
+            <div
+              class="flex flex-row justify-between items-center gap-4 bg-[#EBEFE5] py-2 px-4 rounded-xl border-2 border-[#0D631B]/20 w-full"
+            >
+              <div class="flex flex-row gap-3 items-center">
+                <img
+                  src="../../assets/icon/setor-sampah/sampah/Plastik.svg"
+                  alt="icon-sampah"
+                  class="bg-white rounded-xl p-2 w-12 h-12 select-none"
+                />
+                <div class="flex flex-col">
+                  <p class="font-semibold text-md">Estimasi Nasabah</p>
+                  <p class="font-light text-sm">
+                    Rp <span id="harga-estimasi-nasabah">${Number(item.total_nominal).toLocaleString("id-ID")}</span>
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex flex-row gap-3 items-center border-2 border-black/70 rounded-lg py-2 px-3 w-24 justify-end"
+              >
+                <span
+                  id="berat-estimasi-nasabah"
+                  class="font-semibold text-xl text-black w-18"
+                  >${item.total_berat}</span
+                >
+                <p class="font-semibold text-sm">kg</p>
+              </div>
+            </div>
+  
+            <div
+              class="flex flex-row justify-between items-center gap-4 bg-[#EBEFE5] py-2 px-4 rounded-xl border-2 border-[#0D631B]/20 w-full"
+            >
+              <div class="flex flex-row gap-3 items-center">
+                <img
+                  src="../../assets/icon/setor-sampah/sampah/Kertas.svg"
+                  alt="icon-sampah"
+                  class="bg-white rounded-xl p-2 w-12 h-12 select-none"
+                />
+                <div class="flex flex-col">
+                  <p class="font-semibold text-md">Berat Aktual</p>
+                  <p class="font-light text-sm">
+                    Rp <span id="harga-aktual-nasabah">-</span>
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex flex-row gap-4 items-center border-2 border-black/70 rounded-lg py-2 px-2 shadow-md w-24 justify-end"
+              >
+                <input
+                  id="berat-aktual-nasabah"
+                  type="number"
+                  step="0.1"
+                  placeholder="0.0"
+                  class="font-semibold text-xl text-black outline-none bg-transparent w-full min-w-0 text-right appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+                <p class="font-semibold text-sm">kg</p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="flex flex-row justify-start mt-2 w-full">
+            <button
+              id="id-transaksi-${item.id_transaksi}"
+              type="button"
+              class="bg-[#0D631B] py-2 px-3 rounded-lg font-semibold text-white text-md active:scale-95 hover:bg-[#2E7D32] duration-200 w-full"
+            >
+              Simpan
+            </button>
+          </div>
+        </div>
+      `;
+      container.append(cardTransaksi);
+    });
+  }
+
+  // --
+
+  $("#overlay-popup").removeClass("hidden");
+  $("#popup-detail").removeClass("hidden");
+  setTimeout(() => {
+    $("#overlay-popup").removeClass("opacity-0").addClass("opacity-100");
+    $("#popup-detail")
+      .removeClass("translate-x-full")
+      .addClass("translate-x-0");
+  }, 10);
+}
+
+$(document).on("click", "#close-popup", function () {
+  $("#overlay-popup").removeClass("opacity-100").addClass("opacity-0");
+  $("#popup-detail").removeClass("translate-x-0").addClass("translate-x-full");
+
+  setTimeout(() => {
+    $("#overlay-popup").addClass("hidden");
+    $("#popup-detail").addClass("hidden");
   }, 300);
 });
