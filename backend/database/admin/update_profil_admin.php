@@ -1,8 +1,4 @@
 <?php
-/*
-  backend/database/admin/update_profil_admin.php
-  Menerima POST JSON: { "nama": "...", "email": "...", "telepon": "..." }
-*/
 
 header('Content-Type: application/json');
 require '../db.php';

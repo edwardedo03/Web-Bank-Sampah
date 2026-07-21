@@ -1,13 +1,4 @@
 <?php
-/*
-  backend/database/admin/get_riwayat_transaksi.php
-  GET ?q=keyword
-
-  Tiap baris hasil = 1 baris detail_transaksi (1 jenis sampah dalam 1 transaksi),
-  dengan status ASLI dari kolom `status` di tabel detail_transaksi
-  (bukan lagi di-hardcode "SELESAI").
-*/
-
 header('Content-Type: application/json');
 require '../db.php';
 

@@ -1,11 +1,3 @@
-/* ==========================================================
-   Bank Sampah Selaras — Admin UI
-   Shared JS helpers: toast, modal, dropdown (versi Tailwind)
-   ========================================================== */
-
-/**
- * Menampilkan notifikasi kecil di pojok kanan bawah.
- */
 function showToast(message, isError = false) {
     let toast = document.getElementById('appToast');
     if (!toast) {
@@ -27,7 +19,6 @@ function showToast(message, isError = false) {
     }, 2500);
 }
 
-/** Buka modal: hilangkan class "hidden" & tambahkan "flex" */
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -36,7 +27,6 @@ function openModal(modalId) {
     }
 }
 
-/** Tutup modal: tambahkan lagi class "hidden" */
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -61,9 +51,6 @@ function setupModalCloseHandlers() {
     });
 }
 
-/**
- * Setup dropdown menu sederhana (misalnya menu di avatar admin).
- */
 function setupDropdown(triggerId, menuId) {
     const trigger = document.getElementById(triggerId);
     const menu = document.getElementById(menuId);

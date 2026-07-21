@@ -1,13 +1,4 @@
 <?php
-/*
-  backend/database/admin/dashboard_data.php
-  GET ?periode=Bulan+Ini&jenis=Semua+Jenis
-
-  Mengembalikan JSON statistik dashboard + 5 transaksi terbaru.
-  Status transaksi sekarang diambil ASLI dari kolom `status` di detail_transaksi
-  (bukan hardcode "SELESAI" lagi).
-*/
-
 header('Content-Type: application/json');
 require '../db.php';
 
@@ -16,7 +7,6 @@ session_start();
 $periode = $_GET['periode'] ?? 'Bulan Ini';
 $jenis = $_GET['jenis'] ?? 'Semua Jenis';
 
-// Bangun kondisi tanggal berdasarkan periode
 $periodeCondition = '';
 if ($periode === 'Minggu Ini') {
     $periodeCondition = "AND t.tanggal_transaksi >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
@@ -26,7 +16,6 @@ if ($periode === 'Minggu Ini') {
     $periodeCondition = "AND YEAR(t.tanggal_transaksi) = YEAR(NOW()) AND MONTH(t.tanggal_transaksi) = MONTH(NOW())";
 }
 
-// Kondisi jenis sampah (opsional)
 $jenisCondition = '';
 $jenisParam = null;
 if ($jenis !== 'Semua Jenis') {
@@ -44,7 +33,6 @@ $result = [
     'tren_mingguan' => [],
 ];
 
-// Total nasabah & petugas & saldo (tidak tergantung filter periode/jenis)
 $q = $conn->query("SELECT COUNT(*) AS total FROM nasabah");
 $result['total_nasabah'] = (int) $q->fetch_assoc()['total'];
 
@@ -55,7 +43,6 @@ $q = $conn->query("SELECT SUM(jumlah_tabungan) AS total FROM nasabah");
 $row = $q->fetch_assoc();
 $result['total_saldo'] = (float) ($row['total'] ?? 0);
 
-// 5 aktivitas terbaru (per baris detail_transaksi), dengan status asli, terfilter periode & jenis
 $sql = "
     SELECT
         dt.id_detail,
@@ -94,9 +81,6 @@ while ($row = $res->fetch_assoc()) {
     ];
 }
 
-// ---------------------------------------------------------------
-// Chart 1: Sampah Terkumpul per jenis (total berat aktual yang sudah ditimbang)
-// ---------------------------------------------------------------
 $sqlSampah = "
     SELECT jenis_sampah, SUM(berat_sampah_aktual) AS total_berat
     FROM detail_transaksi
@@ -111,9 +95,6 @@ while ($row = $q->fetch_assoc()) {
     ];
 }
 
-// ---------------------------------------------------------------
-// Chart 2: Tren Volume Transaksi 7 hari terakhir (setoran vs penarikan)
-// ---------------------------------------------------------------
 $sqlSetoran = "
     SELECT DATE(tanggal_transaksi) AS tgl, SUM(total_nominal) AS total
     FROM transaksi
@@ -138,7 +119,6 @@ while ($row = $q->fetch_assoc()) {
     $penarikanPerHari[$row['tgl']] = (float) $row['total'];
 }
 
-// Susun 7 hari terakhir berurutan, termasuk hari yang datanya 0
 for ($i = 6; $i >= 0; $i--) {
     $tanggal = date('Y-m-d', strtotime("-$i day"));
     $result['tren_mingguan'][] = [

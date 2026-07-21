@@ -1,14 +1,10 @@
 <?php
-/*
-  backend/database/admin/update_password_admin.php
-  Menerima POST JSON: { "password_lama": "...", "password_baru": "...", "password_konfirmasi": "..." }
-*/
 
 header('Content-Type: application/json');
 require '../db.php';
 session_start();
 
-$idAdmin = $_SESSION['id_admin'] ?? 1; // TODO: sesuaikan dengan session login asli
+$idAdmin = $_SESSION['id_admin'] ?? 1; 
 
 $input = json_decode(file_get_contents('php://input'), true);
 $passwordLama = $input['password_lama'] ?? '';
@@ -27,7 +23,6 @@ if ($passwordBaru !== $passwordKonfirmasi) {
     exit();
 }
 
-// Ambil hash password saat ini buat diverifikasi
 $stmt = $conn->prepare("SELECT password_admin FROM admin WHERE id_admin = ?");
 $stmt->bind_param('i', $idAdmin);
 $stmt->execute();

@@ -1,21 +1,10 @@
 <?php
-/*
-  backend/database/admin/proses_penarikan.php
-  Menerima POST JSON: { "id": 5, "aksi": "setuju" }  atau  { "id": 5, "aksi": "tolak" }
-
-  Kalau "setuju":
-    - Cek dulu saldo nasabah cukup atau enggak
-    - Kalau cukup: kurangi jumlah_tabungan nasabah, ubah status jadi "Disetujui"
-    - Kalau tidak cukup: tolak dengan pesan error, status TIDAK diubah
-  Kalau "tolak":
-    - Ubah status jadi "Ditolak", saldo nasabah TIDAK berubah
-*/
 
 header('Content-Type: application/json');
 require '../db.php';
 session_start();
 
-$idAdmin = $_SESSION['id_admin'] ?? 1; // TODO: sesuaikan dengan session login asli
+$idAdmin = $_SESSION['id_admin'] ?? 1; 
 
 $input = json_decode(file_get_contents('php://input'), true);
 $idPenarikan = $input['id'] ?? null;
@@ -27,7 +16,6 @@ if (!$idPenarikan || !in_array($aksi, ['setuju', 'tolak'], true)) {
     exit();
 }
 
-// Ambil data penarikan + saldo nasabah terkait
 $stmt = $conn->prepare("
     SELECT ps.id_nasabah, ps.nominal_penarikan, ps.status_penarikan, n.jumlah_tabungan, n.nama_nasabah
     FROM penarikan_saldo ps
@@ -61,7 +49,6 @@ if ($aksi === 'tolak') {
     exit();
 }
 
-// aksi === 'setuju'
 if ($row['jumlah_tabungan'] < $row['nominal_penarikan']) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Saldo nasabah tidak mencukupi untuk penarikan ini']);

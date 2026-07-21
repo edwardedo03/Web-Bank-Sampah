@@ -1,8 +1,4 @@
 <?php
-/*
-  backend/database/admin/update_harga_sampah.php
-  Menerima POST JSON: { "id": 1, "harga_baru": 3000 }
-*/
 
 header('Content-Type: application/json');
 require '../db.php';

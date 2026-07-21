@@ -1,8 +1,4 @@
 <?php
-/*
-  backend/database/admin/get_penarikan_pending.php
-  Mengambil semua permintaan penarikan saldo yang statusnya "Menunggu Validasi".
-*/
 
 header('Content-Type: application/json');
 require '../db.php';

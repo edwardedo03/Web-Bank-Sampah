@@ -1,19 +1,7 @@
 <?php
-/*
-  backend/database/admin/get_petugas.php
-  GET ?page=1&per_page=10&q=keyword
-  Mengembalikan daftar petugas dengan pagination sederhana.
-
-  Otomatis cek apakah kolom `status_aktif` sudah ada di tabel
-  `petugas_lapangan`. Kalau sudah ada, nilai aktif/nonaktif diambil asli
-  dari database. Kalau belum ada, semua petugas dianggap aktif (true)
-  sebagai fallback sementara.
-*/
-
 header('Content-Type: application/json');
 require '../db.php';
 
-// Cek keberadaan kolom status_aktif sekali di awal
 $cekKolom = $conn->query("SHOW COLUMNS FROM petugas_lapangan LIKE 'status_aktif'");
 $adaKolomStatus = $cekKolom->num_rows > 0;
 
@@ -32,7 +20,6 @@ if ($keyword !== '') {
     $types = 'ss';
 }
 
-// Hitung total data (untuk info pagination)
 $countSql = "SELECT COUNT(*) AS total FROM petugas_lapangan $where";
 $countStmt = $conn->prepare($countSql);
 if ($params) {
@@ -42,7 +29,6 @@ $countStmt->execute();
 $total = (int) $countStmt->get_result()->fetch_assoc()['total'];
 $countStmt->close();
 
-// Ambil data sesuai halaman — kolom status_aktif ikut diambil kalau ada
 $kolomStatus = $adaKolomStatus ? ', status_aktif' : '';
 $sql = "SELECT id_petugas, nama_petugas, wilayah_tugas, email_petugas $kolomStatus FROM petugas_lapangan $where ORDER BY nama_petugas ASC LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
@@ -77,8 +63,7 @@ echo json_encode([
     'data' => $data,
     'page' => $page,
     'per_page' => $perPage,
-    'total' => $total,
-    'kolom_status_tersedia' => $adaKolomStatus, // info tambahan buat debugging kalau perlu
+    'total' => $total,// info tambahan buat debugging kalau perlu
 ]);
 
 $stmt->close();

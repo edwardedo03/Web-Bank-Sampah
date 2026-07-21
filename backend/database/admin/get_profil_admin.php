@@ -1,15 +1,10 @@
 <?php
-/*
-  backend/database/admin/get_profil_admin.php
-  Mengambil data admin yang sedang login (dari session).
-*/
 
 header('Content-Type: application/json');
 require '../db.php';
 session_start();
 
-// TODO: sesuaikan dengan nama session yang dipakai backend/database/login_db.php
-$idAdmin = $_SESSION['id_admin'] ?? 1; // fallback ke id 1 untuk testing kalau session belum ada
+$idAdmin = $_SESSION['id_admin'] ?? 1; 
 
 $stmt = $conn->prepare("SELECT id_admin, username_admin, nama_admin, email_admin, no_telepon_admin FROM admin WHERE id_admin = ?");
 $stmt->bind_param('i', $idAdmin);

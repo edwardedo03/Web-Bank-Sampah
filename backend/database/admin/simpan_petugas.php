@@ -1,16 +1,4 @@
 <?php
-/*
-  backend/database/admin/simpan_petugas.php
-  Menerima POST JSON:
-  - Tambah baru: { "mode": "tambah", "nama": "...", "wilayah": "...", "email": "...", "no_telepon": "...", "password": "..." }
-  - Edit:        { "mode": "edit", "id": 5, "nama": "...", "wilayah": "..." }
-
-  CATATAN PENTING: tabel `petugas_lapangan` pakai `id_petugas` berupa angka
-  auto-increment (bigint), BUKAN kode seperti "SS-00124" yang ada di desain
-  Figma. Untuk sekarang endpoint ini pakai id_petugas asli dari database.
-  Kalau format kode "SS-00124" itu memang wajib ada, perlu kolom baru
-  khusus untuk itu di tabel `petugas_lapangan`.
-*/
 
 header('Content-Type: application/json');
 require '../db.php';
@@ -40,7 +28,6 @@ if ($mode === 'edit') {
     }
     $stmt->close();
 } else {
-    // mode tambah
     $nama = trim($input['nama'] ?? '');
     $wilayah = trim($input['wilayah'] ?? '');
     $email = trim($input['email'] ?? '');
@@ -53,7 +40,6 @@ if ($mode === 'edit') {
         exit();
     }
 
-    // Username petugas dibuat otomatis dari nama (huruf kecil, tanpa spasi) + angka acak
     $usernameBase = strtolower(str_replace(' ', '', $nama));
     $username = $usernameBase . rand(100, 999);
     $passwordHash = password_hash($passwordPlain, PASSWORD_BCRYPT);

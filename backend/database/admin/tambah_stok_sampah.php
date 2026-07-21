@@ -1,9 +1,4 @@
 <?php
-/*
-  backend/database/admin/tambah_stok_sampah.php
-  Menerima POST JSON: { "id": 1, "jumlah": 50 }
-  Menambahkan (bukan mengganti) stok yang sudah ada.
-*/
 
 header('Content-Type: application/json');
 require '../db.php';

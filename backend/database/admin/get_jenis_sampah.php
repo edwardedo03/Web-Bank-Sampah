@@ -1,9 +1,4 @@
 <?php
-/*
-  backend/database/admin/get_jenis_sampah.php
-  Dipanggil dari admin_kelola_sampah.html
-  Mengembalikan daftar jenis sampah + harga + stok.
-*/
 
 header('Content-Type: application/json');
 require '../db.php';

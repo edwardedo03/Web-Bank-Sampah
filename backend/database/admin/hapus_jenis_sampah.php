@@ -1,9 +1,4 @@
 <?php
-/*
-  backend/database/admin/hapus_jenis_sampah.php
-  Menerima POST JSON: { "id": 3 }
-  Menghapus satu baris jenis sampah dari tabel `sampah`.
-*/
 
 header('Content-Type: application/json');
 require '../db.php';
