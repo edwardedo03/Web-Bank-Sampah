@@ -49,7 +49,7 @@ $.ajax({
   data: { id_akun: idAkun },
   success: function (res) {
     if (res.success && res.history.length > 0) {
-      const limitHistory = res.history.slice(0, 6);
+      const limitHistory = res.history.slice(0, 20);
 
       limitHistory.forEach((item) => {
         const dateTime = new Date(item.tanggal_penyerahan);
@@ -140,7 +140,7 @@ $.ajax({
   },
 });
 
-// --------------
+// tarik saldo
 
 $("#tarik-saldo").on("click", function () {
   $("#tarik-saldo-form").removeClass("hidden");
@@ -159,12 +159,11 @@ $(document).on("change", ".radio-nominal", function () {
   const val = $(this).val();
 
   if (val === "tarik-semua") {
-    const saldoTersedia =
-      parseInt(
-        $("#saldo-penarikan")
-          .text()
-          .replace(/[^0-9]/g, ""),
-      ) || 0;
+    const saldoTersedia = parseInt(
+      $("#saldo-penarikan")
+        .text()
+        .replace(/[^0-9]/g, ""),
+    );
     $("#nominal-penarikan").val(saldoTersedia);
   } else {
     $("#nominal-penarikan").val(val);
@@ -173,4 +172,47 @@ $(document).on("change", ".radio-nominal", function () {
 
 $("#nominal-penarikan").on("input", function () {
   $(".radio-nominal").prop("checked", false);
+});
+
+$("#btn-tarik-saldo").on("click", function () {
+  const nominalPenarikan = parseFloat($("#nominal-penarikan").val());
+  const saldoTersedia =
+    parseFloat(
+      $("#saldo-penarikan")
+        .text()
+        .replace(/[^0-9]/g, ""),
+    ) || 0;
+
+  if (isNaN(nominalPenarikan) || nominalPenarikan < 5000) {
+    alert("Nominal penarikan minimal Rp 5.000");
+    return;
+  } else if (nominalPenarikan > saldoTersedia) {
+    alert("Jumlah penarikan melebihi saldo!");
+    return;
+  }
+
+  const dataTarikSaldo = {
+    id_akun: idAkun,
+    nominal_tarik: nominalPenarikan,
+  };
+
+  $.ajax({
+    url: "../../backend/database/nasabah/tarik_saldo.php",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(dataTarikSaldo),
+    success: function (res) {
+      if (res.success) {
+        alert("Sukses: " + res.message);
+        $("#nominal-penarikan").val("");
+        $(".radio-nominal").prop("checked", false);
+      } else {
+        alert("Permintaan gagal:" + res.message);
+      }
+    },
+    error: function (xhr) {
+      console.log(xhr.responseText);
+      alert("Error: ", xhr.responseText);
+    },
+  });
 });

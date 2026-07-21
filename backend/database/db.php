@@ -14,3 +14,5 @@
         ]);
         exit();
     }
+
+    $conn->query("SET time_zone = '+07:00';");
