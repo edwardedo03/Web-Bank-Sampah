@@ -3,15 +3,9 @@
   backend/database/admin/get_riwayat_transaksi.php
   GET ?q=keyword
 
-  Menggabungkan transaksi + nasabah + detail_transaksi (jenis sampah).
-  Setiap baris detail_transaksi jadi 1 baris tersendiri di hasilnya
-  (kalau 1 transaksi ada beberapa jenis sampah, akan muncul beberapa baris).
-
-  CATATAN: tabel `transaksi` tidak punya kolom "jenis transaksi"
-  (setoran/penarikan) atau "status" (selesai/proses) — datanya cuma
-  transaksi setoran sampah. Untuk sekarang field itu di-hardcode jadi
-  "Setoran" dan "SELESAI". Kalau nanti tabel penarikan_saldo sudah dibuat,
-  file ini perlu di-update untuk gabungin data dari 2 sumber.
+  Tiap baris hasil = 1 baris detail_transaksi (1 jenis sampah dalam 1 transaksi),
+  dengan status ASLI dari kolom `status` di tabel detail_transaksi
+  (bukan lagi di-hardcode "SELESAI").
 */
 
 header('Content-Type: application/json');
@@ -21,15 +15,16 @@ $keyword = isset($_GET['q']) ? trim($_GET['q']) : '';
 
 $sql = "
     SELECT
-        t.id_transaksi,
+        dt.id_detail,
         n.nama_nasabah,
         t.total_nominal,
         t.tanggal_transaksi,
         dt.jenis_sampah,
-        dt.berat_sampah
-    FROM transaksi t
+        dt.berat_sampah,
+        dt.status
+    FROM detail_transaksi dt
+    JOIN transaksi t ON t.id_transaksi = dt.id_transaksi
     JOIN nasabah n ON n.id_nasabah = t.id_nasabah
-    LEFT JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
 ";
 $params = [];
 $types = '';
@@ -53,14 +48,14 @@ while ($row = $res->fetch_assoc()) {
     $inisial = strtoupper(substr($namaParts[0], 0, 1) . substr(end($namaParts), 0, 1));
 
     $data[] = [
-        'id' => $row['id_transaksi'],
+        'id' => $row['id_detail'],
         'nama' => $row['nama_nasabah'],
         'inisial' => $inisial,
         'jenis_transaksi' => 'Setoran',
-        'jenis_sampah' => $row['jenis_sampah'] ?? '-',
-        'nilai' => 'Rp ' . number_format($row['total_nominal'], 0, ',', '.'),
+        'jenis_sampah' => $row['jenis_sampah'],
+        'berat' => $row['berat_sampah'] . ' kg',
         'tanggal' => date('d M Y', strtotime($row['tanggal_transaksi'])),
-        'status' => 'SELESAI',
+        'status' => $row['status'], // status ASLI: Proses / Gagal / Menunggu Validasi / dll
     ];
 }
 

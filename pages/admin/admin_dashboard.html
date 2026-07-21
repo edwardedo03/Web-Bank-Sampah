@@ -132,8 +132,20 @@
 <script>
 const API_BASE = '../../backend/database/admin';
 
+/*
+  Pemetaan warna badge berdasarkan status ASLI dari database:
+  - Proses / Menunggu Validasi -> abu-abu (belum final)
+  - Gagal -> merah
+  - Selesai (kalau ada nanti) -> hijau
+*/
+function getStatusClass(status) {
+    if (status === 'Gagal') return 'bg-red-100 text-red-700';
+    if (status === 'Selesai') return 'bg-green-100 text-green-700';
+    return 'bg-gray-100 text-gray-600'; // Proses, Menunggu Validasi, dll
+}
+
 function renderTransaksiRow(t) {
-    const statusClass = t.status === 'SELESAI' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+    const statusClass = getStatusClass(t.status);
     const tr = document.createElement('tr');
     tr.className = 'cursor-pointer hover:bg-[#F7FBF0]';
     tr.dataset.nama = t.nama;
@@ -165,7 +177,10 @@ function renderTransaksiRow(t) {
 }
 
 function muatDataDashboard() {
-    fetch(`${API_BASE}/dashboard_data.php`)
+    const periode = encodeURIComponent(document.getElementById('periode').value);
+    const jenis = encodeURIComponent(document.getElementById('jenis').value);
+
+    fetch(`${API_BASE}/dashboard_data.php?periode=${periode}&jenis=${jenis}`)
         .then(res => res.json())
         .then(data => {
             if (!data.success) {
@@ -179,7 +194,7 @@ function muatDataDashboard() {
             const tbody = document.getElementById('transaksiTerbaruBody');
             tbody.innerHTML = '';
             if (data.transaksi_terbaru.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-400 py-4">Belum ada transaksi</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-400 py-4">Tidak ada aktivitas pada periode/jenis ini</td></tr>';
             } else {
                 data.transaksi_terbaru.forEach(function (t) {
                     tbody.appendChild(renderTransaksiRow(t));
@@ -196,13 +211,8 @@ document.getElementById('btnLogout').addEventListener('click', function () {
     });
 });
 
-function terapkanFilterDashboard() {
-    const periode = document.getElementById('periode').value;
-    const jenis = document.getElementById('jenis').value;
-    showToast(`Filter belum didukung backend: ${periode} — ${jenis}`);
-}
-document.getElementById('periode').addEventListener('change', terapkanFilterDashboard);
-document.getElementById('jenis').addEventListener('change', terapkanFilterDashboard);
+document.getElementById('periode').addEventListener('change', muatDataDashboard);
+document.getElementById('jenis').addEventListener('change', muatDataDashboard);
 
 muatDataDashboard();
 </script>

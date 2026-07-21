@@ -1,9 +1,10 @@
 <?php
 /*
   backend/database/admin/tambah_jenis_sampah.php
-  Menerima POST JSON: { "nama": "Botol Kaca", "harga": 1000 }
-  Kolom "deskripsi" di UI belum ada tempatnya di tabel `sampah` saat ini,
-  jadi sementara tidak disimpan (lihat catatan di bawah).
+  Menerima POST JSON: { "nama": "Botol Kaca", "harga": 1000, "deskripsi": "..." }
+
+  Kolom deskripsi sekarang sudah ada di tabel `sampah` dengan nama
+  `deskripsi_sampah` (bukan `deskripsi`).
 */
 
 header('Content-Type: application/json');
@@ -13,6 +14,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 $nama = trim($input['nama'] ?? '');
 $harga = $input['harga'] ?? null;
+$deskripsi = trim($input['deskripsi'] ?? '');
 
 if ($nama === '' || $harga === null || !is_numeric($harga)) {
     http_response_code(400);
@@ -20,8 +22,8 @@ if ($nama === '' || $harga === null || !is_numeric($harga)) {
     exit();
 }
 
-$stmt = $conn->prepare("INSERT INTO sampah (jenis_sampah, harga_sampah_per_kg, jumlah_sampah_gudang) VALUES (?, ?, 0)");
-$stmt->bind_param('sd', $nama, $harga);
+$stmt = $conn->prepare("INSERT INTO sampah (jenis_sampah, deskripsi_sampah, harga_sampah_per_kg, jumlah_sampah_gudang) VALUES (?, ?, ?, 0)");
+$stmt->bind_param('ssd', $nama, $deskripsi, $harga);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Kategori baru berhasil ditambahkan', 'id' => $stmt->insert_id]);
@@ -33,11 +35,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
-
-/*
-  CATATAN: kolom "Deskripsi Singkat" yang ada di form Tambah Kategori (UI)
-  belum punya tempat di tabel `sampah` sekarang (cuma ada jenis_sampah,
-  harga_sampah_per_kg, jumlah_sampah_gudang). Kalau memang dibutuhkan,
-  perlu tambah kolom baru dulu, misalnya:
-  ALTER TABLE sampah ADD COLUMN deskripsi VARCHAR(64) NOT NULL DEFAULT '';
-*/

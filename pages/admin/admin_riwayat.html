@@ -63,8 +63,10 @@
                         <label for="filterStatus" class="text-[10px] font-bold uppercase text-gray-400">Status</label>
                         <select id="filterStatus" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white">
                             <option>Semua</option>
-                            <option>Selesai</option>
                             <option>Proses</option>
+                            <option>Menunggu Validasi</option>
+                            <option>Gagal</option>
+                            <option>Selesai</option>
                         </select>
                     </div>
                 </div>
@@ -96,8 +98,14 @@
 <script>
 const API_BASE = '../../backend/database/admin';
 
+function getStatusClass(status) {
+    if (status === 'Gagal') return 'bg-red-100 text-red-700';
+    if (status === 'Selesai') return 'bg-green-100 text-green-700';
+    return 'bg-gray-100 text-gray-600'; // Proses, Menunggu Validasi, dll
+}
+
 function renderRiwayatRow(r) {
-    const statusClass = r.status === 'SELESAI' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+    const statusClass = getStatusClass(r.status);
     const tr = document.createElement('tr');
     tr.innerHTML = `
         <td class="py-3 border-b border-gray-100">
@@ -108,7 +116,7 @@ function renderRiwayatRow(r) {
         </td>
         <td class="py-3 border-b border-gray-100">${r.jenis_transaksi}</td>
         <td class="py-3 border-b border-gray-100">${r.jenis_sampah}</td>
-        <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${r.nilai}</td>
+        <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${r.berat}</td>
         <td class="py-3 border-b border-gray-100">${r.tanggal}</td>
         <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${statusClass}">${r.status}</span></td>
     `;
@@ -139,7 +147,7 @@ function terapkanFilterLokal() {
         const jenisRow = row.children[1].textContent.trim();
         const statusRow = row.children[5].textContent.trim();
         const cocokJenis = jenis === 'Semua' || jenisRow === jenis;
-        const cocokStatus = status === 'Semua' || statusRow.toUpperCase() === status.toUpperCase();
+        const cocokStatus = status === 'Semua' || statusRow === status;
         row.style.display = (cocokJenis && cocokStatus) ? '' : 'none';
     });
 }

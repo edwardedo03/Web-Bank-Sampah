@@ -4,13 +4,18 @@
   GET ?page=1&per_page=10&q=keyword
   Mengembalikan daftar petugas dengan pagination sederhana.
 
-  CATATAN: tabel `petugas_lapangan` saat ini belum punya kolom "status aktif"
-  atau "foto". Untuk sekarang, status aktif dianggap selalu true (lihat
-  catatan di bawah file ini untuk saran penambahan kolom).
+  Otomatis cek apakah kolom `status_aktif` sudah ada di tabel
+  `petugas_lapangan`. Kalau sudah ada, nilai aktif/nonaktif diambil asli
+  dari database. Kalau belum ada, semua petugas dianggap aktif (true)
+  sebagai fallback sementara.
 */
 
 header('Content-Type: application/json');
 require '../db.php';
+
+// Cek keberadaan kolom status_aktif sekali di awal
+$cekKolom = $conn->query("SHOW COLUMNS FROM petugas_lapangan LIKE 'status_aktif'");
+$adaKolomStatus = $cekKolom->num_rows > 0;
 
 $page = isset($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
 $perPage = 10;
@@ -37,8 +42,9 @@ $countStmt->execute();
 $total = (int) $countStmt->get_result()->fetch_assoc()['total'];
 $countStmt->close();
 
-// Ambil data sesuai halaman
-$sql = "SELECT id_petugas, nama_petugas, wilayah_tugas, email_petugas FROM petugas_lapangan $where ORDER BY nama_petugas ASC LIMIT ? OFFSET ?";
+// Ambil data sesuai halaman — kolom status_aktif ikut diambil kalau ada
+$kolomStatus = $adaKolomStatus ? ', status_aktif' : '';
+$sql = "SELECT id_petugas, nama_petugas, wilayah_tugas, email_petugas $kolomStatus FROM petugas_lapangan $where ORDER BY nama_petugas ASC LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
 
 if ($params) {
@@ -62,7 +68,7 @@ while ($row = $res->fetch_assoc()) {
         'inisial' => $inisial,
         'wilayah' => $row['wilayah_tugas'],
         'email' => $row['email_petugas'],
-        'aktif' => true, // TODO: sambungkan ke kolom status aktif kalau sudah ditambahkan
+        'aktif' => $adaKolomStatus ? (bool) $row['status_aktif'] : true,
     ];
 }
 
@@ -72,13 +78,8 @@ echo json_encode([
     'page' => $page,
     'per_page' => $perPage,
     'total' => $total,
+    'kolom_status_tersedia' => $adaKolomStatus, // info tambahan buat debugging kalau perlu
 ]);
 
 $stmt->close();
 $conn->close();
-
-/*
-  SARAN: kalau fitur toggle "Status Aktif" di UI mau benar-benar tersimpan,
-  tabel `petugas_lapangan` perlu kolom tambahan, misalnya:
-  ALTER TABLE petugas_lapangan ADD COLUMN status_aktif TINYINT(1) NOT NULL DEFAULT 1;
-*/

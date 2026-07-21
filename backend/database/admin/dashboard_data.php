@@ -1,27 +1,37 @@
 <?php
 /*
   backend/database/admin/dashboard_data.php
+  GET ?periode=Bulan+Ini&jenis=Semua+Jenis
 
-  Dipanggil dari pages/admin/admin_dashboard.html lewat fetch().
-  Mengembalikan JSON:
-  {
-    "total_nasabah": 1284,
-    "total_petugas": 12,
-    "total_saldo": 42500000,
-    "transaksi_terbaru": [ {...}, {...} ]
-  }
+  Mengembalikan JSON statistik dashboard + 5 transaksi terbaru.
+  Status transaksi sekarang diambil ASLI dari kolom `status` di detail_transaksi
+  (bukan hardcode "SELESAI" lagi).
 */
 
 header('Content-Type: application/json');
-require '../db.php'; // koneksi $conn (mysqli) sudah tersedia dari sini
+require '../db.php';
 
-// TODO: sesuaikan nama session ini dengan yang dipakai di backend/database/login_db.php
 session_start();
-if (!isset($_SESSION['id_admin']) && !isset($_SESSION['id_akun'])) {
-    // Sementara tidak memaksa redirect supaya gampang ditest — nanti aktifkan ini:
-    // http_response_code(401);
-    // echo json_encode(['success' => false, 'message' => 'Belum login']);
-    // exit();
+
+$periode = $_GET['periode'] ?? 'Bulan Ini';
+$jenis = $_GET['jenis'] ?? 'Semua Jenis';
+
+// Bangun kondisi tanggal berdasarkan periode
+$periodeCondition = '';
+if ($periode === 'Minggu Ini') {
+    $periodeCondition = "AND t.tanggal_transaksi >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+} elseif ($periode === 'Tahun Ini') {
+    $periodeCondition = "AND YEAR(t.tanggal_transaksi) = YEAR(NOW())";
+} else { // default: Bulan Ini
+    $periodeCondition = "AND YEAR(t.tanggal_transaksi) = YEAR(NOW()) AND MONTH(t.tanggal_transaksi) = MONTH(NOW())";
+}
+
+// Kondisi jenis sampah (opsional)
+$jenisCondition = '';
+$jenisParam = null;
+if ($jenis !== 'Semua Jenis') {
+    $jenisCondition = "AND dt.jenis_sampah = ?";
+    $jenisParam = $jenis;
 }
 
 $result = [
@@ -32,50 +42,56 @@ $result = [
     'transaksi_terbaru' => [],
 ];
 
-// Total nasabah
+// Total nasabah & petugas & saldo (tidak tergantung filter periode/jenis)
 $q = $conn->query("SELECT COUNT(*) AS total FROM nasabah");
 $result['total_nasabah'] = (int) $q->fetch_assoc()['total'];
 
-// Total petugas
 $q = $conn->query("SELECT COUNT(*) AS total FROM petugas_lapangan");
 $result['total_petugas'] = (int) $q->fetch_assoc()['total'];
 
-// Total saldo (jumlah tabungan semua nasabah)
 $q = $conn->query("SELECT SUM(jumlah_tabungan) AS total FROM nasabah");
 $row = $q->fetch_assoc();
 $result['total_saldo'] = (float) ($row['total'] ?? 0);
 
-// 5 transaksi terbaru, gabung dengan nama nasabah dan jenis sampah pertamanya
+// 5 aktivitas terbaru (per baris detail_transaksi), dengan status asli, terfilter periode & jenis
 $sql = "
     SELECT
-        t.id_transaksi,
+        dt.id_detail,
         n.nama_nasabah,
-        t.total_nominal,
-        t.total_berat,
-        t.tanggal_transaksi,
-        dt.jenis_sampah
-    FROM transaksi t
+        dt.jenis_sampah,
+        dt.berat_sampah,
+        dt.subtotal_nominal,
+        dt.status,
+        t.tanggal_transaksi
+    FROM detail_transaksi dt
+    JOIN transaksi t ON t.id_transaksi = dt.id_transaksi
     JOIN nasabah n ON n.id_nasabah = t.id_nasabah
-    LEFT JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
-    GROUP BY t.id_transaksi
+    WHERE 1=1 $periodeCondition $jenisCondition
     ORDER BY t.tanggal_transaksi DESC
     LIMIT 5
 ";
-$q = $conn->query($sql);
-while ($row = $q->fetch_assoc()) {
+$stmt = $conn->prepare($sql);
+if ($jenisParam !== null) {
+    $stmt->bind_param('s', $jenisParam);
+}
+$stmt->execute();
+$res = $stmt->get_result();
+
+while ($row = $res->fetch_assoc()) {
     $namaParts = explode(' ', trim($row['nama_nasabah']));
     $inisial = strtoupper(substr($namaParts[0], 0, 1) . substr(end($namaParts), 0, 1));
 
     $result['transaksi_terbaru'][] = [
-        'id' => $row['id_transaksi'],
+        'id' => $row['id_detail'],
         'nama' => $row['nama_nasabah'],
         'inisial' => $inisial,
-        'jenis_sampah' => $row['jenis_sampah'] ?? '-',
-        'berat' => $row['total_berat'] . ' kg',
-        'total' => 'Rp ' . number_format($row['total_nominal'], 0, ',', '.'),
-        'status' => 'SELESAI', // tidak ada kolom status di tabel transaksi, default selesai
+        'jenis_sampah' => $row['jenis_sampah'],
+        'berat' => $row['berat_sampah'] . ' kg',
+        'total' => 'Rp ' . number_format($row['subtotal_nominal'], 0, ',', '.'),
+        'status' => $row['status'], // status ASLI dari database
     ];
 }
 
 echo json_encode($result);
+$stmt->close();
 $conn->close();
