@@ -40,6 +40,8 @@ $result = [
     'total_petugas' => 0,
     'total_saldo' => 0,
     'transaksi_terbaru' => [],
+    'sampah_terkumpul' => [],
+    'tren_mingguan' => [],
 ];
 
 // Total nasabah & petugas & saldo (tidak tergantung filter periode/jenis)
@@ -89,6 +91,60 @@ while ($row = $res->fetch_assoc()) {
         'berat' => $row['berat_sampah'] . ' kg',
         'total' => 'Rp ' . number_format($row['subtotal_nominal'], 0, ',', '.'),
         'status' => $row['status'], // status ASLI dari database
+    ];
+}
+
+// ---------------------------------------------------------------
+// Chart 1: Sampah Terkumpul per jenis (total berat aktual yang sudah ditimbang)
+// ---------------------------------------------------------------
+$sqlSampah = "
+    SELECT jenis_sampah, SUM(berat_sampah_aktual) AS total_berat
+    FROM detail_transaksi
+    GROUP BY jenis_sampah
+    ORDER BY jenis_sampah ASC
+";
+$q = $conn->query($sqlSampah);
+while ($row = $q->fetch_assoc()) {
+    $result['sampah_terkumpul'][] = [
+        'jenis' => $row['jenis_sampah'],
+        'berat' => (float) $row['total_berat'],
+    ];
+}
+
+// ---------------------------------------------------------------
+// Chart 2: Tren Volume Transaksi 7 hari terakhir (setoran vs penarikan)
+// ---------------------------------------------------------------
+$sqlSetoran = "
+    SELECT DATE(tanggal_transaksi) AS tgl, SUM(total_nominal) AS total
+    FROM transaksi
+    WHERE tanggal_transaksi >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+    GROUP BY DATE(tanggal_transaksi)
+";
+$setoranPerHari = [];
+$q = $conn->query($sqlSetoran);
+while ($row = $q->fetch_assoc()) {
+    $setoranPerHari[$row['tgl']] = (float) $row['total'];
+}
+
+$sqlPenarikan = "
+    SELECT DATE(tanggal_penarikan) AS tgl, SUM(nominal_penarikan) AS total
+    FROM penarikan_saldo
+    WHERE tanggal_penarikan >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+    GROUP BY DATE(tanggal_penarikan)
+";
+$penarikanPerHari = [];
+$q = $conn->query($sqlPenarikan);
+while ($row = $q->fetch_assoc()) {
+    $penarikanPerHari[$row['tgl']] = (float) $row['total'];
+}
+
+// Susun 7 hari terakhir berurutan, termasuk hari yang datanya 0
+for ($i = 6; $i >= 0; $i--) {
+    $tanggal = date('Y-m-d', strtotime("-$i day"));
+    $result['tren_mingguan'][] = [
+        'tanggal' => date('d/m', strtotime($tanggal)),
+        'setoran' => $setoranPerHari[$tanggal] ?? 0,
+        'penarikan' => $penarikanPerHari[$tanggal] ?? 0,
     ];
 }
 
