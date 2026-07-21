@@ -103,7 +103,7 @@ $.ajax({
                 </p>
               </div>
             </div>
-            <hr />
+            <hr class="border-t-1 border-black my-2" />
             <div class="py-4 px-2 flex flex-row justify-between">
               <p class="text-[#0D631B]/90">Berat: <span>${item.berat_sampah_aktual}</span> Kg</p>
               <a href="">
@@ -160,7 +160,7 @@ $(document).on("change", ".radio-nominal", function () {
 
   if (val === "tarik-semua") {
     const saldoTersedia = parseInt(
-      $("#saldo-penarikan")
+      $("#saldo-tabungan")
         .text()
         .replace(/[^0-9]/g, ""),
     );
@@ -178,7 +178,7 @@ $("#btn-tarik-saldo").on("click", function () {
   const nominalPenarikan = parseFloat($("#nominal-penarikan").val());
   const saldoTersedia =
     parseFloat(
-      $("#saldo-penarikan")
+      $("#saldo-tabungan")
         .text()
         .replace(/[^0-9]/g, ""),
     ) || 0;

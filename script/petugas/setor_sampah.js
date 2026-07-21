@@ -372,6 +372,6 @@ $(document).on("click", ".btn-tolak-detail", function () {
   const parentCard = $(this).closest(".card-transaksi");
 
   if (confirm("Apakah Anda yakin ingin menolak transaksi sampah ini?")) {
-    updateDetailTransaksi(idDetail, "Gagal", null, parentCard);
+    updateDetailTransaksi(idDetail, "Gagal", null, null, parentCard);
   }
 });
