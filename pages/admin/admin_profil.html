@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil Akun — Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
 </head>
 <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
@@ -111,55 +112,67 @@
 const API_BASE = '../../backend/database/admin';
 
 function muatProfil() {
-    fetch(`${API_BASE}/get_profil_admin.php`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) { showToast(data.message || 'Gagal memuat profil', true); return; }
-            document.getElementById('profileInisial').textContent = data.inisial;
-            document.getElementById('profileNama').textContent = data.nama;
-            document.getElementById('namaAdmin').value = data.nama;
-            document.getElementById('idAdmin').value = data.username;
-            document.getElementById('emailAdmin').value = data.email;
-            document.getElementById('teleponAdmin').value = data.telepon;
-        }).catch(() => showToast('Gagal terhubung ke server.', true));
+    $.getJSON(`${API_BASE}/get_profil_admin.php`).done(function (data) {
+        if (!data.success) { showToast(data.message || 'Gagal memuat profil', true); return; }
+        $('#profileInisial').text(data.inisial);
+        $('#profileNama').text(data.nama);
+        $('#namaAdmin').val(data.nama);
+        $('#idAdmin').val(data.username);
+        $('#emailAdmin').val(data.email);
+        $('#teleponAdmin').val(data.telepon);
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
-document.getElementById('formProfil').addEventListener('submit', function (e) {
+$('#formProfil').on('submit', function (e) {
     e.preventDefault();
-    const nama = document.getElementById('namaAdmin').value;
-    const email = document.getElementById('emailAdmin').value;
-    const telepon = document.getElementById('teleponAdmin').value;
-    fetch(`${API_BASE}/update_profil_admin.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nama, email, telepon }),
-    }).then(res => res.json()).then(data => {
+    const nama = $('#namaAdmin').val();
+    const email = $('#emailAdmin').val();
+    const telepon = $('#teleponAdmin').val();
+    $.ajax({
+        url: `${API_BASE}/update_profil_admin.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ nama, email, telepon }),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message, !data.success);
         if (data.success) muatProfil();
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 });
 
-document.getElementById('formPassword').addEventListener('submit', function (e) {
+$('#formPassword').on('submit', function (e) {
     e.preventDefault();
-    const password_lama = document.getElementById('passLama').value;
-    const password_baru = document.getElementById('passBaru').value;
-    const password_konfirmasi = document.getElementById('passKonfirmasi').value;
-    fetch(`${API_BASE}/update_password_admin.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password_lama, password_baru, password_konfirmasi }),
-    }).then(res => res.json()).then(data => {
+    const password_lama = $('#passLama').val();
+    const password_baru = $('#passBaru').val();
+    const password_konfirmasi = $('#passKonfirmasi').val();
+    $.ajax({
+        url: `${API_BASE}/update_password_admin.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ password_lama, password_baru, password_konfirmasi }),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message, !data.success);
-        if (data.success) document.getElementById('formPassword').reset();
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+        if (data.success) $('#formPassword')[0].reset();
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 });
 
 setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    fetch(`${API_BASE}/logout.php`).then(function () {
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
         window.location.href = '../login.html';
     });
 });
 
-muatProfil();
+$(document).ready(function () {
+    muatProfil();
+});
 </script>
 
 </body>

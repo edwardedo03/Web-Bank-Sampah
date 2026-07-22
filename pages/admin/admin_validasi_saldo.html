@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Validasi Tarik Saldo — Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
 </head>
 <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
@@ -95,14 +96,11 @@
 <script src="../../script/admin/admin.js"></script>
 <script>
 const API_BASE = '../../backend/database/admin';
-const detailPanel = document.getElementById('detailPanel');
 let activeRequestId = null;
 let dataPenarikan = [];
 
 function renderPenarikanRow(p) {
-    const tr = document.createElement('tr');
-    tr.dataset.id = p.id;
-    tr.innerHTML = `
+    const $tr = $('<tr></tr>').attr('data-id', p.id).html(`
         <td class="py-3 border-b border-gray-100">
             <div class="flex items-center gap-2.5">
                 <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${p.inisial}</span>
@@ -116,80 +114,86 @@ function renderPenarikanRow(p) {
             <button class="btn-lihat-detail w-8 h-8 rounded-full bg-[#2E7D32] text-white">✓</button>
             <button class="btn-tolak w-8 h-8 rounded-full bg-red-600 text-white">✕</button>
         </td>
-    `;
-    tr.querySelector('.btn-lihat-detail').addEventListener('click', function () { bukaDetail(p); });
-    tr.querySelector('.btn-tolak').addEventListener('click', function () {
+    `);
+    $tr.find('.btn-lihat-detail').on('click', function () { bukaDetail(p); });
+    $tr.find('.btn-tolak').on('click', function () {
         if (!confirm('Tolak permintaan penarikan dari ' + p.nama + '?')) return;
         prosesPenarikan(p.id, 'tolak', p.nama);
     });
-    return tr;
+    return $tr;
 }
 
 function muatDataPenarikan() {
-    fetch(`${API_BASE}/get_penarikan_pending.php`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) { showToast(data.message || 'Gagal memuat data', true); return; }
-            dataPenarikan = data.data;
-            const tbody = document.getElementById('penarikanTableBody');
-            tbody.innerHTML = '';
-            if (data.data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-400 py-4">Tidak ada permintaan pending</td></tr>';
-            } else {
-                data.data.forEach(function (p) { tbody.appendChild(renderPenarikanRow(p)); });
-            }
-        }).catch(() => showToast('Gagal terhubung ke server.', true));
+    $.getJSON(`${API_BASE}/get_penarikan_pending.php`).done(function (data) {
+        if (!data.success) { showToast(data.message || 'Gagal memuat data', true); return; }
+        dataPenarikan = data.data;
+        const $tbody = $('#penarikanTableBody').empty();
+        if (data.data.length === 0) {
+            $tbody.html('<tr><td colspan="5" class="text-center text-gray-400 py-4">Tidak ada permintaan pending</td></tr>');
+        } else {
+            data.data.forEach(function (p) { $tbody.append(renderPenarikanRow(p)); });
+        }
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
 function bukaDetail(p) {
     activeRequestId = p.id;
-    document.getElementById('detailInisial').textContent = p.inisial;
-    document.getElementById('detailNama').textContent = p.nama;
-    document.getElementById('detailIdNasabah').textContent = 'ID Nasabah: #' + p.id_nasabah;
-    document.getElementById('detailNominal').textContent = p.nominal_format;
-    document.getElementById('detailWaktu').textContent = p.tanggal;
-    detailPanel.classList.remove('hidden');
+    $('#detailInisial').text(p.inisial);
+    $('#detailNama').text(p.nama);
+    $('#detailIdNasabah').text('ID Nasabah: #' + p.id_nasabah);
+    $('#detailNominal').text(p.nominal_format);
+    $('#detailWaktu').text(p.tanggal);
+    $('#detailPanel').removeClass('hidden');
 }
 
 function prosesPenarikan(id, aksi, nama) {
-    fetch(`${API_BASE}/proses_penarikan.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, aksi }),
-    }).then(res => res.json()).then(data => {
+    $.ajax({
+        url: `${API_BASE}/proses_penarikan.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ id, aksi }),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message, !data.success);
         if (data.success) {
-            if (activeRequestId === id) { detailPanel.classList.add('hidden'); activeRequestId = null; }
+            if (activeRequestId === id) { $('#detailPanel').addClass('hidden'); activeRequestId = null; }
             muatDataPenarikan();
         }
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
-document.getElementById('btnCloseDetail').addEventListener('click', function () {
-    detailPanel.classList.add('hidden');
+$('#btnCloseDetail').on('click', function () {
+    $('#detailPanel').addClass('hidden');
 });
 
-document.getElementById('btnSetujui').addEventListener('click', function () {
+$('#btnSetujui').on('click', function () {
     if (!activeRequestId) return;
-    const nama = document.getElementById('detailNama').textContent;
+    const nama = $('#detailNama').text();
     if (!confirm('Setujui penarikan ' + nama + '? Saldo nasabah akan langsung dipotong.')) return;
     prosesPenarikan(activeRequestId, 'setuju', nama);
 });
 
-document.getElementById('btnTolak').addEventListener('click', function () {
+$('#btnTolak').on('click', function () {
     if (!activeRequestId) return;
-    const nama = document.getElementById('detailNama').textContent;
+    const nama = $('#detailNama').text();
     if (!confirm('Tolak permintaan penarikan dari ' + nama + '?')) return;
     prosesPenarikan(activeRequestId, 'tolak', nama);
 });
 
 setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    fetch(`${API_BASE}/logout.php`).then(function () {
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
         window.location.href = '../login.html';
     });
 });
 
-muatDataPenarikan();
+$(document).ready(function () {
+    muatDataPenarikan();
+});
 </script>
 
 </body>

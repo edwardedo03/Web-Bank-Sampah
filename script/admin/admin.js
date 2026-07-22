@@ -1,73 +1,61 @@
 function showToast(message, isError = false) {
-    let toast = document.getElementById('appToast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'appToast';
-        toast.className = 'fixed bottom-6 right-6 px-5 py-3 rounded-lg text-sm font-semibold text-white shadow-lg z-[200] opacity-0 translate-y-2 transition-all duration-200 pointer-events-none';
-        document.body.appendChild(toast);
+    let $toast = $('#appToast');
+    if ($toast.length === 0) {
+        $toast = $('<div id="appToast"></div>').addClass(
+            'fixed bottom-6 right-6 px-5 py-3 rounded-lg text-sm font-semibold text-white shadow-lg z-[200] opacity-0 translate-y-2 transition-all duration-200 pointer-events-none'
+        );
+        $('body').append($toast);
     }
-    toast.textContent = message;
-    toast.classList.toggle('bg-[#2E7D32]', !isError);
-    toast.classList.toggle('bg-red-600', isError);
-    toast.classList.remove('opacity-0', 'translate-y-2');
-    toast.classList.add('opacity-100', 'translate-y-0');
+    $toast.text(message);
+    $toast.toggleClass('bg-[#2E7D32]', !isError);
+    $toast.toggleClass('bg-red-600', isError);
+    $toast.removeClass('opacity-0 translate-y-2').addClass('opacity-100 translate-y-0');
 
-    clearTimeout(toast._hideTimeout);
-    toast._hideTimeout = setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'translate-y-2');
+    clearTimeout($toast.data('hideTimeout'));
+    const timeout = setTimeout(function () {
+        $toast.removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2');
     }, 2500);
+    $toast.data('hideTimeout', timeout);
 }
 
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    }
+    $('#' + modalId).removeClass('hidden').addClass('flex');
 }
 
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    }
+    $('#' + modalId).addClass('hidden').removeClass('flex');
 }
 
 function setupModalCloseHandlers() {
-    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-            }
-        });
+    $('.modal-overlay').on('click', function (e) {
+        if (e.target === this) {
+            $(this).addClass('hidden').removeClass('flex');
+        }
     });
-    document.querySelectorAll('[data-modal-close]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            closeModal(btn.getAttribute('data-modal-close'));
-        });
+    $('[data-modal-close]').on('click', function () {
+        closeModal($(this).attr('data-modal-close'));
     });
 }
 
 function setupDropdown(triggerId, menuId) {
-    const trigger = document.getElementById(triggerId);
-    const menu = document.getElementById(menuId);
-    if (!trigger || !menu) return;
+    const $trigger = $('#' + triggerId);
+    const $menu = $('#' + menuId);
+    if ($trigger.length === 0 || $menu.length === 0) return;
 
-    trigger.addEventListener('click', function (e) {
+    $trigger.on('click', function (e) {
         e.stopPropagation();
-        menu.classList.toggle('hidden');
+        $menu.toggleClass('hidden');
     });
 
-    document.addEventListener('click', function () {
-        menu.classList.add('hidden');
+    $(document).on('click', function () {
+        $menu.addClass('hidden');
     });
 
-    menu.addEventListener('click', function (e) {
+    $menu.on('click', function (e) {
         e.stopPropagation();
     });
 }
 
-document.addEventListener('DOMContentLoaded', setupModalCloseHandlers);
+$(document).ready(function () {
+    setupModalCloseHandlers();
+});

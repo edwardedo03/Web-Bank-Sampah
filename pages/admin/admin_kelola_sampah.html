@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kelola Sampah & Harga — Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
 </head>
 <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
@@ -153,9 +154,7 @@ function formatRupiah(angka) {
 }
 
 function renderSampahRow(s) {
-    const tr = document.createElement('tr');
-    tr.dataset.id = s.id;
-    tr.innerHTML = `
+    const $tr = $('<tr></tr>').attr('data-id', s.id).html(`
         <td class="py-3 border-b border-gray-100"><strong>${s.nama}</strong></td>
         <td class="py-3 border-b border-gray-100">${formatRupiah(s.harga)}</td>
         <td class="py-3 border-b border-gray-100">${s.stok.toLocaleString('id-ID')} kg</td>
@@ -164,110 +163,129 @@ function renderSampahRow(s) {
             <button class="btn-tambah-stok bg-[#2E7D32] text-white rounded-full px-3.5 py-1.5 text-xs font-semibold">Tambah Stok</button>
             <button class="btn-hapus-sampah bg-red-500 text-white rounded-full px-3.5 py-1.5 text-xs font-semibold">Hapus</button>
         </td>
-    `;
-    tr.querySelector('.btn-edit-harga').addEventListener('click', function () {
-        document.getElementById('edhNamaJenis').textContent = s.nama;
-        document.getElementById('formEditHarga').dataset.id = s.id;
-        document.getElementById('edhHargaBaru').value = s.harga;
+    `);
+
+    $tr.find('.btn-edit-harga').on('click', function () {
+        $('#edhNamaJenis').text(s.nama);
+        $('#formEditHarga').attr('data-id', s.id);
+        $('#edhHargaBaru').val(s.harga);
         openModal('modalEditHarga');
     });
-    tr.querySelector('.btn-tambah-stok').addEventListener('click', function () {
-        document.getElementById('tsNamaJenis').textContent = s.nama;
-        document.getElementById('formTambahStok').dataset.id = s.id;
-        document.getElementById('tsJumlah').value = '';
+    $tr.find('.btn-tambah-stok').on('click', function () {
+        $('#tsNamaJenis').text(s.nama);
+        $('#formTambahStok').attr('data-id', s.id);
+        $('#tsJumlah').val('');
         openModal('modalTambahStok');
     });
-    tr.querySelector('.btn-hapus-sampah').addEventListener('click', function () {
+    $tr.find('.btn-hapus-sampah').on('click', function () {
         if (!confirm(`Yakin ingin menghapus "${s.nama}"?`)) return;
-        fetch(`${API_BASE}/hapus_jenis_sampah.php`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: s.id }),
-        }).then(res => res.json()).then(data => {
+        $.ajax({
+            url: `${API_BASE}/hapus_jenis_sampah.php`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: s.id }),
+            dataType: 'json',
+        }).done(function (data) {
             showToast(data.message, !data.success);
             if (data.success) muatDataSampah();
-        }).catch(() => showToast('Gagal terhubung ke server.', true));
+        }).fail(function () {
+            showToast('Gagal terhubung ke server.', true);
+        });
     });
-    return tr;
+
+    return $tr;
 }
 
 function muatDataSampah() {
-    fetch(`${API_BASE}/get_jenis_sampah.php`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) {
-                showToast(data.message || 'Gagal memuat data sampah', true);
-                return;
-            }
-            const tbody = document.getElementById('sampahTableBody');
-            tbody.innerHTML = '';
-            data.data.forEach(function (s) {
-                tbody.appendChild(renderSampahRow(s));
-            });
-            document.getElementById('statTotalJenis').textContent = data.data.length;
-        })
-        .catch(() => showToast('Gagal terhubung ke server.', true));
+    $.getJSON(`${API_BASE}/get_jenis_sampah.php`).done(function (data) {
+        if (!data.success) { showToast(data.message || 'Gagal memuat data sampah', true); return; }
+        const $tbody = $('#sampahTableBody').empty();
+        data.data.forEach(function (s) {
+            $tbody.append(renderSampahRow(s));
+        });
+        $('#statTotalJenis').text(data.data.length);
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
-document.getElementById('cariSampah').addEventListener('input', function (e) {
-    const keyword = e.target.value.toLowerCase();
-    document.querySelectorAll('#sampahTableBody tr').forEach(function (row) {
-        row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
+$('#cariSampah').on('input', function () {
+    const keyword = $(this).val().toLowerCase();
+    $('#sampahTableBody tr').each(function () {
+        $(this).toggle($(this).text().toLowerCase().includes(keyword));
     });
 });
 
-document.getElementById('btnTambahKategori').addEventListener('click', function () {
-    document.getElementById('formTambahKategori').reset();
+$('#btnTambahKategori').on('click', function () {
+    $('#formTambahKategori')[0].reset();
     openModal('modalTambahKategori');
 });
 
-document.getElementById('formTambahKategori').addEventListener('submit', function (e) {
+$('#formTambahKategori').on('submit', function (e) {
     e.preventDefault();
-    const nama = document.getElementById('katNama').value;
-    const harga = document.getElementById('katHarga').value;
-    const deskripsi = document.getElementById('katDeskripsi').value;
-    fetch(`${API_BASE}/tambah_jenis_sampah.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nama, harga, deskripsi }),
-    }).then(res => res.json()).then(data => {
+    const nama = $('#katNama').val();
+    const harga = $('#katHarga').val();
+    const deskripsi = $('#katDeskripsi').val();
+    $.ajax({
+        url: `${API_BASE}/tambah_jenis_sampah.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ nama, harga, deskripsi }),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message, !data.success);
         if (data.success) { closeModal('modalTambahKategori'); muatDataSampah(); }
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 });
 
-document.getElementById('formEditHarga').addEventListener('submit', function (e) {
+$('#formEditHarga').on('submit', function (e) {
     e.preventDefault();
-    const id = this.dataset.id;
-    const hargaBaru = document.getElementById('edhHargaBaru').value;
-    fetch(`${API_BASE}/update_harga_sampah.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, harga_baru: hargaBaru }),
-    }).then(res => res.json()).then(data => {
+    const id = $(this).attr('data-id');
+    const hargaBaru = $('#edhHargaBaru').val();
+    $.ajax({
+        url: `${API_BASE}/update_harga_sampah.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ id, harga_baru: hargaBaru }),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message, !data.success);
         if (data.success) { closeModal('modalEditHarga'); muatDataSampah(); }
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 });
 
-document.getElementById('formTambahStok').addEventListener('submit', function (e) {
+$('#formTambahStok').on('submit', function (e) {
     e.preventDefault();
-    const id = this.dataset.id;
-    const jumlah = document.getElementById('tsJumlah').value;
-    fetch(`${API_BASE}/tambah_stok_sampah.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, jumlah }),
-    }).then(res => res.json()).then(data => {
+    const id = $(this).attr('data-id');
+    const jumlah = $('#tsJumlah').val();
+    $.ajax({
+        url: `${API_BASE}/tambah_stok_sampah.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ id, jumlah }),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message, !data.success);
         if (data.success) { closeModal('modalTambahStok'); muatDataSampah(); }
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 });
 
 setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    fetch(`${API_BASE}/logout.php`).then(function () {
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
         window.location.href = '../login.html';
     });
 });
 
-muatDataSampah();
+$(document).ready(function () {
+    muatDataSampah();
+});
 </script>
 
 </body>

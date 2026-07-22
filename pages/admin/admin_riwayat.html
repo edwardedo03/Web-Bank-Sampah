@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Riwayat Transaksi — Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
 </head>
 <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
@@ -101,13 +102,12 @@ const API_BASE = '../../backend/database/admin';
 function getStatusClass(status) {
     if (status === 'Gagal') return 'bg-red-100 text-red-700';
     if (status === 'Selesai') return 'bg-green-100 text-green-700';
-    return 'bg-gray-100 text-gray-600'; // Proses, Menunggu Validasi, dll
+    return 'bg-gray-100 text-gray-600';
 }
 
 function renderRiwayatRow(r) {
     const statusClass = getStatusClass(r.status);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
+    return $('<tr></tr>').html(`
         <td class="py-3 border-b border-gray-100">
             <div class="flex items-center gap-2.5">
                 <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${r.inisial}</span>
@@ -119,55 +119,57 @@ function renderRiwayatRow(r) {
         <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${r.berat}</td>
         <td class="py-3 border-b border-gray-100">${r.tanggal}</td>
         <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${statusClass}">${r.status}</span></td>
-    `;
-    return tr;
+    `);
 }
 
 function muatRiwayat(keyword) {
-    fetch(`${API_BASE}/get_riwayat_transaksi.php?q=${encodeURIComponent(keyword || '')}`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) { showToast(data.message || 'Gagal memuat riwayat', true); return; }
-            const tbody = document.getElementById('riwayatTableBody');
-            tbody.innerHTML = '';
-            if (data.data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray-400 py-4">Tidak ada data</td></tr>';
-            } else {
-                data.data.forEach(function (r) { tbody.appendChild(renderRiwayatRow(r)); });
-            }
-            terapkanFilterLokal();
-        }).catch(() => showToast('Gagal terhubung ke server.', true));
+    $.getJSON(`${API_BASE}/get_riwayat_transaksi.php`, { q: keyword || '' }).done(function (data) {
+        if (!data.success) { showToast(data.message || 'Gagal memuat riwayat', true); return; }
+        const $tbody = $('#riwayatTableBody').empty();
+        if (data.data.length === 0) {
+            $tbody.html('<tr><td colspan="6" class="text-center text-gray-400 py-4">Tidak ada data</td></tr>');
+        } else {
+            data.data.forEach(function (r) { $tbody.append(renderRiwayatRow(r)); });
+        }
+        terapkanFilterLokal();
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
 function terapkanFilterLokal() {
-    const jenis = document.getElementById('filterJenis').value;
-    const status = document.getElementById('filterStatus').value;
-    document.querySelectorAll('#riwayatTableBody tr').forEach(function (row) {
-        if (row.children.length < 6) return;
-        const jenisRow = row.children[1].textContent.trim();
-        const statusRow = row.children[5].textContent.trim();
+    const jenis = $('#filterJenis').val();
+    const status = $('#filterStatus').val();
+    $('#riwayatTableBody tr').each(function () {
+        const $row = $(this);
+        if ($row.children().length < 6) return;
+        const jenisRow = $row.children().eq(1).text().trim();
+        const statusRow = $row.children().eq(5).text().trim();
         const cocokJenis = jenis === 'Semua' || jenisRow === jenis;
         const cocokStatus = status === 'Semua' || statusRow === status;
-        row.style.display = (cocokJenis && cocokStatus) ? '' : 'none';
+        $row.toggle(cocokJenis && cocokStatus);
     });
 }
 
 let searchTimeout;
-document.getElementById('cariRiwayat').addEventListener('input', function (e) {
+$('#cariRiwayat').on('input', function () {
     clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(function () { muatRiwayat(e.target.value); }, 300);
+    const val = $(this).val();
+    searchTimeout = setTimeout(function () { muatRiwayat(val); }, 300);
 });
-document.getElementById('filterJenis').addEventListener('change', terapkanFilterLokal);
-document.getElementById('filterStatus').addEventListener('change', terapkanFilterLokal);
+$('#filterJenis').on('change', terapkanFilterLokal);
+$('#filterStatus').on('change', terapkanFilterLokal);
 
 setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    fetch(`${API_BASE}/logout.php`).then(function () {
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
         window.location.href = '../login.html';
     });
 });
 
-muatRiwayat('');
+$(document).ready(function () {
+    muatRiwayat('');
+});
 </script>
 
 </body>

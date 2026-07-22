@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kelola Petugas — Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
     <style>
         .toggle-track { transition: background-color .15s ease; }
         .toggle-dot { transition: transform .15s ease; }
@@ -130,9 +131,7 @@ let currentPage = 1;
 let currentKeyword = '';
 
 function renderPetugasRow(p) {
-    const tr = document.createElement('tr');
-    tr.dataset.id = p.id;
-    tr.innerHTML = `
+    const $tr = $('<tr></tr>').attr('data-id', p.id).html(`
         <td class="py-3 border-b border-gray-100">
             <div class="flex items-center gap-2.5 person">
                 <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${p.inisial}</span>
@@ -150,113 +149,121 @@ function renderPetugasRow(p) {
             </label>
         </td>
         <td class="py-3 border-b border-gray-100"><button class="edit-icon-btn text-gray-500" title="Edit petugas">✎</button></td>
-    `;
-    return tr;
+    `);
+    return $tr;
 }
 
-function attachRowHandlers(row) {
-    row.querySelector('input[type="checkbox"]').addEventListener('change', function () {
-        const nama = row.querySelector('.person').textContent.trim();
-        fetch(`${API_BASE}/update_status_petugas.php`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_petugas: row.dataset.id, aktif: this.checked }),
-        }).then(res => res.json()).then(data => {
-            showToast(data.message || (data.success ? `Status ${nama} diubah menjadi ${this.checked ? 'Aktif' : 'Nonaktif'}.` : 'Gagal update status'), !data.success);
-        }).catch(() => showToast('Gagal terhubung ke server.', true));
+function attachRowHandlers($row, p) {
+    $row.find('input[type="checkbox"]').on('change', function () {
+        const nama = $row.find('.person').text().trim();
+        const aktif = $(this).is(':checked');
+        $.ajax({
+            url: `${API_BASE}/update_status_petugas.php`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id_petugas: p.id, aktif }),
+            dataType: 'json',
+        }).done(function (data) {
+            showToast(data.message || (data.success ? `Status ${nama} diubah menjadi ${aktif ? 'Aktif' : 'Nonaktif'}.` : 'Gagal update status'), !data.success);
+        }).fail(function () {
+            showToast('Gagal terhubung ke server.', true);
+        });
     });
 
-    row.querySelector('.edit-icon-btn').addEventListener('click', function () {
-        document.getElementById('modalPetugasTitle').textContent = 'Edit Petugas';
-        document.getElementById('ptgNama').value = row.querySelector('.person').textContent.trim();
-        document.getElementById('ptgWilayah').value = row.querySelector('.pill-tag').textContent;
-        document.getElementById('fieldEmailPetugas').classList.add('hidden');
-        document.getElementById('fieldTeleponPetugas').classList.add('hidden');
-        document.getElementById('fieldPasswordPetugas').classList.add('hidden');
-        formPetugas.dataset.mode = 'edit';
-        formPetugas.dataset.id = row.dataset.id;
+    $row.find('.edit-icon-btn').on('click', function () {
+        $('#modalPetugasTitle').text('Edit Petugas');
+        $('#ptgNama').val($row.find('.person').text().trim());
+        $('#ptgWilayah').val($row.find('.pill-tag').text());
+        $('#fieldEmailPetugas, #fieldTeleponPetugas, #fieldPasswordPetugas').addClass('hidden');
+        $formPetugas.attr('data-mode', 'edit');
+        $formPetugas.attr('data-id', p.id);
         openModal('modalPetugas');
     });
 }
 
 function muatDataPetugas() {
-    fetch(`${API_BASE}/get_petugas.php?page=${currentPage}&q=${encodeURIComponent(currentKeyword)}`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) { showToast(data.message || 'Gagal memuat data petugas', true); return; }
-            const tbody = document.getElementById('petugasTableBody');
-            tbody.innerHTML = '';
-            data.data.forEach(function (p) {
-                const row = renderPetugasRow(p);
-                tbody.appendChild(row);
-                attachRowHandlers(row);
-            });
-            document.getElementById('paginationInfo').textContent =
-                `Menampilkan ${data.data.length} dari ${data.total} petugas (halaman ${data.page})`;
-        }).catch(() => showToast('Gagal terhubung ke server.', true));
+    $.getJSON(`${API_BASE}/get_petugas.php`, { page: currentPage, q: currentKeyword }).done(function (data) {
+        if (!data.success) { showToast(data.message || 'Gagal memuat data petugas', true); return; }
+        const $tbody = $('#petugasTableBody').empty();
+        data.data.forEach(function (p) {
+            const $row = renderPetugasRow(p);
+            $tbody.append($row);
+            attachRowHandlers($row, p);
+        });
+        $('#paginationInfo').text(`Menampilkan ${data.data.length} dari ${data.total} petugas (halaman ${data.page})`);
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
 let searchTimeout;
-document.getElementById('cariPetugas').addEventListener('input', function (e) {
+$('#cariPetugas').on('input', function () {
     clearTimeout(searchTimeout);
+    const val = $(this).val();
     searchTimeout = setTimeout(function () {
-        currentKeyword = e.target.value;
+        currentKeyword = val;
         currentPage = 1;
         muatDataPetugas();
     }, 300);
 });
 
-const formPetugas = document.getElementById('formPetugas');
+const $formPetugas = $('#formPetugas');
 
-document.getElementById('btnTambahPetugas').addEventListener('click', function () {
-    document.getElementById('modalPetugasTitle').textContent = 'Tambah Petugas Baru';
-    formPetugas.reset();
-    formPetugas.dataset.mode = 'tambah';
-    document.getElementById('fieldEmailPetugas').classList.remove('hidden');
-    document.getElementById('fieldTeleponPetugas').classList.remove('hidden');
-    document.getElementById('fieldPasswordPetugas').classList.remove('hidden');
+$('#btnTambahPetugas').on('click', function () {
+    $('#modalPetugasTitle').text('Tambah Petugas Baru');
+    $formPetugas[0].reset();
+    $formPetugas.attr('data-mode', 'tambah');
+    $('#fieldEmailPetugas, #fieldTeleponPetugas, #fieldPasswordPetugas').removeClass('hidden');
     openModal('modalPetugas');
 });
 
-formPetugas.addEventListener('submit', function (e) {
+$formPetugas.on('submit', function (e) {
     e.preventDefault();
-    const mode = formPetugas.dataset.mode;
-    const nama = document.getElementById('ptgNama').value;
-    const wilayah = document.getElementById('ptgWilayah').value;
+    const mode = $formPetugas.attr('data-mode');
+    const nama = $('#ptgNama').val();
+    const wilayah = $('#ptgWilayah').val();
     const payload = { mode, nama, wilayah };
     if (mode === 'edit') {
-        payload.id = formPetugas.dataset.id;
+        payload.id = $formPetugas.attr('data-id');
     } else {
-        payload.email = document.getElementById('ptgEmail').value;
-        payload.no_telepon = document.getElementById('ptgTelepon').value;
-        payload.password = document.getElementById('ptgPassword').value;
+        payload.email = $('#ptgEmail').val();
+        payload.no_telepon = $('#ptgTelepon').val();
+        payload.password = $('#ptgPassword').val();
     }
-    fetch(`${API_BASE}/simpan_petugas.php`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-    }).then(res => res.json()).then(data => {
+    $.ajax({
+        url: `${API_BASE}/simpan_petugas.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(payload),
+        dataType: 'json',
+    }).done(function (data) {
         showToast(data.message || (data.success ? 'Berhasil disimpan' : 'Gagal menyimpan'), !data.success);
         if (data.success) { closeModal('modalPetugas'); muatDataPetugas(); }
-    }).catch(() => showToast('Gagal terhubung ke server.', true));
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 });
 
-document.getElementById('btnPrevPage').addEventListener('click', function () {
+$('#btnPrevPage').on('click', function () {
     if (currentPage <= 1) return;
     currentPage--;
     muatDataPetugas();
 });
-document.getElementById('btnNextPage').addEventListener('click', function () {
+$('#btnNextPage').on('click', function () {
     currentPage++;
     muatDataPetugas();
 });
 
 setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    fetch(`${API_BASE}/logout.php`).then(function () {
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
         window.location.href = '../login.html';
     });
 });
 
-muatDataPetugas();
+$(document).ready(function () {
+    muatDataPetugas();
+});
 </script>
 
 </body>

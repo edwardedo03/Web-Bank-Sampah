@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Admin — Bank Sampah Selaras</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
 </head>
 <body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
 
@@ -152,12 +153,6 @@
 <script>
 const API_BASE = '../../backend/database/admin';
 
-/*
-  Pemetaan warna badge berdasarkan status ASLI dari database:
-  - Proses / Menunggu Validasi -> abu-abu (belum final)
-  - Gagal -> merah
-  - Selesai (kalau ada nanti) -> hijau
-*/
 function getStatusClass(status) {
     if (status === 'Gagal') return 'bg-red-100 text-red-700';
     if (status === 'Selesai') return 'bg-green-100 text-green-700';
@@ -166,118 +161,122 @@ function getStatusClass(status) {
 
 function renderTransaksiRow(t) {
     const statusClass = getStatusClass(t.status);
-    const tr = document.createElement('tr');
-    tr.className = 'cursor-pointer hover:bg-[#F7FBF0]';
-    tr.dataset.nama = t.nama;
-    tr.dataset.jenis = t.jenis_sampah;
-    tr.dataset.berat = t.berat;
-    tr.dataset.total = t.total;
-    tr.dataset.status = t.status;
-    tr.innerHTML = `
-        <td class="py-3 border-b border-gray-100">
-            <div class="flex items-center gap-2.5">
-                <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${t.inisial}</span>
-                ${t.nama}
-            </div>
-        </td>
-        <td class="py-3 border-b border-gray-100">${t.jenis_sampah}</td>
-        <td class="py-3 border-b border-gray-100">${t.berat}</td>
-        <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${t.total}</td>
-        <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${statusClass}">${t.status}</span></td>
-    `;
-    tr.addEventListener('click', function () {
-        document.getElementById('dtNama').textContent = tr.dataset.nama;
-        document.getElementById('dtJenis').textContent = tr.dataset.jenis;
-        document.getElementById('dtBerat').textContent = tr.dataset.berat;
-        document.getElementById('dtTotal').textContent = tr.dataset.total;
-        document.getElementById('dtStatus').textContent = tr.dataset.status;
+    const $tr = $('<tr></tr>')
+        .addClass('cursor-pointer hover:bg-[#F7FBF0]')
+        .attr('data-nama', t.nama)
+        .attr('data-jenis', t.jenis_sampah)
+        .attr('data-berat', t.berat)
+        .attr('data-total', t.total)
+        .attr('data-status', t.status)
+        .html(`
+            <td class="py-3 border-b border-gray-100">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${t.inisial}</span>
+                    ${t.nama}
+                </div>
+            </td>
+            <td class="py-3 border-b border-gray-100">${t.jenis_sampah}</td>
+            <td class="py-3 border-b border-gray-100">${t.berat}</td>
+            <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${t.total}</td>
+            <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${statusClass}">${t.status}</span></td>
+        `);
+    $tr.on('click', function () {
+        $('#dtNama').text($(this).attr('data-nama'));
+        $('#dtJenis').text($(this).attr('data-jenis'));
+        $('#dtBerat').text($(this).attr('data-berat'));
+        $('#dtTotal').text($(this).attr('data-total'));
+        $('#dtStatus').text($(this).attr('data-status'));
         openModal('modalDetailTransaksi');
     });
-    return tr;
+    return $tr;
 }
 
 function renderBarChartSampah(data) {
-    const container = document.getElementById('barChartSampah');
-    container.innerHTML = '';
+    const $container = $('#barChartSampah').empty();
     if (data.length === 0) {
-        container.innerHTML = '<p class="text-xs text-gray-400 m-auto">Belum ada data</p>';
+        $container.html('<p class="text-xs text-gray-400 m-auto">Belum ada data</p>');
         return;
     }
     const maxBerat = Math.max(...data.map(d => d.berat), 1);
     data.forEach(function (d) {
         const persen = Math.max((d.berat / maxBerat) * 100, 3);
-        const col = document.createElement('div');
-        col.className = 'flex-1 h-full flex flex-col items-center justify-end gap-2';
-        col.innerHTML = `
-            <span class="text-[10px] text-gray-500">${d.berat} kg</span>
-            <div class="w-full bg-[#2E7D32] rounded-t-md" style="height: ${persen}%"></div>
-            <span class="text-[11px] text-gray-600">${d.jenis}</span>
-        `;
-        container.appendChild(col);
+        const $col = $('<div></div>')
+            .addClass('flex-1 h-full flex flex-col items-center justify-end gap-2')
+            .html(`
+                <span class="text-[10px] text-gray-500">${d.berat} kg</span>
+                <div class="w-full bg-[#2E7D32] rounded-t-md" style="height: ${persen}%"></div>
+                <span class="text-[11px] text-gray-600">${d.jenis}</span>
+            `);
+        $container.append($col);
     });
 }
 
 function renderLineChartTren(data) {
-    const svg = document.getElementById('lineChartTren');
+    const $svg = $('#lineChartTren');
     if (data.length === 0) {
-        svg.innerHTML = '';
+        $svg.empty();
         return;
     }
     const maxNilai = Math.max(...data.map(d => Math.max(d.setoran, d.penarikan)), 1);
     const stepX = 320 / (data.length - 1 || 1);
-    const toY = (val) => 130 - (val / maxNilai) * 110; // padding atas-bawah
+    const toY = (val) => 130 - (val / maxNilai) * 110;
 
     const pointsSetoran = data.map((d, i) => `${i * stepX},${toY(d.setoran)}`).join(' ');
     const pointsPenarikan = data.map((d, i) => `${i * stepX},${toY(d.penarikan)}`).join(' ');
 
-    svg.innerHTML = `
+    $svg.html(`
         <polyline points="${pointsSetoran}" fill="none" stroke="#2E7D32" stroke-width="2.5" />
         <polyline points="${pointsPenarikan}" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 4" />
-    `;
+    `);
 }
 
 function muatDataDashboard() {
-    const periode = encodeURIComponent(document.getElementById('periode').value);
-    const jenis = encodeURIComponent(document.getElementById('jenis').value);
+    const periode = $('#periode').val();
+    const jenis = $('#jenis').val();
 
-    fetch(`${API_BASE}/dashboard_data.php?periode=${periode}&jenis=${jenis}`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) {
-                showToast(data.message || 'Gagal memuat dashboard', true);
-                return;
-            }
-            document.getElementById('statNasabah').textContent = data.total_nasabah.toLocaleString('id-ID');
-            document.getElementById('statPetugas').textContent = data.total_petugas;
-            document.getElementById('statSaldo').textContent = 'Rp ' + data.total_saldo.toLocaleString('id-ID');
+    $.ajax({
+        url: `${API_BASE}/dashboard_data.php`,
+        method: 'GET',
+        data: { periode, jenis },
+        dataType: 'json',
+    }).done(function (data) {
+        if (!data.success) {
+            showToast(data.message || 'Gagal memuat dashboard', true);
+            return;
+        }
+        $('#statNasabah').text(Number(data.total_nasabah).toLocaleString('id-ID'));
+        $('#statPetugas').text(data.total_petugas);
+        $('#statSaldo').text('Rp ' + Number(data.total_saldo).toLocaleString('id-ID'));
 
-            renderBarChartSampah(data.sampah_terkumpul);
-            renderLineChartTren(data.tren_mingguan);
+        renderBarChartSampah(data.sampah_terkumpul);
+        renderLineChartTren(data.tren_mingguan);
 
-            const tbody = document.getElementById('transaksiTerbaruBody');
-            tbody.innerHTML = '';
-            if (data.transaksi_terbaru.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-400 py-4">Tidak ada aktivitas pada periode/jenis ini</td></tr>';
-            } else {
-                data.transaksi_terbaru.forEach(function (t) {
-                    tbody.appendChild(renderTransaksiRow(t));
-                });
-            }
-        })
-        .catch(() => showToast('Gagal terhubung ke server.', true));
+        const $tbody = $('#transaksiTerbaruBody').empty();
+        if (data.transaksi_terbaru.length === 0) {
+            $tbody.html('<tr><td colspan="5" class="text-center text-gray-400 py-4">Tidak ada aktivitas pada periode/jenis ini</td></tr>');
+        } else {
+            data.transaksi_terbaru.forEach(function (t) {
+                $tbody.append(renderTransaksiRow(t));
+            });
+        }
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
 }
 
 setupDropdown('avatarTrigger', 'avatarMenu');
-document.getElementById('btnLogout').addEventListener('click', function () {
-    fetch(`${API_BASE}/logout.php`).then(function () {
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
         window.location.href = '../login.html';
     });
 });
 
-document.getElementById('periode').addEventListener('change', muatDataDashboard);
-document.getElementById('jenis').addEventListener('change', muatDataDashboard);
+$('#periode').on('change', muatDataDashboard);
+$('#jenis').on('change', muatDataDashboard);
 
-muatDataDashboard();
+$(document).ready(function () {
+    muatDataDashboard();
+});
 </script>
 
 </body>
