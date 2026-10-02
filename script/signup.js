@@ -46,6 +46,7 @@ $("#signup-form").on("submit", function (e) {
           alert("gagal: " + res.message);
         }
       },
+
       error: function (xhr, status, error) {
         console.log("Status:", xhr.status);
         console.log("Response:", xhr.responseText);

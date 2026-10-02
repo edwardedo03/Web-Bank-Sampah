@@ -14,12 +14,12 @@
       <div class="flex flex-col gap-10">
         <div class="">
           <h2 class="font-bold text-md text-[#0D631B]">Bank Sampah Selaras</h2>
-          <p class="text-sm">Community Waste</p>
+          <p class="text-xs">Recycle Today, Sustain Tomorrow</p>
         </div>
         <ul class="flex flex-col gap-4">
           <a href="../../index.html">
             <li
-              class="rounded-lg px-4 py-3 text-xs font-bold text-[#40493D] bg-[#EBEFE5] flex flex-row justify-start items-center gap-5 duration-200 hover:bg-[#2E7D32] hover:text-[#CBFFC2]"
+              class="rounded-lg px-4 py-3 text-xs font-bold text-[#40493D] bg-[#EBEFE5] flex flex-row justify-start items-center gap-5 duration-200 hover:bg-[#2E7D32] hover:text-[#CBFFC2] active:scale-95"
             >
               <!-- <img
                 src="../../assets/icon/dashboard/dashboard-dark.png"
@@ -42,7 +42,7 @@
           </a>
           <a href="./setor_sampah.html">
             <li
-              class="rounded-lg px-4 py-3 text-xs font-bold text-[#40493D] bg-[#EBEFE5] flex flex-row justify-start items-center gap-5 duration-200 hover:bg-[#2E7D32] hover:text-[#CBFFC2]"
+              class="rounded-lg px-4 py-3 text-xs font-bold text-[#40493D] bg-[#EBEFE5] flex flex-row justify-start items-center gap-5 duration-200 hover:bg-[#2E7D32] hover:text-[#CBFFC2] active:scale-95"
             >
               <!-- <img
                 src="../../assets/icon/setor-sampah/setor-sampah.png"
@@ -65,18 +65,19 @@
           </a>
           <a href="#">
             <li
-              class="rounded-lg px-4 py-3 text-xs font-bold text-[#CBFFC2] bg-[#2E7D32] flex flex-row justify-start items-center gap-5 duration-200 hover:scale-95"
+              class="rounded-lg px-4 py-3 text-xs font-bold text-[#CBFFC2] bg-[#2E7D32] flex flex-row justify-start items-center gap-5 duration-200 hover:scale-95 active:scale-95"
             >
               <img
                 src="../../assets/icon/riwayat-transaksi/riwayat-light.png"
                 alt="riwayat-transaksi"
+                class="select-none"
               />
               Riwayat Transaksi
             </li>
           </a>
           <a href="./profile_nasabah.html">
             <li
-              class="rounded-lg px-4 py-3 text-xs font-bold text-[#40493D] bg-[#EBEFE5] flex flex-row justify-start items-center gap-5 duration-200 hover:bg-[#2E7D32] hover:text-[#CBFFC2]"
+              class="rounded-lg px-4 py-3 text-xs font-bold text-[#40493D] bg-[#EBEFE5] flex flex-row justify-start items-center gap-5 duration-200 hover:bg-[#2E7D32] hover:text-[#CBFFC2] active:scale-95"
             >
               <!-- <img
                 src="../../assets/icon/profil-account/profil-account.png"
@@ -101,16 +102,17 @@
       </div>
       <div class="flex flex-col gap-3">
         <button
-          class="border border-[#F7FBF0] border-solid rounded-xl p-2 py-4 text-sm font-semibold text-[#F7FBF0] bg-[#0D631B] flex flex-row justify-center items-center gap-3 hover:bg-[#2E7D32] duration-200"
+          class="border border-[#F7FBF0] border-solid rounded-xl p-2 py-4 text-sm font-semibold text-[#F7FBF0] bg-[#0D631B] flex flex-row justify-center items-center gap-3 hover:bg-[#2E7D32] duration-200 active:scale-95"
         >
           <img
             src="../../assets/icon/bantuan-petugas.png"
             alt="bantuan-petugas"
+            class="select-none"
           />
           Bantuan Petugas
         </button>
         <button
-          class="bg-red-800 text-white text-sm p-2 rounded-xl font-bold hover:bg-red-700 duration-200"
+          class="bg-red-800 text-white text-sm p-2 rounded-xl font-bold hover:bg-red-700 duration-200 active:scale-95"
           id="logout"
         >
           Logout
@@ -129,12 +131,12 @@
               SALDO TABUNGAN DIGITAL
             </h2>
             <p class="font-bold text-[#0D631B] text-3xl">
-              Rp <span id="saldo-tabungan">450.000</span>
+              Rp <span id="saldo-tabungan">-</span>
             </p>
           </div>
           <img
             src="../../assets/icon/total-tabungan-hijau.svg"
-            class="w-8 h-8"
+            class="w-8 h-8 select-none"
           />
         </div>
         <div
@@ -149,7 +151,7 @@
         >
           <p class="text-md font-semibold">Total Sampah</p>
           <p class="text-[#0D631B] text-lg">
-            <span id="total-sampah">124.50</span> Kg
+            <span id="total-sampah">0</span> Kg
           </p>
         </div>
         <div
@@ -157,7 +159,7 @@
         >
           <p class="text-md font-semibold">Penyetoran</p>
           <p class="text-[#0D631B] text-lg">
-            <span id="jumlah-setoran">18</span> Kali
+            <span id="jumlah-setoran">0</span> Kali
           </p>
         </div>
 
@@ -195,17 +197,19 @@
         </div>
       </div>
 
+      <!-- KATEGORI SEMUA -->
+
       <div
         id="kategori-semua"
-        class="content-kategori w-[70%] flex flex-col gap-4"
+        class="content-kategori w-[70%] flex flex-col gap-4 max-h-[480px] overflow-y-auto pr-2 custom-scrollbar"
       >
-        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+        <!-- <div class="w-full bg-white rounded-xl px-5 shadow-md">
           <div class="flex flex-row justify-between items-center py-4 px-2">
             <div class="flex flex-row justify-start items-center gap-4">
               <img
                 src="../../assets/icon/setor-sampah/setor-light.png"
                 alt="icon-setor-sampah"
-                class="bg-[#0D631B] rounded-full p-3"
+                class="bg-[#0D631B] rounded-full p-3 select-none"
               />
               <div class="flex flex-col items-start">
                 <h4 class="font-semibold text-lg">Plastik PET & Botol</h4>
@@ -234,20 +238,22 @@
               </p>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
+
+      <!-- KATEGORI PLASTIK -->
 
       <div
         id="kategori-plastik"
-        class="content-kategori w-[70%] flex flex-col gap-4 hidden"
+        class="content-kategori w-[70%] flex flex-col gap-4 hidden max-h-[480px] overflow-y-auto pr-2 custom-scrollbar"
       >
-        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+        <!-- <div class="w-full bg-white rounded-xl px-5 shadow-md">
           <div class="flex flex-row justify-between items-center py-4 px-2">
             <div class="flex flex-row justify-start items-center gap-4">
               <img
                 src="../../assets/icon/setor-sampah/setor-light.png"
                 alt="icon-setor-sampah"
-                class="bg-[#0D631B] rounded-full p-3"
+                class="bg-[#0D631B] rounded-full p-3 select-none"
               />
               <div class="flex flex-col items-start">
                 <h4 class="font-semibold text-lg">Plastik Botol</h4>
@@ -276,20 +282,22 @@
               </p>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
+
+      <!-- KATEGORI KERTAS -->
 
       <div
         id="kategori-kertas"
-        class="content-kategori w-[70%] flex flex-col gap-4 hidden"
+        class="content-kategori w-[70%] flex flex-col gap-4 hidden max-h-[480px] overflow-y-auto pr-2 custom-scrollbar"
       >
-        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+        <!-- <div class="w-full bg-white rounded-xl px-5 shadow-md">
           <div class="flex flex-row justify-between items-center py-4 px-2">
             <div class="flex flex-row justify-start items-center gap-4">
               <img
                 src="../../assets/icon/setor-sampah/setor-light.png"
                 alt="icon-setor-sampah"
-                class="bg-[#0D631B] rounded-full p-3"
+                class="bg-[#0D631B] rounded-full p-3 select-none"
               />
               <div class="flex flex-col items-start">
                 <h4 class="font-semibold text-lg">Kertas Bungkus</h4>
@@ -318,20 +326,22 @@
               </p>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
+
+      <!-- KATEGORI LOGAM -->
 
       <div
         id="kategori-logam"
-        class="content-kategori w-[70%] flex flex-col gap-4 hidden"
+        class="content-kategori w-[70%] flex flex-col gap-4 hidden max-h-[480px] overflow-y-auto pr-2 custom-scrollbar"
       >
-        <div class="w-full bg-white rounded-xl px-5 shadow-md">
+        <!-- <div class="w-full bg-white rounded-xl px-5 shadow-md">
           <div class="flex flex-row justify-between items-center py-4 px-2">
             <div class="flex flex-row justify-start items-center gap-4">
               <img
                 src="../../assets/icon/setor-sampah/setor-light.png"
                 alt="icon-setor-sampah"
-                class="bg-[#0D631B] rounded-full p-3"
+                class="bg-[#0D631B] rounded-full p-3 select-none"
               />
               <div class="flex flex-col items-start">
                 <h4 class="font-semibold text-lg">Logam Besi</h4>
@@ -360,10 +370,102 @@
               </p>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
+
+      <form
+        id="tarik-saldo-form"
+        class="flex flex-col justify-start items-center w-[70%] gap-5 py-2 hidden"
+      >
+        <!-- <div
+          class="flex flex-col items-start justify-between gap-1 py-5 px-5 bg-[#BFCABA]/30 rounded-xl w-full border-2 border-[#0D631B]/20 shadow-md"
+        >
+          <p class="font-semibold text-lg text-gray-800/60">Saldo Tersedia</p>
+          <p class="font-bold text-3xl text-[#0D631B]">
+            Rp <span id="saldo-penarikan">0</span>
+          </p>
+        </div> -->
+
+        <div class="flex flex-col w-full items-start gap-3">
+          <p>Nominal Penarikan</p>
+          <div class="grid grid-cols-2 gap-3 w-full">
+            <div
+              class="flex flex-row gap-2 col-span-full w-full items-center bg-white border-2 border-[#0D631B]/20 rounded-xl px-3 shadow-md"
+            >
+              <p class="font-bold text-xl">Rp</p>
+              <input
+                type="number"
+                step="10000"
+                min="0"
+                id="nominal-penarikan"
+                placeholder="0"
+                class="w-full py-2 px-3 rounded-xl w-full text-lg font-semibold outline-none"
+              />
+            </div>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="50000"
+                class="sr-only radio-nominal"
+              />
+              Rp 50.000
+            </label>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="100000"
+                class="sr-only radio-nominal"
+              />
+              Rp 100.000
+            </label>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="200000"
+                class="sr-only radio-nominal"
+              />
+              Rp 200.000
+            </label>
+
+            <label
+              class="col-span-1 border-2 border-[#0D631B]/20 rounded-xl py-3 font-semibold active:scale-95 duration-200 w-full hover:bg-[#0D631B] hover:text-white duration-400 text-center cursor-pointer has-[:checked]:bg-[#0D631B] has-[:checked]:shadow-md has-[:checked]:text-white"
+            >
+              <input
+                type="radio"
+                name="jumlah-saldo-pilihan"
+                value="tarik-semua"
+                class="sr-only radio-nominal"
+              />
+              Tarik Semua
+            </label>
+
+            <button
+              id="btn-tarik-saldo"
+              type="button"
+              class="col-span-full bg-[#0D631B] text-white rounded-xl py-3 font-semibold hover:bg-[#2E7D32] active:scale-95 duration-200"
+            >
+              Tarik Saldo
+            </button>
+          </div>
+        </div>
+      </form>
     </section>
 
-    <script src="../../script/nasabah/riwayat_transaksi.js"></script>
+    <script
+      type="module"
+      src="../../script/nasabah/riwayat_transaksi.js"
+    ></script>
   </body>
 </html>

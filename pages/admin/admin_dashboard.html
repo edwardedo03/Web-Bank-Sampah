@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin — Bank Sampah Selaras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
+</head>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
+
+<div class="flex w-full h-screen overflow-hidden">
+
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
+        </div>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
+    </aside>
+
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
+
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5 relative">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8">
+            <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold m-0 mb-1">Dashboard Admin</h1>
+                    <p class="text-sm text-gray-500 m-0">Monitoring real-time aktivitas pengelolaan sampah.</p>
+                </div>
+                <div class="flex gap-2.5">
+                    <div class="flex flex-col gap-1">
+                        <label for="periode" class="text-[10px] font-bold uppercase text-gray-400">Periode</label>
+                        <select id="periode" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white">
+                            <option>Bulan Ini</option>
+                            <option>Minggu Ini</option>
+                            <option>Tahun Ini</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label for="jenis" class="text-[10px] font-bold uppercase text-gray-400">Jenis Sampah</label>
+                        <select id="jenis" class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white">
+                            <option>Semua Jenis</option>
+                            <option>Plastik</option>
+                            <option>Kertas</option>
+                            <option>Logam</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Total Nasabah</p>
+                    <p class="text-2xl font-bold m-0" id="statNasabah">–</p>
+                    <p class="text-[11px] text-[#2E7D32] mt-1.5 mb-0">↗ dari database</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-gray-500 m-0 mb-1.5">Total Petugas</p>
+                    <p class="text-2xl font-bold m-0" id="statPetugas">–</p>
+                    <p class="text-[11px] text-gray-500 mt-1.5 mb-0">Semua status aktif</p>
+                </div>
+                <div class="bg-[#0D631B] text-white rounded-2xl shadow-sm p-5">
+                    <p class="text-xs text-white/80 m-0 mb-1.5">Total Saldo (IDR)</p>
+                    <p class="text-2xl font-bold m-0" id="statSaldo">–</p>
+                    <p class="text-[11px] text-white/80 mt-1.5 mb-0">Dana tabungan nasabah</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <div class="flex items-center justify-between mb-3.5">
+                        <h3 class="text-sm font-bold m-0">Sampah Terkumpul (kg)</h3>
+                    </div>
+                    <div id="barChartSampah" class="flex items-end gap-3.5 h-36 pt-2.5"></div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <div class="flex items-center justify-between mb-3.5">
+                        <h3 class="text-sm font-bold m-0">Tren Volume Transaksi (7 Hari)</h3>
+                        <div class="flex gap-3.5 text-[11px] text-gray-500">
+                            <span class="inline-flex items-center gap-1"><i class="w-2 h-2 rounded-full bg-[#2E7D32] inline-block"></i> Setoran</span>
+                            <span class="inline-flex items-center gap-1"><i class="w-2 h-2 rounded-full bg-red-500 inline-block"></i> Penarikan</span>
+                        </div>
+                    </div>
+                    <svg id="lineChartTren" viewBox="0 0 320 140" width="100%" height="140" preserveAspectRatio="none"></svg>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                <div class="flex items-center justify-between mb-3.5">
+                    <h3 class="text-sm font-bold m-0">Transaksi Terbaru</h3>
+                    <a href="admin_riwayat.html" class="text-xs font-semibold text-[#2E7D32]">Lihat Semua</a>
+                </div>
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Nasabah</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Jenis Sampah</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Berat</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Total</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaksiTerbaruBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalDetailTransaksi">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold m-0">Detail Transaksi</h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalDetailTransaksi">✕</button>
+        </div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Nasabah</label><p id="dtNama" class="m-0 font-semibold"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Jenis Sampah</label><p id="dtJenis" class="m-0"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Berat</label><p id="dtBerat" class="m-0"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Total</label><p id="dtTotal" class="m-0 font-bold text-[#2E7D32]"></p></div>
+        <div class="mb-3.5"><label class="text-xs font-semibold text-gray-600">Status</label><p id="dtStatus" class="m-0"></p></div>
+        <div class="flex gap-2.5 mt-4">
+            <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalDetailTransaksi">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../script/admin/admin.js"></script>
+<script>
+const API_BASE = '../../backend/database/admin';
+
+function getStatusClass(status) {
+    if (status === 'Gagal') return 'bg-red-100 text-red-700';
+    if (status === 'Selesai') return 'bg-green-100 text-green-700';
+    return 'bg-gray-100 text-gray-600'; // Proses, Menunggu Validasi, dll
+}
+
+function renderTransaksiRow(t) {
+    const statusClass = getStatusClass(t.status);
+    const $tr = $('<tr></tr>')
+        .addClass('cursor-pointer hover:bg-[#F7FBF0]')
+        .attr('data-nama', t.nama)
+        .attr('data-jenis', t.jenis_sampah)
+        .attr('data-berat', t.berat)
+        .attr('data-total', t.total)
+        .attr('data-status', t.status)
+        .html(`
+            <td class="py-3 border-b border-gray-100">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${t.inisial}</span>
+                    ${t.nama}
+                </div>
+            </td>
+            <td class="py-3 border-b border-gray-100">${t.jenis_sampah}</td>
+            <td class="py-3 border-b border-gray-100">${t.berat}</td>
+            <td class="py-3 border-b border-gray-100 font-bold text-[#2E7D32]">${t.total}</td>
+            <td class="py-3 border-b border-gray-100"><span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${statusClass}">${t.status}</span></td>
+        `);
+    $tr.on('click', function () {
+        $('#dtNama').text($(this).attr('data-nama'));
+        $('#dtJenis').text($(this).attr('data-jenis'));
+        $('#dtBerat').text($(this).attr('data-berat'));
+        $('#dtTotal').text($(this).attr('data-total'));
+        $('#dtStatus').text($(this).attr('data-status'));
+        openModal('modalDetailTransaksi');
+    });
+    return $tr;
+}
+
+function renderBarChartSampah(data) {
+    const $container = $('#barChartSampah').empty();
+    if (data.length === 0) {
+        $container.html('<p class="text-xs text-gray-400 m-auto">Belum ada data</p>');
+        return;
+    }
+    const maxBerat = Math.max(...data.map(d => d.berat), 1);
+    data.forEach(function (d) {
+        const persen = Math.max((d.berat / maxBerat) * 100, 3);
+        const $col = $('<div></div>')
+            .addClass('flex-1 h-full flex flex-col items-center justify-end gap-2')
+            .html(`
+                <span class="text-[10px] text-gray-500">${d.berat} kg</span>
+                <div class="w-full bg-[#2E7D32] rounded-t-md" style="height: ${persen}%"></div>
+                <span class="text-[11px] text-gray-600">${d.jenis}</span>
+            `);
+        $container.append($col);
+    });
+}
+
+function renderLineChartTren(data) {
+    const $svg = $('#lineChartTren');
+    if (data.length === 0) {
+        $svg.empty();
+        return;
+    }
+    const maxNilai = Math.max(...data.map(d => Math.max(d.setoran, d.penarikan)), 1);
+    const stepX = 320 / (data.length - 1 || 1);
+    const toY = (val) => 130 - (val / maxNilai) * 110;
+
+    const pointsSetoran = data.map((d, i) => `${i * stepX},${toY(d.setoran)}`).join(' ');
+    const pointsPenarikan = data.map((d, i) => `${i * stepX},${toY(d.penarikan)}`).join(' ');
+
+    $svg.html(`
+        <polyline points="${pointsSetoran}" fill="none" stroke="#2E7D32" stroke-width="2.5" />
+        <polyline points="${pointsPenarikan}" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 4" />
+    `);
+}
+
+function muatDataDashboard() {
+    const periode = $('#periode').val();
+    const jenis = $('#jenis').val();
+
+    $.ajax({
+        url: `${API_BASE}/dashboard_data.php`,
+        method: 'GET',
+        data: { periode, jenis },
+        dataType: 'json',
+    }).done(function (data) {
+        if (!data.success) {
+            showToast(data.message || 'Gagal memuat dashboard', true);
+            return;
+        }
+        $('#statNasabah').text(Number(data.total_nasabah).toLocaleString('id-ID'));
+        $('#statPetugas').text(data.total_petugas);
+        $('#statSaldo').text('Rp ' + Number(data.total_saldo).toLocaleString('id-ID'));
+
+        renderBarChartSampah(data.sampah_terkumpul);
+        renderLineChartTren(data.tren_mingguan);
+
+        const $tbody = $('#transaksiTerbaruBody').empty();
+        if (data.transaksi_terbaru.length === 0) {
+            $tbody.html('<tr><td colspan="5" class="text-center text-gray-400 py-4">Tidak ada aktivitas pada periode/jenis ini</td></tr>');
+        } else {
+            data.transaksi_terbaru.forEach(function (t) {
+                $tbody.append(renderTransaksiRow(t));
+            });
+        }
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
+}
+
+setupDropdown('avatarTrigger', 'avatarMenu');
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
+        window.location.href = '../login.html';
+    });
+});
+
+$('#periode').on('change', muatDataDashboard);
+$('#jenis').on('change', muatDataDashboard);
+
+$(document).ready(function () {
+    muatDataDashboard();
+});
+</script>
+
+</body>
+</html>

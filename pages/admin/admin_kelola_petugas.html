@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Petugas — Bank Sampah Selaras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/jquery-4.0.0.min.js"></script>
+    <style>
+        .toggle-track { transition: background-color .15s ease; }
+        .toggle-dot { transition: transform .15s ease; }
+        input:checked + .toggle-track { background-color: #2E7D32; }
+        input:checked + .toggle-track .toggle-dot { transform: translateX(18px); }
+    </style>
+</head>
+<body class="m-0 p-0 bg-[#F7FBF0] flex flex-row min-h-screen font-sans text-[#1c1f1a]">
+
+<div class="flex w-full h-screen overflow-hidden">
+
+    <aside class="flex-none bg-[#EBEFE5] w-64 h-screen overflow-y-auto flex flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h2 class="font-bold text-lg text-[#0D631B] m-0">Bank Sampah Selaras</h2>
+                <p class="text-xs text-gray-500 m-0">Community Waste Mgmt</p>
+            </div>
+            <ul class="flex flex-col gap-1 list-none p-0 m-0">
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_dashboard.html">Dashboard</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_kelola_sampah.html">Kelola Sampah &amp; Harga</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_validasi_saldo.html">Validasi Tarik Saldo</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold bg-[#2E7D32] text-[#CBFFC2]" href="admin_kelola_petugas.html">Kelola Petugas</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_riwayat.html">Riwayat Transaksi</a></li>
+                <li><a class="block rounded-lg px-4 py-3 text-sm font-bold text-[#40493D] hover:bg-white" href="admin_profil.html">Profil Akun</a></li>
+            </ul>
+        </div>
+        <button type="button" class="rounded-full bg-[#0D631B] text-white text-sm font-semibold py-2.5 px-4">Bantuan Petugas</button>
+    </aside>
+
+    <div class="flex-1 min-w-0 h-screen overflow-y-auto">
+
+        <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+            <div class="font-bold text-[#0D631B]">Bank Sampah Selaras</div>
+            <div class="flex items-center gap-3.5">
+                <span class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-sm">?</span>
+                <div class="relative">
+                    <div id="avatarTrigger" class="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-bold cursor-pointer">AD</div>
+                    <div id="avatarMenu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px] overflow-hidden z-50">
+                        <a href="admin_profil.html" class="block w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7FBF0]">Profil Akun</a>
+                        <button type="button" id="btnLogout" class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-[#F7FBF0]">Keluar</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8">
+            <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold m-0 mb-1">Manajemen Petugas Lapangan</h1>
+                    <p class="text-sm text-gray-500 m-0">Daftar petugas aktif yang bertugas mengelola setoran sampah di lapangan.</p>
+                </div>
+                <button type="button" id="btnTambahPetugas" class="rounded-full bg-[#2E7D32] text-white text-sm font-semibold px-4 py-2">+ Tambah Petugas Baru</button>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                <input type="text" id="cariPetugas" placeholder="Masukkan nama atau ID petugas..."
+                       class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm mb-4">
+
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Foto &amp; Nama</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">ID Petugas</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Wilayah Tugas</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Status Aktif</th>
+                            <th class="text-left text-[11px] uppercase text-gray-400 font-semibold py-2.5 border-b border-gray-200">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="petugasTableBody"></tbody>
+                </table>
+
+                <div class="flex items-center justify-between mt-4 text-xs text-gray-500">
+                    <span id="paginationInfo">Memuat data...</span>
+                    <div class="flex gap-1.5">
+                        <button type="button" id="btnPrevPage" class="w-7 h-7 rounded-lg border border-gray-200 bg-white">‹</button>
+                        <button type="button" id="btnNextPage" class="w-7 h-7 rounded-lg border border-gray-200 bg-white">›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay hidden fixed inset-0 bg-black/40 items-center justify-center z-[100] p-5" id="modalPetugas">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h3 id="modalPetugasTitle" class="text-base font-bold m-0">Tambah Petugas Baru</h3>
+            <button class="text-gray-400 text-lg" data-modal-close="modalPetugas">✕</button>
+        </div>
+        <form id="formPetugas">
+            <div class="mb-3.5">
+                <label for="ptgNama" class="block text-xs font-semibold text-gray-600 mb-1.5">Nama Lengkap</label>
+                <input type="text" id="ptgNama" required placeholder="Contoh: Rina Wulandari" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="mb-3.5">
+                <label for="ptgWilayah" class="block text-xs font-semibold text-gray-600 mb-1.5">Wilayah Tugas</label>
+                <input type="text" id="ptgWilayah" required placeholder="Contoh: Blok D - Kebayoran" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="mb-3.5" id="fieldEmailPetugas">
+                <label for="ptgEmail" class="block text-xs font-semibold text-gray-600 mb-1.5">Email</label>
+                <input type="email" id="ptgEmail" placeholder="Contoh: rina@gmail.com" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="mb-3.5" id="fieldTeleponPetugas">
+                <label for="ptgTelepon" class="block text-xs font-semibold text-gray-600 mb-1.5">Nomor Telepon</label>
+                <input type="text" id="ptgTelepon" placeholder="Contoh: 0812xxxxxxx" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="mb-3.5" id="fieldPasswordPetugas">
+                <label for="ptgPassword" class="block text-xs font-semibold text-gray-600 mb-1.5">Password Awal</label>
+                <input type="password" id="ptgPassword" placeholder="Password login petugas" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            </div>
+            <div class="flex gap-2.5 mt-4">
+                <button type="button" class="flex-1 border border-[#2E7D32] text-[#2E7D32] rounded-full py-2.5 font-semibold text-sm" data-modal-close="modalPetugas">Batal</button>
+                <button type="submit" class="flex-1 bg-[#2E7D32] text-white rounded-full py-2.5 font-semibold text-sm">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../../script/admin/admin.js"></script>
+<script>
+const API_BASE = '../../backend/database/admin';
+let currentPage = 1;
+let currentKeyword = '';
+
+function renderPetugasRow(p) {
+    const $tr = $('<tr></tr>').attr('data-id', p.id).html(`
+        <td class="py-3 border-b border-gray-100">
+            <div class="flex items-center gap-2.5 person">
+                <span class="w-7 h-7 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-[11px] font-bold flex items-center justify-center">${p.inisial}</span>
+                ${p.nama}
+            </div>
+        </td>
+        <td class="py-3 border-b border-gray-100">${p.id}</td>
+        <td class="py-3 border-b border-gray-100"><span class="pill-tag inline-flex px-2.5 py-1 rounded-full bg-[#EBEFE5] text-[#2E7D32] text-xs font-semibold">${p.wilayah}</span></td>
+        <td class="py-3 border-b border-gray-100">
+            <label class="relative inline-block w-10 h-5.5">
+                <input type="checkbox" class="opacity-0 w-0 h-0" ${p.aktif ? 'checked' : ''}>
+                <span class="toggle-track absolute inset-0 bg-gray-300 rounded-full cursor-pointer">
+                    <span class="toggle-dot absolute w-4 h-4 bg-white rounded-full left-0.5 top-0.5"></span>
+                </span>
+            </label>
+        </td>
+        <td class="py-3 border-b border-gray-100"><button class="edit-icon-btn text-gray-500" title="Edit petugas">✎</button></td>
+    `);
+    return $tr;
+}
+
+function attachRowHandlers($row, p) {
+    $row.find('input[type="checkbox"]').on('change', function () {
+        const nama = $row.find('.person').text().trim();
+        const aktif = $(this).is(':checked');
+        $.ajax({
+            url: `${API_BASE}/update_status_petugas.php`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id_petugas: p.id, aktif }),
+            dataType: 'json',
+        }).done(function (data) {
+            showToast(data.message || (data.success ? `Status ${nama} diubah menjadi ${aktif ? 'Aktif' : 'Nonaktif'}.` : 'Gagal update status'), !data.success);
+        }).fail(function () {
+            showToast('Gagal terhubung ke server.', true);
+        });
+    });
+
+    $row.find('.edit-icon-btn').on('click', function () {
+        $('#modalPetugasTitle').text('Edit Petugas');
+        $('#ptgNama').val($row.find('.person').text().trim());
+        $('#ptgWilayah').val($row.find('.pill-tag').text());
+        $('#fieldEmailPetugas, #fieldTeleponPetugas, #fieldPasswordPetugas').addClass('hidden');
+        $formPetugas.attr('data-mode', 'edit');
+        $formPetugas.attr('data-id', p.id);
+        openModal('modalPetugas');
+    });
+}
+
+function muatDataPetugas() {
+    $.getJSON(`${API_BASE}/get_petugas.php`, { page: currentPage, q: currentKeyword }).done(function (data) {
+        if (!data.success) { showToast(data.message || 'Gagal memuat data petugas', true); return; }
+        const $tbody = $('#petugasTableBody').empty();
+        data.data.forEach(function (p) {
+            const $row = renderPetugasRow(p);
+            $tbody.append($row);
+            attachRowHandlers($row, p);
+        });
+        $('#paginationInfo').text(`Menampilkan ${data.data.length} dari ${data.total} petugas (halaman ${data.page})`);
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
+}
+
+let searchTimeout;
+$('#cariPetugas').on('input', function () {
+    clearTimeout(searchTimeout);
+    const val = $(this).val();
+    searchTimeout = setTimeout(function () {
+        currentKeyword = val;
+        currentPage = 1;
+        muatDataPetugas();
+    }, 300);
+});
+
+const $formPetugas = $('#formPetugas');
+
+$('#btnTambahPetugas').on('click', function () {
+    $('#modalPetugasTitle').text('Tambah Petugas Baru');
+    $formPetugas[0].reset();
+    $formPetugas.attr('data-mode', 'tambah');
+    $('#fieldEmailPetugas, #fieldTeleponPetugas, #fieldPasswordPetugas').removeClass('hidden');
+    openModal('modalPetugas');
+});
+
+$formPetugas.on('submit', function (e) {
+    e.preventDefault();
+    const mode = $formPetugas.attr('data-mode');
+    const nama = $('#ptgNama').val();
+    const wilayah = $('#ptgWilayah').val();
+    const payload = { mode, nama, wilayah };
+    if (mode === 'edit') {
+        payload.id = $formPetugas.attr('data-id');
+    } else {
+        payload.email = $('#ptgEmail').val();
+        payload.no_telepon = $('#ptgTelepon').val();
+        payload.password = $('#ptgPassword').val();
+    }
+    $.ajax({
+        url: `${API_BASE}/simpan_petugas.php`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(payload),
+        dataType: 'json',
+    }).done(function (data) {
+        showToast(data.message || (data.success ? 'Berhasil disimpan' : 'Gagal menyimpan'), !data.success);
+        if (data.success) { closeModal('modalPetugas'); muatDataPetugas(); }
+    }).fail(function () {
+        showToast('Gagal terhubung ke server.', true);
+    });
+});
+
+$('#btnPrevPage').on('click', function () {
+    if (currentPage <= 1) return;
+    currentPage--;
+    muatDataPetugas();
+});
+$('#btnNextPage').on('click', function () {
+    currentPage++;
+    muatDataPetugas();
+});
+
+setupDropdown('avatarTrigger', 'avatarMenu');
+$('#btnLogout').on('click', function () {
+    $.get(`${API_BASE}/logout.php`).always(function () {
+        window.location.href = '../login.html';
+    });
+});
+
+$(document).ready(function () {
+    muatDataPetugas();
+});
+</script>
+
+</body>
+</html>
